@@ -1,0 +1,48 @@
+PHP Timeclock
+Version 1.1
+http://sourceforge.net/projects/phptimeclock
+Copyright (C) 2008 phpTimeClock Team
+Based upon phptimeclock which is Copyright 2006 Ken Papizan
+Licensed under the GPL
+
+
+PHP Timeclock Credits -- Many thanks to the developers listed below.
+--------------------------------------------------------------------
+Midwest Elite Entertainment
+A company that specializes in DJ and karaoke services in the Midwest.
+http://www.MeEnt.Biz/
+
+John Schneiderman
+Has contributed bug fixes and feature additions seen in the releases 1.05 to 1.1.
+
+Affinity4
+Sponsorship of development by paying for Jacob's time on the project.
+http://www.affinity4.com
+
+Jacob Allred
+Bug fixes and feature enhancements. Jacob also coded the majority of the v2 changes.
+http://www.jacoballred.com
+http://www.fakenamegenerator.com
+
+Matt Kruse
+Two of his javascript scripts are utilized in this app. One is a color picker and the other is a calendar popup.
+http://mattkruse.com
+
+Joshua Paine
+Provided a javascript script that renders transparent pngs for Internet Explorer versions 6 and below.
+http:////demo.fairsky.us/javascript/png.html
+
+Mark James
+Provided the transparent png icons that are scattered throughout the app.
+http://www.famfamfam.com/lab/icons/silk/
+
+Adam Woodbeck
+Provided code that is included in the Hours Worked report.
+
+Martin Geisler
+Provided code to display current, local weather stats. This code is included in his own sourceforge.net project, PHP Weather.
+http://sourceforge.net/projects/phpweather
+
+Greg Breland Provided code and coding help in many, many places throughout the app. He has a couple of projects currently in development: Squidfire, a script that parses Squid logs, and WeldAE, which is a platform for building database driven applications.
+http://sourceforge.net/projects/squidfire
+http://weldae.org

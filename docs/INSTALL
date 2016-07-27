@@ -1,0 +1,63 @@
+PHP Timeclock
+Version 1.1
+http://sourceforge.net/projects/phptimeclock
+Copyright (C) 2008 phpTimeClock Team
+Based upon phptimeclock which is Copyright 2006 Ken Papizan
+Licensed under the GPL
+
+
+REQUIREMENTS:
+
+--- at least PHP 4.1.x, with mysql support
+--- MySQL
+--- Webserver
+--- Javascript enabled web browser
+
+
+TESTED:
+
+--- PHP 5.2.6 with mysql support
+--- MySQL 5.0.67
+--- Apache 2.2.9
+--- Konqueror 3.5.10 Firefox 3.0.3
+
+Any version of mysql or webserver software that supports php, whether it's an earlier
+version than what's tested or later, will probably work fine. Any web browser that supports
+CSS 2 should work fine (IE5+, Mozilla 1.0+, Firefox).
+
+INSTALLATION:
+
+New Install
+-----------
+--- Unpack the distribution into your webserver's document root directory.
+--- Create a database named "phptimeclock" or whatever you wish to name it.
+--- Create a mysql user named "timeclock" (or whatever you wish to name it) with a password.
+    Give this user at least SELECT, UPDATE, INSERT, DELETE, ALTER, and CREATE privileges to ONLY
+    this database.
+--- Import the tables using the create_tables.sql script included in this distribution.
+--- Edit config.inc.php using any changes you wish.
+--- Open the index page with your web browser.
+--- Click on the Administration link on the right side of the page. Input "admin" (without the quotes)
+    for the username and "admin" (without the quotes) for the password. Please change the password
+    for this admin user after the initial setup of PHP Timeclock is complete.
+--- Create at least one office by clicking on the Create Office link on the left side of the page.
+    You MUST create an office to achieve the desired results. Create more offices if needed.
+--- Create at least one group by clicking on the Create Group link on the left side of the page.
+    You MUST create a group to achieve the desired results. Create more groups if needed.
+--- Add your users by clicking on the Create New Users link, and assign them to the office(s) and
+    group(s) you created above. Give Sys Admin level access for users who will administrate
+    PHP Timeclock. Give Time Admin level access for users who will need to edit users' time, but
+    who will not need Sys Admin level access. If you require the reports to be secured so only
+    certain users can run them, then give these users reports level access.
+
+    *** Admin level access and reports level access are completely separate from each other. Just
+    *** because a user has admin level access does not give that user reports level access. You must
+    *** specifically give them reports level access when you are creating or editing the users,
+    *** if you choose to secure these reports for these users. To make PHP Timeclock lock down the
+    *** reports to only these users, set the use_reports_password setting in config.inc.php to "yes".
+
+Upgrading from 1.05 to 1.1
+---------------------------
+--- Backup and move your current installation.
+--- Unpack the distribution into your webserver's document root directory.
+--- Edit config.inc.php.
