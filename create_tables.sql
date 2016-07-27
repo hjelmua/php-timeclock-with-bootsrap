@@ -36,7 +36,7 @@ CREATE TABLE audit (
   user_modified varchar(50) NOT NULL default '',
   PRIMARY KEY  (modified_when),
   UNIQUE KEY modified_when (modified_when)
-) TYPE=MyISAM;
+);
 
 # --------------------------------------------------------
 
@@ -47,7 +47,7 @@ CREATE TABLE audit (
 CREATE TABLE dbversion (
   dbversion decimal(5,1) NOT NULL default '0.0',
   PRIMARY KEY  (dbversion)
-) TYPE=MyISAM;
+);
 
 #
 # Dumping data for table `dbversion`
@@ -74,7 +74,7 @@ CREATE TABLE employees (
   time_admin tinyint(1) NOT NULL default '0',
   disabled tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (empfullname)
-) TYPE=MyISAM;
+);
 
 #
 # Dumping data for table `employees`
@@ -93,7 +93,7 @@ CREATE TABLE groups (
   groupid int(10) NOT NULL auto_increment,
   officeid int(10) NOT NULL default '0',
   PRIMARY KEY  (groupid)
-) TYPE=MyISAM;
+);
 
 # --------------------------------------------------------
 
@@ -108,21 +108,22 @@ CREATE TABLE info (
   notes varchar(250) default NULL,
   ipaddress varchar(39) NOT NULL default '',
   KEY fullname (fullname)
-) TYPE=MyISAM;
+);
 
 # --------------------------------------------------------
 
 #
 # Table structure for table `metars`
-#
+# had to make som changes
 
-CREATE TABLE metars (
-  metar varchar(255) NOT NULL default '',
-  timestamp timestamp(14) NOT NULL,
-  station varchar(4) NOT NULL default '',
-  PRIMARY KEY  (station),
-  UNIQUE KEY station (station)
-) TYPE=MyISAM;
+CREATE TABLE `metars` (
+  `metar` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `station` varchar(4) COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (`station`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+
 
 # --------------------------------------------------------
 
@@ -134,7 +135,7 @@ CREATE TABLE offices (
   officename varchar(50) NOT NULL default '',
   officeid int(10) NOT NULL auto_increment,
   PRIMARY KEY  (officeid)
-) TYPE=MyISAM;
+);
 
 # --------------------------------------------------------
 
@@ -147,7 +148,7 @@ CREATE TABLE punchlist (
   color varchar(7) NOT NULL default '',
   in_or_out tinyint(1) default NULL,
   PRIMARY KEY  (punchitems)
-) TYPE=MyISAM;
+);
 
 #
 # Dumping data for table `punchlist`

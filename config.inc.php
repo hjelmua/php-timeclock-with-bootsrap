@@ -220,9 +220,10 @@ $display_group_name = "no";
 
 
 /* A logo or graphic, this is displayed in the top left of each page.
-Set it to "none" to ignore this option. */
+Set it to "none" to ignore this option. Its better with none in a bootstraped version */
 
-$logo = "images/logos/phptimeclock.png";
+$logo = "none";
+/* $logo = "images/logos/phptimeclock.png"; *
 
 
 /* This sets the refresh rate (in seconds) for index.php. If the application is kept open,
