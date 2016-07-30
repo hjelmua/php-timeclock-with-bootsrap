@@ -25,37 +25,42 @@
  * This module will also add the ending HTML tags to make it valid HTML.
  */
 
-echo "
-         <!-- Display Footer -->
-         <tr class=hide>
-            <td height=4% class=misc_items align=right valign=middle scope=row colspan=2>";
+echo '
+        </div>
+        <!-- /.content-wrapper -->
+	
+	<!-- Main Footer -->
+  <footer class="main-footer">
+    <!-- To the right -->
+    <div class="pull-right hidden-xs">';
+
 
 // Determine if we should add the contact E-mail to the footer
 if (! empty($email) && ($email != "none")) {
     echo "
-               <a class=footer_links href='mailto:$email'>
-                  Contact Management
-               </a> &nbsp; &#8226;";
+               <a class=footer_links href='mailto:$email'> Contact Management </a> &nbsp; &#8226;";
 }
 
 // Determine if the application information is set
 if (empty($company_name) || empty($app_version)) {
     echo "
-               <a class=footer_links href='http://www.phptimeclock.com' target='_blank'>
-                  Powered by PhpTimeClock
-               </a>";
+               <a class=footer_links href='https://github.com/hjelmua/php-timeclock-with-bootsrap' target='_blank'>Powered by PhpTimeClock</a>";
 } else {
     echo "
-               <a class=footer_links href='http://www.phptimeclock.com' target='_blank'>
-                  $company_name is Powered by PhpTimeClock $app_version
-               </a>";
+               <a class=footer_links href='https://github.com/hjelmua/php-timeclock-with-bootsrap' target='_blank'> $company_name is Powered by PhpTimeClock $app_version</a>";
 }
 
+echo '
+	</div>
+<!-- Default to the left -->
+
+Powered by <a class="footer_links" href="http://nginx.org/">NGINX</a> &nbsp;&#177 <a class="footer_links" href="http://mysql.org">MySql</a>&nbsp;&#177
+<a class="footer_links" href="http://php.net">&nbsp;PHP</a> &nbsp;&#8226; <a class="footer_links" href="https://almsaeedstudio.com">AdminLTE theme</a> &nbsp;&#177 <a class="footer_links" href="http://getbootstrap.com">Bootstrap</a>
+
+ </footer>
+';
+
+include './theme/templates/controlsidebar.inc'; 
 // Finish up the HTML to make it valid
-echo "
-            </td>
-         </tr>
-      </table>
-   </body>
-</html>";
+
 ?>

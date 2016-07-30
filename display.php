@@ -28,10 +28,22 @@ $row_count = 0;
 $page_count = 0;
 
 // Add the Message of the day
-echo "
-                        <!-- Current Display Messages -->
-                        <table class=misc_items width=100% border=0 cellpadding=2 cellspacing=0>";
+echo '
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="box">
+         <!--     <div class="box-header">
+                <h3 class="box-title">Responsive Hover Table</h3>	
+              </div>   
+	      -->
+              <!-- /.box-header -->
+              <div class="box-body table-responsive no-padding">
+	      <!-- Current Display Messages -->
+	      <table class="table table-hover">
+';
 
+
+/* move to leftmain
 // Determine if we should add the message of the day
 if (! isset($_GET['printer_friendly']) && ($message_of_the_day != "none")) {
     echo "
@@ -49,6 +61,7 @@ if (! isset($_GET['printer_friendly']) && ($message_of_the_day != "none")) {
                                  &nbsp;
                               </td>";
 }
+end move to leftmain */ 
 
 // Parse the employee info in the result array
 while ($row = mysql_fetch_array($result)) {
@@ -59,6 +72,8 @@ while ($row = mysql_fetch_array($result)) {
     if ($row_count == 0) {
         if ($page_count == 0) {
             // display sortable column headings for main page //
+	    
+	    /* moving this to leftmain
             if (! isset($_GET['printer_friendly'])) {
                 echo "
                               <td align=right colspan=2>
@@ -73,133 +88,136 @@ while ($row = mysql_fetch_array($result)) {
                               </td>
                            </tr>";
             }
-
+end moving to leftmain */
+	    
+	    /*  let let bootstrap sort the table
             echo "
                            <!-- Current Employee Status' -->
-                           <tr class=notprint>";
+                           <tr>";
+
 
             if ($display_name == "yes") {
                 echo "
-                              <td nowrap width=20% align=left style='padding-left:10px;padding-right:10px;'>
-                                 <a style='font-size:11px;color:#27408b;' href='$current_page?sortcolumn=empfullname&sortdirection=$sortnewdirection'>
+                              <th>
+                                 <a href='$current_page?sortcolumn=empfullname&sortdirection=$sortnewdirection'>
                                     Name
                                  </a>
-                              </td> ";
+                              </th> ";
             }
 
             if ($display_status == "yes") {
                 echo "
-                              <td nowrap width=10% align=left style='padding-left:10px;'>
-                                 <a style='font-size:11px;color:#27408b;' href='$current_page?sortcolumn=inout&sortdirection=$sortnewdirection'>
+                              <th>
+                                 <a href='$current_page?sortcolumn=inout&sortdirection=$sortnewdirection'>
                                     Status
                                  </a>
-                              </td>";
+                              </th>";
             }
 
             if ($display_date == "yes") {
                 echo "
-                              <td nowrap width=5% align=left style='padding-left:10px;'>
-                                 <a style='font-size:11px;color:#27408b;' href='$current_page?sortcolumn=tstamp&sortdirection=$sortnewdirection'>
+                              <th>
+                                 <a href='$current_page?sortcolumn=tstamp&sortdirection=$sortnewdirection'>
                                     Date
                                  </a>
-                              </td>";
+                              </th>";
             }
 
             if ($display_time == "yes") {
                 echo "
-                              <td nowrap width=5% align=left style='padding-right:10px;'>
-                                 <a style='font-size:11px;color:#27408b;' href='$current_page?sortcolumn=tstamp&sortdirection=$sortnewdirection'>
+                              <th>
+                                 <a href='$current_page?sortcolumn=tstamp&sortdirection=$sortnewdirection'>
                                     Time
                                  </a>
-                              </td>";
+                              </th>";
             }
 
             if ($display_office_name == "yes") {
                 echo "
-                              <td nowrap width=10% align=left style='padding-left:10px;'>
-                                 <a style='font-size:11px;color:#27408b;' href='$current_page?sortcolumn=office&sortdirection=$sortnewdirection'>
+                              <th>
+                                 <a href='$current_page?sortcolumn=office&sortdirection=$sortnewdirection'>
                                     Office
                                  </a>
-                              </td>";
+                              </th>";
             }
 
             if ($display_group_name == "yes") {
                 echo "
-                              <td nowrap width=10% align=left style='padding-left:10px;'>
-                                 <a style='font-size:11px;color:#27408b;' href='$current_page?sortcolumn=groups&sortdirection=$sortnewdirection'>
+                              <th>
+                                 <a href='$current_page?sortcolumn=groups&sortdirection=$sortnewdirection'>
                                     Group
                                  </a>
-                              </td>";
+                              </th>";
             }
 
             if ($display_notes == "yes") {
                 echo "
-                              <td style='padding-left:10px;'>
-                                 <a style='font-size:11px;color:#27408b;' href='$current_page?sortcolumn=notes&sortdirection=$sortnewdirection'>
+                              <th>
+                                 <a href='$current_page?sortcolumn=notes&sortdirection=$sortnewdirection'>
                                     <u>Notes</u>
                                  </a>
-                              </td>";
+                              </th>";
             }
 
             echo "
                            </tr>";
+	end lets let bootstrap sort the table    */
         } else {
             // display report name and page number of printed report above the column headings of each printed page //
             $temp_page_count = $page_count + 1;
         }
 
         echo "
-                           <tr class=notdisplay>";
+                           <tr>";
 
         if ($display_name == "yes") {
             echo "
-                              <td nowrap width=20% align=left style='padding-left:10px;padding-right:10px;font-size:11px;color:#27408b; text-decoration:underline;'>
+                              <th>
                                  Name
-                              </td>";
+                              </th>";
         }
 
         if ($display_status == "yes") {
             echo "
-                              <td nowrap width=10% align=left style='padding-left:10px;font-size:11px;color:#27408b; text-decoration:underline;'>
+                              <th>
                                  Status
-                              </td>";
+                              </th>";
         }
 
         if ($display_date == "yes") {
             echo "
-                              <td nowrap width=5% align=left style='padding-left:10px;font-size:11px;color:#27408b; text-decoration:underline;'>
+                              <th>
                                  Date
-                              </td>";
+                              </th>";
         }
 
         if ($display_time == "yes") {
             echo "
-                              <td nowrap width=5% align=left style='padding-right:10px;font-size:11px;color:#27408b; text-decoration:underline;'>
+                              <th>
                                  Time
-                              </td>";
+                              </th>";
         }
 
         if ($display_office_name == "yes") {
             echo "
-                              <td nowrap width=10% align=left style='padding-left:10px;font-size:11px;color:#27408b; text-decoration:underline;'>
+                              <th>
                                  Office
-                              </td>";
+                              </th>";
         }
 
         if ($display_group_name == "yes") {
             echo "
-                              <td nowrap width=10% align=left style='padding-left:10px;font-size:11px;color:#27408b; text-decoration:underline;'>
+                              <th>
                                  Group
                               </td>";
         }
 
         if ($display_notes == "yes") {
             echo "
-                              <td style='padding-left:10px;'>
-                                 <a style='font-size:11px;color:#27408b;text-decoration:underline;'>
+                              <th>
                                     Notes
                                  </a>
-                              </td>";
+                              </th>";
         }
 
         echo "
@@ -215,17 +233,17 @@ while ($row = mysql_fetch_array($result)) {
     $date = date($datefmt, $display_stamp);
 
     echo "
-                           <tr class=display_row>";
+                           <tr>";
 
     if ($display_name == "yes") {
         if ($show_display_name == "yes") {
             echo stripslashes("
-                              <td nowrap width=20% bgcolor='$row_color' style='padding-left:10px; padding-right:10px;'>
+                              <td>
                                  ".$row["displayname"]."
                               </td>");
         } elseif ($show_display_name == "no") {
             echo stripslashes("
-                              <td nowrap width=20% bgcolor='$row_color' style='padding-left:10px; padding-right:10px;'>
+                              <td>
                                  ".$row["empfullname"]."
                               </td>");
         }
@@ -239,14 +257,12 @@ while ($row = mysql_fetch_array($result)) {
         while ($status_row = mysql_fetch_array($status)) {
             if ($status_row['punchitems'] == $row["inout"]) {
                 echo "
-                              <td nowrap align=left width=10% style='background-color:$row_color;color:".$row["color"]."; padding-left:10px;'>";
+                             <!-- <td> -->";
 
                 if ((($display_status_option == "icon") || ($display_status_option == "both")) && $status_row['in_or_out'] == 0) { // An out status icon
-                    echo "
-                                 <img src='images/icons/status_out.gif' alt='Employee Is Out' />";
+		    echo '<td class="text-red"><i class="glyphicon glyphicon-log-out"></i>';
                 } else if ((($display_status_option == "icon") || ($display_status_option == "both")) && $status_row['in_or_out'] == 1) { // An in status icon
-                    echo "
-                                 <img src='images/icons/status_in.gif' alt='Employee Is In' />";
+                    echo '<td class="text-green"><i class="glyphicon glyphicon-log-in"></i>';
                 }
 
                 if (($display_status_option == "text") || ($display_status_option == "both")) { // Add the status.
@@ -263,35 +279,35 @@ while ($row = mysql_fetch_array($result)) {
 
     if ($display_date == "yes") {
         echo "
-                              <td nowrap align=right width=5% bgcolor='$row_color' style='padding-left:10px;'>
+                              <td>
                                  ".$date."
                               </td>";
         }
 
     if ($display_time == "yes") {
         echo "
-                              <td nowrap align=right width=5% bgcolor='$row_color' style='padding-right:10px;'>
+                              <td>
                                  ".$time."
                               </td>";
     }
 
     if ($display_office_name == "yes") {
         echo "
-                              <td nowrap align=left width=10% bgcolor='$row_color' style='padding-left:10px;'>
+                              <td>
                                  ".$row["office"]."
                               </td>";
     }
 
     if ($display_group_name == "yes") {
         echo "
-                              <td nowrap align=left width=10% bgcolor='$row_color' style='padding-left:10px;'>
+                              <td>
                                  ".$row["groups"]."
                               </td>";
     }
 
     if ($display_notes == "yes") {
         echo stripslashes("
-                              <td bgcolor='$row_color' style='padding-left:10px;'>
+                              <td>
                                  ".$row["notes"]."
                               </td>");
     }
@@ -310,12 +326,17 @@ while ($row = mysql_fetch_array($result)) {
     }
 }
 echo "
-                        </table>";
+                        </table> 
+      </div>
+      <!-- /.box-body -->
+    </div>
+    <!-- /.box -->
+  </div>
+</div>";
 
 if (! isset($_GET['printer_friendly'])) {
     echo "
-                     </td>
-                  </tr>";
+<!-- debug end of display.php-->";
 }
 mysql_free_result($result);
 ?>

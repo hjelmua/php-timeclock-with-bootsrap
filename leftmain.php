@@ -90,6 +90,7 @@ if ($request == 'POST') {
     ob_end_flush();
 }
 
+/*
 if ($display_weather == 'yes') { // Retrieve weather information
     include 'phpweather.php';
     $metar = get_metar($metar);
@@ -168,74 +169,251 @@ if ($display_weather == 'yes') { // Retrieve weather information
     }
 }
 
-echo "
-      <!-- Left Side Interface For Employee's To Punch -->
-      <table width=100% height=89% border=0 cellpadding=0 cellspacing=1>
-         <tr valign=top>
-            <td class=left_main width=170 align=left scope=col>
-               <table class=hide width=100% border=0 cellpadding=1 cellspacing=0>";
+*/
 
-// display links in top left of each page //
-if ($links == "none") { // Display any links listed
-    echo "
-                  <tr>
-                  </tr>";
-} else {
-    echo "
-                  <tr>
-                     <td class=left_rows height=7 align=left valign=middle> </td>
-                  </tr>";
-    for ($x = 0; $x < count($display_links); $x++) {
-        echo "
-                  <tr>
-                     <td class=left_rows height=18 align=left valign=middle>
-                        <a class=admin_headings href='$links[$x]'>
-                           $display_links[$x]
-                        </a>
-                     </td>
-                  </tr>";
+/* nya */
+if ($display_weather == 'yes') {
+
+    include 'phpweather.php';
+    $metar = get_metar($metar);
+    $data = process_metar($metar);
+
+    if ($weather_units == "f") {
+        $mph = " mph";
+        $miles = " miles";
+
+        // weather info //
+
+        if (!isset($data['temp_f'])) {
+            $temp = '';
+        } else {
+            $temp = $data['temp_f'];
+        }
+        if (!isset($data['windchill_f'])) {
+            $windchill = '';
+        } else {
+            $windchill = $data['windchill_f'];
+        }
+        if (!isset($data['wind_dir_text_short'])) {
+            $wind_dir = '';
+        } else {
+            $wind_dir = $data['wind_dir_text_short'];
+        }
+        if (!isset($data['wind_miles_per_hour'])) {
+            $wind = '';
+        } else {
+            $wind = round($data['wind_miles_per_hour']);
+        }
+        if ($wind == 0) {
+            $wind_dir = 'None';
+            $mph = '';
+            $wind = '';
+        } else {
+            $wind_dir = $wind_dir;
+        }
+        if (!isset($data['visibility_miles'])) {
+            $visibility = '';
+        } else {
+            $visibility = $data['visibility_miles'] . $miles;
+        }
+        if (!isset($data['rel_humidity'])) {
+            $humidity = 'None';
+        } else {
+            $humidity = round($data['rel_humidity'], 0);
+        }
+        if (!isset($data['time'])) {
+            $time = '';
+        } else {
+            $time = date($timefmt, $data['time']);
+        }
+        if (!isset($data['cloud_layer1_condition'])) {
+            $cloud_cover = '';
+        } else {
+            $cloud_cover = $data['cloud_layer1_condition'];
+        }
+        if (($temp <> '') && ($temp >= '70') && ($humidity <> '')) {
+            $heatindex = number_format(-42.379 + (2.04901523 * $temp) + (10.1433312 * $humidity) - (0.22475541 * $temp * $humidity)
+                                       - (0.00683783 * ($temp * $temp)) - (0.05481717 * ($humidity * $humidity))
+                                       + (0.00122874 * ($temp * $temp) * $humidity) + (0.00085282 * $temp * ($humidity * $humidity))
+                                       - (0.00000199 * ($temp * $temp) * ($humidity * $humidity)));
+        }
+    } else {
+        $mph = " kmh";
+        $miles = " km";
+
+        // weather info //
+
+        if (!isset($data['temp_c'])) {
+            $temp = '';
+        } else {
+            $temp = $data['temp_c'];
+        }
+        if (!isset($data['temp_f'])) {
+            $tempF = '';
+        } else {
+            $tempF = $data['temp_f'];
+        }
+        if (!isset($data['windchill_c'])) {
+            $windchill = '';
+        } else {
+            $windchill = $data['windchill_c'];
+        }
+        if (!isset($data['wind_dir_text_short'])) {
+            $wind_dir = '';
+        } else {
+            $wind_dir = $data['wind_dir_text_short'];
+        }
+        if (!isset($data['wind_meters_per_second'])) {
+            $wind = '';
+        } else {
+            $wind = round($data['wind_meters_per_second'] / 1000 * 60 * 60);
+        }
+        if ($wind == 0) {
+            $wind_dir = 'None';
+            $mph = '';
+            $wind = '';
+        } else {
+            $wind_dir = $wind_dir;
+        }
+        if (!isset($data['visibility_km'])) {
+            $visibility = '';
+        } else {
+            $visibility = $data['visibility_km'] . $miles;
+        }
+        if (!isset($data['rel_humidity'])) {
+            $humidity = 'None';
+        } else {
+            $humidity = round($data['rel_humidity'], 0);
+        }
+        if (!isset($data['time'])) {
+            $time = '';
+        } else {
+            $time = date($timefmt, $data['time']);
+        }
+        if (!isset($data['cloud_layer1_condition'])) {
+            $cloud_cover = '';
+        } else {
+            $cloud_cover = $data['cloud_layer1_condition'];
+        }
+        if (($tempF <> '') && ($tempF >= '70') && ($humidity <> '')) {
+            $heatindexF = number_format(-42.379 + (2.04901523 * $tempF) + (10.1433312 * $humidity) - (0.22475541 * $tempF * $humidity)
+                                        - (0.00683783 * ($tempF * $tempF)) - (0.05481717 * ($humidity * $humidity))
+                                        + (0.00122874 * ($tempF * $tempF) * $humidity) + (0.00085282 * $tempF * ($humidity * $humidity))
+                                        - (0.00000199 * ($tempF * $tempF) * ($humidity * $humidity)));
+            $heatindex = round(($heatindexF - 32) * 5 / 9);
+        }
+    }
+
+    if ((isset($heatindex)) || ($windchill <> '')) {
+        if (!isset($heatindex)) {
+            $feelslike = $windchill;
+        } else {
+            $feelslike = $heatindex;
+        }
+    } else {
+        $feelslike = $temp;
     }
 }
 
-// display form to submit signin/signout information //
-echo "
-                  <form name='timeclock' action='$self' method='post'>";
 
-if ($links == "none") {
-    echo "
-                     <tr>
-                        <td height=7> </td>
-                     </tr>";
-} else {
-    echo "
-                     <tr>
-                        <td height=20> </td>
-                     </tr>";
+/* slut nya */
+
+include './theme/templates/leftnavstart.inc';
+
+
+
+//user moved here from topmain
+if (isset($_SESSION['valid_user'])) {
+$logged_in_user = $_SESSION['valid_user'];
+echo '
+      <div class="user-panel">
+        <div class="pull-left image">
+          <h3><i class="fa fa-user-secret text-orange"></i></h3>
+        </div>
+        <div class="pull-left info">
+          <p>'.$logged_in_user.'</p>
+          <!-- Status -->
+          <a href="#"><i class="fa fa-circle text-success"></i> Logged in</a>
+        </div>
+      </div>';
 }
 
+else if (isset($_SESSION['time_admin_valid_user'])) {
+    $logged_in_user = $_SESSION['time_admin_valid_user'];
+    echo '
+          <div class="user-panel">
+            <div class="pull-left image">
+              <h3><i class="fa fa-user-secret text-red"></i></h3>
+            </div>
+            <div class="pull-left info">
+              <p>'.$logged_in_user.'</p>
+              <!-- Status -->
+              <a href="#"><i class="fa fa-circle text-success"></i> Logged in</a>
+            </div>
+          </div>';
+
+} else if (isset($_SESSION['valid_reports_user'])) {
+    $logged_in_user = $_SESSION['valid_reports_user'];
+    echo '
+          <div class="user-panel">
+            <div class="pull-left image">
+              <h3><i class="fa fa-user-plus"></i></h3>
+            </div>
+            <div class="pull-left info">
+              <p>'.$logged_in_user.'</p>
+              <!-- Status -->
+              <a href="#"><i class="fa fa-circle text-success"></i> Logged in</a>
+            </div>
+          </div>';
+} else if (isset($_SESSION['valid_report_employee'])) {
+    $logged_in_user = $_SESSION['valid_report_employee'];
+    echo '
+          <div class="user-panel">
+            <div class="pull-left image">
+              <h3><i class="fa fa-user"></i></h3>
+            </div>
+            <div class="pull-left info">
+              <p>'.$logged_in_user.'</p>
+              <!-- Status -->
+              <a href="#"><i class="fa fa-circle text-success"></i> Logged in</a>
+            </div>
+          </div>';
+}
+
+// end user moved here from topmain
+
+
+
 echo "
-                     <tr>
-                        <td class=title_underline height=4 align=left valign=middle style='padding-left:10px;'>
-                           Please punch in below:
-                        </td>
-                     </tr>
-                     <tr>
-                        <td height=7> </td>
-                     </tr>
-                     <tr>
-                        <td height=4 align=left valign=middle class=misc_items>
-                           Name:
-                        </td>
-                     </tr>
-                     <tr>
-                        <td height=4 align=left valign=middle class=misc_items>";
+      <!-- Left Side Interface For Employee's To Punch -->";
+
+// display form to submit signin/signout information //
+
+
+echo "<form role='form' name='timeclock' action='$self' method='post'>";
+
+echo '
+        <div class="box box-primary">
+               <div class="box-header with-border">
+                 <h3 class="box-title">Please punch in below:</h3>
+               </div>
+               <!-- /.box-header -->';
+echo "<div class='box-body'>
+	
+	<div class='form-group'>
+ 
+                           
+                        
+                           <label>Name:</label>
+			   
+                        ";
 
 // query to populate dropdown with employee names //
 if ($show_display_name == "yes") {
     $query = "select displayname from ".$db_prefix."employees where disabled <> '1'  and empfullname <> 'admin' order by displayname";
     $emp_name_result = mysql_query($query);
     echo "
-                           <select name='left_displayname' tabindex=1>
+                           <select multiple class='form-control' name='left_displayname' tabindex=1>
                               <option value =''>
                                  ...
                               </option>";
@@ -258,17 +436,14 @@ if ($show_display_name == "yes") {
 
     echo "
                            </select>
-                        </td>
-                     </tr>
-                     <tr>
-                        <td height=7> </td>
-                     </tr>";
+    </div>
+                        ";
     mysql_free_result($emp_name_result);
 } else { // Display full employee names
     $query = "select empfullname from ".$db_prefix."employees where disabled <> '1'  and empfullname <> 'admin' order by empfullname";
     $emp_name_result = mysql_query($query);
     echo "
-                           <select name='left_fullname' tabindex=1>
+                           <select multiple class='form-control' name='left_fullname'>
                               <option value =''>
                                  ...
                               </option>";
@@ -290,47 +465,33 @@ if ($show_display_name == "yes") {
 
     echo "
                            </select>
-                        </td>
-                     </tr>
-                     <tr>
-                        <td height=7> </td>
-                     </tr>";
+    </div>
+                        ";
     mysql_free_result($emp_name_result);
 }
 
 // determine whether to use encrypted passwords or not //
 if ($use_passwd == "yes") {
     echo "
-                     <tr>
-                        <td height=4 align=left valign=middle class=misc_items>
-                           Password:
-                        </td>
-                     </tr>
-                     <tr>
-                        <td height=4 align=left valign=middle class=misc_items>
-                           <input type='password' name='employee_passwd' maxlength='25' size='17' tabindex=2>
-                        </td>
-                     </tr>
-                     <tr>
-                        <td height=7> </td>
-                     </tr>";
+                     <div class='form-group'>
+                           <label>Password:</label>
+                        
+                           <input type='password' name='employee_passwd' maxlength='25' class='form-control' placeholder='Password'>
+			   </div>
+";
 }
 
 echo "
-                     <tr>
-                        <td height=4 align=left valign=middle class=misc_items>
+                     <div class='form-group'>
                            Status:
-                        </td>
-                     </tr>
-                     <tr>
-                        <td height=4 align=left valign=middle class=misc_items>";
+                        ";
 
 // query to populate dropdown with punchlist items //
 $query = "select punchitems from ".$db_prefix."punchlist";
 $punchlist_result = mysql_query($query);
 
 echo "
-                           <select name='left_inout' tabindex=3>
+                           <select class='form-control' name='left_inout'>
                               <option value =''>
                                  ...
                               </option>";
@@ -344,166 +505,93 @@ while ($row = mysql_fetch_array($punchlist_result)) {
 
 echo "
                            </select>
-                        </td>
-                     </tr>";
+</div>
+";
 mysql_free_result( $punchlist_result );
 
 echo "
-                     <tr>
-                        <td height=7> </td>
-                     </tr>
-                     <tr>
-                        <td height=4 align=left valign=middle class=misc_items>
-                           Notes:
-                        </td>
-                     </tr>
-                     <tr>
-                        <td height=4 align=left valign=middle class=misc_items>
-                           <input type='text' name='left_notes' maxlength='250' size='17' tabindex=4>
-                        </td>
-                     </tr>";
+                     <div class='form-group'>
+                           <label>Notes:</label>
+                        
+                           <input type='text' name='left_notes' maxlength='250' class='form-control'>
+</div>";
 
 if (! isset($_COOKIE['remember_me'])) {
     echo "
-                     <tr>
-                        <td width=100%>
-                           <table width=100% border=0 cellpadding=0 cellspacing=0>
-                              <tr>
-                                 <td nowrap height=4 align=left valign=middle class=misc_items width=10%>
-                                    Remember Me?
-                                 </td>
-                                 <td width=90% align=left class=misc_items style='padding-left:0px;padding-right:0px;' tabindex=5>
-                                    <input type='checkbox' name='remember_me' value='1'>
-                                 </td>
-                              </tr>
-                           </table>
-                        </td>
-                     <tr>";
+                     <div class='checkbox'>
+     
+		                      <label>
+		                        <input type='checkbox' name='remember_me' value='1'> Remember Me?
+		                      </label>
+                                    
+                 </div>      
+                    ";
 } elseif (isset($_COOKIE['remember_me'])) {
     echo "
-                     <tr>
-                        <td width=100%>
-                           <table width=100% border=0 cellpadding=0 cellspacing=0>
-                              <tr>
-                                 <td nowrap height=4 align=left valign=middle class=misc_items width=10%>
-                                    Reset Cookie?
-                                 </td>
-                                 <td width=90% align=left class=misc_items style='padding-left:0px;padding-right:0px;' tabindex=5>
-                                    <input type='checkbox' name='reset_cookie' value='1'>
-                                 </td>
-                              </tr>
-                           </table>
-                        </td>
-                     <tr>";
+                     <div class='checkbox'>
+                                   
+                                    <label><input type='checkbox' name='reset_cookie' value='1'> Reset Cookie? </label>
+                               </div>   ";
 }
 
 echo "
-                     <tr>
-                        <td height=7> </td>
-                     </tr>
-                     <tr>
-                        <td height=4 align=left valign=middle class=misc_items>
-                           <input type='submit' name='submit_button' value='Punch Status' align='center' tabindex=6>
-                        </td>
-                     </tr>
-                  </form>";
+                      <div class='form-group'>
+<button type='submit' class='btn btn-primary'>Punch Status</button>
+                         </div>
+                  </div></form>";
+
+// End leftnav here and put the rest in main.	
+
+// display links in top left of each page //
+if ($links == "none") { // Display any links listed
+
+} else {
+    echo "<ul class='sidebar-menu'><li class='header'>LINKS</li>";
+    for ($x = 0; $x < count($display_links); $x++) {
+        echo "
+<li><a href='$links[$x]'><i class='fa fa-link'></i>$display_links[$x]</a></li>";
+    }
+    echo '
+	    </ul>';
+}
+	  
+include './theme/templates/leftnavend.inc';
+include './theme/templates/beginmaincontent.inc';
+
+echo '
+	<div class="row">
+	<!-- extra messages -->
+	';
 
 if ($display_weather == "yes") { // Display the weather information.
-    echo "
-                  <tr>
-                     <td height=25 align=left valign=bottom class=misc_items>
-                        <font color='00589C'>
-                           <b> <u>Weather Conditions:</u> </b>
-                        </font>
-                     </td>
-                  </tr>
-                  <tr>
-                     <td height=7> </td>
-                  </tr>
-                  <tr>
-                     <td align=left valign=middle class=misc_items>
-                        <b>$city</b>
-                     </td>
-                  </tr>
-                  <tr>
-                     <td height=4> </td>
-                  </tr>
-                  <tr>
-                     <td align=left valign=middle class=misc_items>
-                        Currently: $temp&#176;
-                     </td>
-                  </tr>
-                  <tr>
-                     <td height=4> </td>
-                  </tr>
-                  <tr>
-                     <td align=left valign=middle class=misc_items>
-                        Feels Like: $feelslike&#176;
-                     </td>
-                  </tr>
-                  <tr>
-                     <td height=4> </td>
-                  </tr>
-                  <tr>
-                     <td align=left valign=middle class=misc_items>
-                        Skies: $cloud_cover
-                     </td>
-                  </tr>
-                  <tr>
-                     <td height=4> </td>
-                  </tr>
-                  <tr>
-                     <td align=left valign=middle class=misc_items>
-                        Wind: $wind_dir $wind$mph
-                     </td>
-                  </tr>
-                  <tr>
-                     <td height=4> </td>
-                  </tr>";
-
-    if ($humidity == 'None') {
-        echo "
-                  <tr>
-                     <td align=left valign=middle class=misc_items>
-                        Humidity: $humidity
-                     </td>
-                  </tr>";
-    } else {
-        echo "
-                  <tr>
-                     <td align=left valign=middle class=misc_items>
-                        Humidity: $humidity%
-                     </td>
-                  </tr>";
-    }
-
-    echo "
-                  <tr>
-                     <td height=4> </td>
-                  </tr>
-                  <tr>
-                     <td align=left valign=middle class=misc_items>
-                        Visibility: $visibility miles
-                     </td>
-                  </tr>
-                  <tr>
-                     <td height=4> </td>
-                  </tr>
-                  <tr>
-                     <td align=left valign=middle class=misc_items>
-                        <font color='FF0000'>
-                           Last Updated: $time
-                        </font>
-                     </td>
-                  </tr>";
+	echo '       <div class="col-md-4">
+          <!-- Widget: user widget style 1 -->
+          <div class="box box-widget widget-user-2">
+            <!-- Add the bg color to the header using any of the bg-* classes -->
+            <div class="widget-user-header bg-yellow">
+              <h3 class="widget-user-username">Weather Conditions</h3>
+	      <h5 class="widget-user-desc">'.$city.'</h5>
+            </div>
+            <div class="box-footer no-padding">
+              <ul class="nav nav-stacked">
+              <li><a href="#"><i class="fa fa-sun-o fa-fw"></i> Currently: <span class="pull-right badge bg-red">'.$temp.' &#176;</span></a></li>
+              <li><a href="#"><i class="fa fa-umbrella fa-fw"></i> Feels Like: <span class="pull-right badge bg-aqua">'.$feelslike.' &#176;</span></a></li>
+              <li><a href="#"><i class="glyphicon glyphicon-cloud fa-fw"></i> Skies: <span class="pull-right badge bg-blue">'.$cloud_cover.'</span></a></li>
+              <li><a href="#"><i class="fa fa-refresh fa-fw"></i> Wind: <span class="pull-right badge bg-orange">'.$wind_dir.' '.$wind.' '.$mph.'</span></a></li>
+	      <li><a href="#"><i class="fa fa-bolt fa-fw"></i> Humidity: <span class="pull-right badge bg-yellow">'.$humidity.''; if ($humidity == 'None') {echo '';} else {echo '%';} echo '</span></a></li>
+	      <li><a href="#"><i class="fa fa-eye fa-fw"></i> Visibility: <span class="pull-right badge bg-grey">'.$visibility.'</span></a></li>
+	      <li><a href="#"><i class="glyphicon glyphicon-time"></i> Last Updated: <span class="pull-right badge bg-green">'.$time.'</span></a></li>
+              </ul>
+            </div>
+          </div>
+          <!-- /.widget-user -->
+        </div>
+        <!-- /.col -->';
 }
 
 echo "
-                  <tr>
-                     <td height=90%> </td>
-                  </tr>
-               </table>
-            </td>";
+
+";
 
 if ($request == 'POST') { // Process employee's punch information
     // signin/signout data passed over from timeclock.php //
@@ -542,7 +630,7 @@ if ($request == 'POST') { // Process employee's punch information
                </table>
             </td>
          </tr>";
-            include 'footer.php';
+
             // Return the employee back to the punch interface after 5 seconds
             echo "
    <head>
@@ -564,7 +652,7 @@ if ($request == 'POST') { // Process employee's punch information
                </table>
             </td>
          </tr>";
-            include 'footer.php';
+
             // Return the employee back to the punch interface after 5 seconds
             echo "
    <head>
@@ -586,7 +674,7 @@ if ($request == 'POST') { // Process employee's punch information
                </table>
             </td>
          </tr>";
-            include 'footer.php';
+
             // Return the employee back to the punch interface after 5 seconds
             echo "
    <head>
@@ -608,7 +696,7 @@ if ($request == 'POST') { // Process employee's punch information
                </table>
             </td>
          </tr>";
-            include 'footer.php';
+
             // Return the employee back to the punch interface after 5 seconds
             echo "
    <head>
@@ -631,7 +719,7 @@ if ($request == 'POST') { // Process employee's punch information
                </table>
             </td>
          </tr>";
-        include 'footer.php';
+
         // Return the employee back to the punch interface after 5 seconds
         echo "
    <head>
@@ -696,7 +784,7 @@ if ($request == 'POST') { // Process employee's punch information
                </table>
             </td>
          </tr>";
-        include 'footer.php';
+
         // Return the employee back to the punch interface after 5 seconds
         echo "
    <head>
@@ -726,11 +814,11 @@ if ($request == 'POST') { // Process employee's punch information
                </table>
             </td>
          </tr>";
-            include 'footer.php';
+
             // Return the employee back to the punch interface after 5 seconds
             echo "
    <head>
-      <meta http-equiv='refresh' content=5;url=index.php>
+
    </head>";
             exit;
         }
@@ -782,11 +870,43 @@ if ($request == 'POST') { // Process employee's punch information
                </table>
             </td>
          </tr>";
-    include 'footer.php';
+
     // Return the employee back to the punch interface after 5 seconds
     echo "
    <head>
       <meta http-equiv='refresh' content=5;url=index.php>
    </head>";
 }
+
+// Determine if we should add the message of the day
+if (! isset($_GET['printer_friendly']) && ($message_of_the_day != "none")) {
+	echo '
+		<!-- Message Of The Day Display -->
+	        <div class="col-md-4">
+		<div class="callout callout-success">
+                <h4>Message Of The Day:</h4>
+
+                <p>'.htmlspecialchars($message_of_the_day).'</p>
+              </div>
+	      </div>
+	      ';
+
+} else if (! isset($_GET['printer_friendly']) && ($message_of_the_day == "none")) {
+    echo "
+                           <!-- Message Of The Day Display -->
+                           
+                                 &nbsp;
+                             ";
+}
+
+if (! isset($_GET['printer_friendly'])) {
+	echo ' <a href="timeclock.php?printer_friendly=true" class="btn btn-app">
+                <i class="glyphicon glyphicon-print"></i> Printer Friendly Page
+              </a>';
+}
+
+echo '
+	</div>
+	<!-- /.extra messages -->
+	';
 ?>

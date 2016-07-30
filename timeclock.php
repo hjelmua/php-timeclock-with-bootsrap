@@ -30,31 +30,27 @@ session_start();
 include 'config.inc.php';
 include 'header.php';
 
+
 if (! isset($_GET['printer_friendly'])) {
     if (isset($_SESSION['valid_user'])) {
         $set_logout = "1";
     }
 
+include 'theme/templates/mainstart.inc';
     include 'topmain.php';
     include 'leftmain.php';
 }
 
-echo "
-            <!-- Display current employee status' -->
-            <title>
-               $title
-            </title>";
+
 $current_page = "timeclock.php";
 
 if (! isset($_GET['printer_friendly'])) {
-    echo "
-            <td align=left class=right_main scope=col>
-               <table width=100% height=100% border=0 cellpadding=5 cellspacing=1>
-                  <tr class=right_main_text>
-                     <td valign=top>";
+    echo " <!-- debug caller 1 --> ";
 }
 
 // code to allow sorting by Name, In/Out, Date, Notes //
+// Not very bootstrappy //
+
 
 if ($show_display_name == "yes") {
     if (! isset($_GET['sortcolumn'])) {
@@ -81,6 +77,7 @@ if ($sortdirection == "asc") {
 } else {
     $sortnewdirection = "asc";
 }
+
 
 // determine what users, office, and/or group will be displayed on main page //
 if (($display_current_users == "yes") && ($display_office == "all") && ($display_group == "all")) {
@@ -143,34 +140,22 @@ $tclock_time = date($timefmt, $tclock_stamp);
 $tclock_date = date($datefmt, $tclock_stamp);
 $report_name="Current Status Report";
 
-echo "
-                        <table width=100% align=center class=misc_items border=0 cellpadding=3 cellspacing=0>";
-
-if (! isset($_GET['printer_friendly'])) {
-    echo "
-                           <tr class=display_hide>";
-} else {
-    echo "
-                           <tr>";
-}
-
-echo "
-                              <td nowrap style='font-size:9px;color:#000000;padding-left:10px;'>
-                                 $report_name&nbsp;&nbsp;---->&nbsp;&nbsp;As of: $tclock_time, $tclock_date
-                              </td>
-                           </tr>
-                        </table>";
+echo '  <!-- start misc -->
+	<section class="content-header">
+	      <h1>'
+	        .$report_name.
+	        '<small>As of: '.$tclock_time.', '.$tclock_date.'</small>
+	      </h1>
+	    </section>';
 
 // Add the current status of the employees are retrieved from the querry stored in $result
 include 'display.php';
 
-echo "
-               </table>
-            </td>
-         </tr>";
 
 if (! isset($_GET['printer_friendly'])) {
     include 'footer.php';
+    include 'theme/templates/endmain.inc';
+    include 'theme/templates/footerscripts.inc';
 }
 ?>
 

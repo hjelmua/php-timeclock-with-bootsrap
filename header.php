@@ -94,23 +94,20 @@ if ($use_client_tz == "yes") {
 }
 
 echo "
-      <link rel='stylesheet' type='text/css' media='screen' href='css/default.css' />
+	<title>$title</title>";
+      include 'theme/templates/header.inc';
+echo "
       <link rel='stylesheet' type='text/css' media='print' href='css/print.css' />";
-
 // set refresh rate for each page //
 if ($refresh == "none") {
-    echo "
-   </head>
-
-   <body>";
+    echo '
+   </head>';
 } else {
     echo "
       <meta http-equiv='refresh' content=\"$refresh;URL=timeclock.php\">
       <script language=\"javascript\" src=\"scripts/pnguin_timeclock.js\">
       </script>
-   </head>
-
-   <body>";
+   </head>";
 }
 
 // Set timezone information
