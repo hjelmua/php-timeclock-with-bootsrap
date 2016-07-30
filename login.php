@@ -30,7 +30,11 @@ session_start();
 
 include 'config.inc.php';
 include 'header.php';
+include 'theme/templates/mainstart.inc';
 include 'topmain.php';
+include './theme/templates/leftnavstart.inc';
+include './theme/templates/leftnavend.inc';
+include './theme/templates/beginmaincontent.inc';
 
 // Determine if the user is trying to login-in for administration privleges.
 if ($_REQUEST["login_action"] == "admin") {
@@ -95,57 +99,56 @@ if ($_REQUEST["login_action"] == "admin") {
         exit;
     } elseif (isset($_SESSION['valid_reports_user'])) {
             echo "
-      <br>
-      <tr class=right_main_text>
-         <td align=center colspan=2>
+      
             You do not have administration access permission.
-         </td>
-      </tr>";
+";
             exit;
     } else { // The user is either not valid or has not entered in his credentials.
-        echo "
-      <form name='auth' method='post' action='$self'>
-         <table align=center width=210 border=0 cellpadding=7 cellspacing=1>
-            <tr class=right_main_text>
-               <td colspan=2 height=35 align=center valign=top class=title_underline>
-                  PHP Timeclock Admin Login
-               </td>
-            </tr>
-            <tr class=right_main_text>
-               <td align=left>
-                  Username:
-               </td>
-               <td align=right>
-                  <input type='text' name='login_userid'>
-               </td>
-            </tr>
-            <tr class=right_main_text>
-               <td align=left>
-                  Password:
-               </td>
-               <td align=right>
-                  <input type='password' name='login_password'>
-               </td>
-            </tr>
-            <tr class=right_main_text>
-               <td align=center colspan=2>
-                  <input type='submit' onClick='admin.php' value='Log In'>
-               </td>
-            </tr>
-            <input type='hidden' name='login_action' value='admin'>";
+	    echo '<div class="col-md-12"><div class="login-box">
+  <div class="login-logo">
+    <a href="index.php"><b>PHP TIMECLOCK <i class="fa fa-clock-o"></i></b>Admin Login</a>
+  </div>
+  <!-- /.login-logo -->
+  <div class="login-box-body">
+    
+
+    <form name="auth" method="post" action=" '.$self.' ">
+      <div class="form-group has-feedback">
+        <input type="text" class="form-control" name="login_userid" placeholder="Username">
+        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+      </div>
+      <div class="form-group has-feedback">
+        <input type="password" name="login_password" class="form-control" placeholder="Password">
+        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+      </div>
+      <div class="row">
+        <div class="col-xs-4">
+	  <button type="submit" class="btn btn-primary btn-block btn-flat" onClick="admin.php">Log In</button>
+	   <input type="hidden" name="login_action" value="admin">
+        </div>
+        <!-- /.col -->
+      </div>
+    </form>
+    
+    </div>
+      <!-- /.login-box-body -->
+    </div>
+    <!-- /.login-box -->
+    </div>
+
+';
+
 
         // Did the user enter invalid credentials
         if (isset($login_userid)) {
             echo "
-            <tr class=right_main_text>
-               <td align=center colspan=2>
+            
                   Could not log you in. Either your username or password is incorrect.
-               </td>
-            </tr>";
+           ";
         }
         echo "
-         </table>
-      </form>
+         
+      
       <script language=\"javascript\">
          document.forms['auth'].login_userid.focus();
       </script>";
@@ -215,56 +218,54 @@ if ($_REQUEST["login_action"] == "admin") {
     } else if ((isset($_SESSION['valid_user'])) || (isset($_SESSION['time_admin_valid_user']))) {
         echo "
       <br>
-      <tr class=right_main_text>
-         <td align=center colspan=2>
+
             You do not have report access permission.
-         </td>
-      </tr>";
+";
         exit;
     } else { // The user is either not valid or has not entered in his credentials.
-        echo "
-      <form name='auth' method='post' action='$self'>
-         <table align=center width=210 border=0 cellpadding=7 cellspacing=1>
-            <tr class=right_main_text>
-               <td colspan=2 height=35 align=center valign=top class=title_underline>
-                  PHP Timeclock Reports Login
-               </td>
-            </tr>
-            <tr class=right_main_text>
-               <td align=left>
-                  Username:
-               </td>
-               <td align=right>
-                  <input type='text' name='login_userid'>
-               </td>
-            </tr>
-            <tr class=right_main_text>
-               <td align=left>
-                  Password:
-               </td>
-               <td align=right>
-                  <input type='password' name='login_password'>
-               </td>
-            </tr>
-            <tr class=right_main_text>
-               <td align=center colspan=2>
-                  <input type='submit' onClick='admin.php' value='Log In'>
-               </td>
-            </tr>
-            <input type='hidden' name='login_action' value='reports'>";
 
+	    echo '<div class="col-md-12"><div class="login-box">
+      <div class="login-logo">
+        <a href="index.php"><b>PHP TIMECLOCK <i class="fa fa-clock-o"></i></b>Reports Login</a>
+  </div>
+  <!-- /.login-logo -->
+  <div class="login-box-body">
+    
+
+    <form name="auth" method="post" action=" '.$self.' ">
+      <div class="form-group has-feedback">
+        <input type="text" class="form-control" name="login_userid" placeholder="Username">
+        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+      </div>
+      <div class="form-group has-feedback">
+        <input type="password" name="login_password" class="form-control" placeholder="Password">
+        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+      </div>
+      <div class="row">
+        <div class="col-xs-4">
+	  <button type="submit" class="btn btn-primary btn-block btn-flat" onClick="admin.php">Log In</button>
+	   <input type="hidden" name="login_action" value="reports">
+        </div>
+        <!-- /.col -->
+      </div>
+    </form>
+    
+    </div>
+      <!-- /.login-box-body -->
+    </div>
+    <!-- /.login-box -->
+    </div>
+
+';
         // Determine if the user has supplied incorrect credentials.
         if (isset($login_userid)) {
             echo "
-            <tr class=right_main_text>
-               <td align=center colspan=2>
+            
                   Could not log you in. Either your username or password is incorrect.
-               </td>
-            </tr>";
+";
         }
         echo "
-         </table>
-      </form>
+
       <script language=\"javascript\">
          document.forms['auth'].login_userid.focus();
       </script>";
@@ -282,7 +283,8 @@ if ($_REQUEST["login_action"] == "admin") {
       </script>";
     }
 }
-echo "
-   </body>
-</html>";
+
+include 'footer.php';
+include 'theme/templates/endmain.inc';
+include 'theme/templates/footerscripts.inc';
 ?>
