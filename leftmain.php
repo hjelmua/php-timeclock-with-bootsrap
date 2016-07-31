@@ -536,7 +536,7 @@ if (! isset($_COOKIE['remember_me'])) {
 
 echo "
                       <div class='form-group'>
-<button type='submit' class='btn btn-primary'>Punch Status</button>
+<button type='submit' class='btn btn-lg btn-primary'>Punch Status</button>
                          </div>
                   </div></form>";
 
@@ -611,26 +611,25 @@ if ($request == 'POST') { // Process employee's punch information
     }
 
     if (! isset($tmp_inout)) {
-        echo "Status is not in the database.";
+	    echo '<div class="col-md-4">
+ <div class="callout callout-danger">
+                <h4><i class="fa fa-bullhorn"></i> Error</h4>
+                <p>Status is not in the database.</p>
+</div>
+</div>';
+
         exit;
     }
     // end post validation //
 
     if ($show_display_name == "yes") {
         if (! $displayname && ! $inout) {
-            echo "
-            <td align=left class=right_main scope=col>
-               <table width=100% height=100% border=0 cellpadding=10 cellspacing=1>
-                  <tr class=right_main_text>
-                     <td valign=top>
-                        <br />
-                        You have not chosen a username or a status. Please try again.
-                     </td>
-                  </tr>
-               </table>
-            </td>
-         </tr>";
-
+    	    echo '<div class="col-md-4">
+     <div class="callout callout-danger">
+                    <h4><i class="fa fa-bullhorn"></i> Error</h4>
+                    <p>You have not chosen a username or a status. Please try again..</p>
+    </div>
+    </div>';
             // Return the employee back to the punch interface after 5 seconds
             echo "
    <head>
@@ -640,18 +639,13 @@ if ($request == 'POST') { // Process employee's punch information
         }
 
         if (! $displayname) {
-            echo "
-            <td align=left class=right_main scope=col>
-               <table width=100% height=100% border=0 cellpadding=10 cellspacing=1>
-                  <tr class=right_main_text>
-                     <td valign=top>
-                        <br />
-                        You have not chosen a username. Please try again.
-                     </td>
-                  </tr>
-               </table>
-            </td>
-         </tr>";
+        	    echo '<div class="col-md-4">
+         <div class="callout callout-danger">
+                        <h4><i class="fa fa-bullhorn"></i> Error</h4>
+                        <p>You have not chosen a username. Please try again.</p>
+        </div>
+        </div>';
+
 
             // Return the employee back to the punch interface after 5 seconds
             echo "
@@ -662,18 +656,13 @@ if ($request == 'POST') { // Process employee's punch information
         }
     } elseif ($show_display_name == "no") {
         if (! $fullname && ! $inout) {
-            echo "
-            <td align=left class=right_main scope=col>
-               <table width=100% height=100% border=0 cellpadding=10 cellspacing=1>
-                  <tr class=right_main_text>
-                     <td valign=top>
-                        <br />
-                        You have not chosen a username or a status. Please try again.
-                     </td>
-                  </tr>
-               </table>
-            </td>
-         </tr>";
+    	    echo '<div class="col-md-4">
+     <div class="callout callout-danger">
+                    <h4><i class="fa fa-bullhorn"></i> Error</h4>
+                    <p>You have not chosen a username or a status. Please try again.</p>
+    </div>
+    </div>';
+
 
             // Return the employee back to the punch interface after 5 seconds
             echo "
@@ -684,18 +673,13 @@ if ($request == 'POST') { // Process employee's punch information
         }
 
         if (! $fullname) {
-            echo "
-            <td align=left class=right_main scope=col>
-               <table width=100% height=100% border=0 cellpadding=10 cellspacing=1>
-                  <tr class=right_main_text>
-                     <td valign=top>
-                        <br />
-                        You have not chosen a username. Please try again.
-                     </td>
-                  </tr>
-               </table>
-            </td>
-         </tr>";
+        	    echo '<div class="col-md-4">
+         <div class="callout callout-danger">
+                        <h4><i class="fa fa-bullhorn"></i> Error</h4>
+                        <p>You have not chosen a username. Please try again.</p>
+        </div>
+        </div>';
+
 
             // Return the employee back to the punch interface after 5 seconds
             echo "
@@ -707,18 +691,13 @@ if ($request == 'POST') { // Process employee's punch information
     }
 
     if (! $inout) {
-        echo "
-            <td align=left class=right_main scope=col>
-               <table width=100% height=100% border=0 cellpadding=10 cellspacing=1>
-                  <tr class=right_main_text>
-                     <td valign=top>
-                        <br />
-                        You have not chosen a status. Please try again.
-                     </td>
-                  </tr>
-               </table>
-            </td>
-         </tr>";
+	    echo '<div class="col-md-4">
+ <div class="callout callout-danger">
+                <h4><i class="fa fa-bullhorn"></i> Error</h4>
+                <p>You have not chosen a status. Please try again.</p>
+</div>
+</div>';
+
 
         // Return the employee back to the punch interface after 5 seconds
         echo "
@@ -772,18 +751,13 @@ if ($request == 'POST') { // Process employee's punch information
 
     // Verify that the employee is not selecting the same status as his current status
     if ($selectedStatus == $currentStatus) {
-        echo "
-            <td align=left class=right_main scope=col>
-               <table width=100% height=100% border=0 cellpadding=10 cellspacing=1>
-                  <tr class=right_main_text>
-                     <td valign=top>
-                        <br />
-                        The current punch status for ".$fullname." is ".$currentPunchName.". Please use a different status.
-                     </td>
-                  </tr>
-               </table>
-            </td>
-         </tr>";
+	    echo '<div class="col-md-4">
+ <div class="callout callout-danger">
+                <h4><i class="fa fa-bullhorn"></i> Error</h4>
+                <p>The current punch status for '.$fullname.' is '.$currentPunchName.' . Please use a different status.</p>
+</div>
+</div>';
+
 
         // Return the employee back to the punch interface after 5 seconds
         echo "
@@ -802,23 +776,18 @@ if ($request == 'POST') { // Process employee's punch information
         }
 
         if ($employee_passwd != $tmp_password) {
-            echo "
-            <td align=left class=right_main scope=col>
-               <table width=100% height=100% border=0 cellpadding=10 cellspacing=1>
-                  <tr class=right_main_text>
-                     <td valign=top>
-                        <br />
-                        You have entered the wrong password for $fullname. Please try again.
-                     </td>
-                  </tr>
-               </table>
-            </td>
-         </tr>";
+    	    echo '<div class="col-md-4">
+     <div class="callout callout-danger">
+                    <h4><i class="fa fa-bullhorn"></i> Error</h4>
+                    <p>You have entered the wrong password for '.$fullname.'. Please try again.</p>
+    </div>
+    </div>';
+
 
             // Return the employee back to the punch interface after 5 seconds
             echo "
    <head>
-
+<meta http-equiv='refresh' content=5;url=index.php>
    </head>";
             exit;
         }
@@ -857,19 +826,13 @@ if ($request == 'POST') { // Process employee's punch information
 
     $update_query = "update ".$db_prefix."employees set tstamp = '".$tz_stamp."' where empfullname = '".$fullname."'";
     $other_result = mysql_query($update_query);
+	    echo '<div class="col-md-4">
+ <div class="callout callout-success">
+                <h4><i class="fa fa-bullhorn"></i> </h4>
+                <p> Status changed successfully for '.$fullname.' to a status of '.$inout.'.</p>
+</div>
+</div>';
 
-    echo "
-            <td align=left class=right_main scope=col>
-               <table width=100% height=100% border=0 cellpadding=10 cellspacing=1>
-                  <tr class=right_main_text>
-                     <td valign=top>
-                        <br />
-                        Status changed successfully for $fullname to a status of $inout. <br>
-                     </td>
-                  </tr>
-               </table>
-            </td>
-         </tr>";
 
     // Return the employee back to the punch interface after 5 seconds
     echo "
@@ -890,20 +853,18 @@ if (! isset($_GET['printer_friendly']) && ($message_of_the_day != "none")) {
               </div>
 	      </div>
 	      ';
+	      
 
 } else if (! isset($_GET['printer_friendly']) && ($message_of_the_day == "none")) {
-    echo "
-                           <!-- Message Of The Day Display -->
-                           
-                                 &nbsp;
-                             ";
+    echo " ";
 }
 
-if (! isset($_GET['printer_friendly'])) {
-	echo ' <a href="timeclock.php?printer_friendly=true" class="btn btn-app">
-                <i class="glyphicon glyphicon-print"></i> Printer Friendly Page
-              </a>';
-}
+      if (! isset($_GET['printer_friendly'])) {
+      	echo ' <a href="timeclock.php?printer_friendly=true" class="btn btn-app">
+                      <i class="glyphicon glyphicon-print"></i> Printer Friendly Page
+                    </a>';
+      }
+
 
 echo '
 	</div>
