@@ -59,3 +59,8 @@ Admin level access and reports level access are completely separate from each ot
 ________
 
 This software and changes made are licensed under the GNU GENERAL PUBLIC LICENSE 2 as found in docs/LICENSE
+
+
+##Swedish 
+________
+Digital stämplelklocka i PHP och Bootstrap
