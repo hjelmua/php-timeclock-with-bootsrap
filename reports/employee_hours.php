@@ -34,7 +34,9 @@ include '../config.inc.php';
 // Determine who is wishing to see the report and has authenticated himself
 if (! isset($_SESSION['valid_report_employee'])) {
     include '../admin/header.php';
-    include '../admin/topmain.php';
+    //     include '../admin/topmain.php';
+    include 'topmain.php';
+    include 'leftmain.php';
 
     echo "
       <!-- Invalid Employee -->
@@ -75,6 +77,7 @@ if (! isset($_SESSION['valid_report_employee'])) {
 
 include 'header_post_reports.php';
 include 'topmain.php';
+include 'leftmain.php';
 
 /**
  * Validates the input from the user
@@ -303,8 +306,8 @@ function output_date_record($new_date, $info_date, $row_color, $punchlist_color,
     }
     if ($show_details == "yes") {
         print "
-                    <tr bgcolor=\"$row_color\" align=\"left\">
-                        <td align=left width=13% nowrap style=\"color:$punchlist_color;\">
+                    <tr align=\"left\">
+                        <td align=left width=13% nowrap>
                             $info_inout
                         </td>
                         <td nowrap align=right width=10% style='padding-right:25px;'>
@@ -385,13 +388,11 @@ if ($request == 'GET' || (! $is_valid_input)) { // Get the employee's report sel
 
     if ($is_valid_input) { // still need the headers
     echo "
-      <!-- Employee Hours Date Selection Interface -->
-      <table width=100% height=89% border=0 cellpadding=0 cellspacing=1>";
+      <!-- Employee Hours Date Selection Interface -->";
     }
     echo "
-         <tr valign=top>
-            <td>
-               <table width=100% height=100% border=0 cellpadding=10 cellspacing=1>
+
+               <table class='table' width=100% height=100% border=0 cellpadding=10 cellspacing=1>
                   <tr class=right_main_text>
                      <td valign=top>
                         <br />
@@ -412,7 +413,7 @@ if ($request == 'GET' || (! $is_valid_input)) { // Get the employee's report sel
                                     From Date: ($tmp_datefmt)
                                  </td>
                                  <td style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;' width=80% >
-                                    <input type='text' size='10' maxlength='10' name='from_date' style='color:#27408b'>&nbsp;*&nbsp;&nbsp;
+                                    <input id='datepicker' type='text' size='10' maxlength='10' name='from_date' style='color:#27408b'>&nbsp;*&nbsp;&nbsp;
                                     <a href=\"#\" onclick=\"form.from_date.value='';cal.select(document.forms['form'].from_date,'from_date_anchor','$js_datefmt'); return false;\" name=\"from_date_anchor\" id=\"from_date_anchor\" style='font-size:11px;color:#27408b;'>
                                        Pick Date
                                     </a>
@@ -423,7 +424,7 @@ if ($request == 'GET' || (! $is_valid_input)) { // Get the employee's report sel
                                     To Date: ($tmp_datefmt)
                                  </td>
                                  <td style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;' width=80% >
-                                    <input type='text' size='10' maxlength='10' name='to_date' style='color:#27408b'>&nbsp;*&nbsp;&nbsp;
+                                    <input id='datepicker1' type='text' size='10' maxlength='10' name='to_date' style='color:#27408b'>&nbsp;*&nbsp;&nbsp;
                                     <a href=\"#\" onclick=\"form.to_date.value='';cal.select(document.forms['form'].to_date,'to_date_anchor','$js_datefmt'); return false;\" name=\"to_date_anchor\" id=\"to_date_anchor\" style='font-size:11px;color:#27408b;'>
                                        Pick Date
                                     </a>
@@ -679,44 +680,47 @@ if ($request == 'GET' || (! $is_valid_input)) { // Get the employee's report sel
         }
     }
 
+
+    echo '<div class="col-md-12">
+          <div class="box"><div class="box-body no-padding">';
     echo "
       <!-- Employee Hours Dates Selected Report -->
-      <table width=80% align=center class=misc_items border=0 cellpadding=3 cellspacing=0>
+      <table class='table'>
          <tr>
-            <td width=80% style='font-size:9px;color:#000000;'>
+            <td width=80% >
                Ran on: $rpt_date at $rpt_time
             </td>
-            <td nowrap style='font-size:9px;color:#000000;'>
+            <td nowrap >
                Employee Total Hours Report for $empfullname
             </td>
          </tr>
          <tr>
             <td width=80%> </td>
-            <td nowrap style='font-size:9px;color:#000000;'>
+            <td nowrap >
                Date Range: $from_date - $to_date
             </td>
          </tr>";
     if (strtolower($user_or_display) == "display") {
         echo "
          <tr>
-            <td width=100% colspan=2 style=\"font-size:11px;color:#000000;border-style:solid;border-color:#888888; border-width:0px 0px 1px 0px;\">
+            <td width=100% colspan=2 >
                <b>$displayname</b>
             </td>
          </tr>";
     } else {
         echo "
          <tr>
-            <td width=100% colspan=2 style=\"font-size:11px;color:#000000;border-style:solid;border-color:#888888; border-width:0px 0px 1px 0px;\">
+            <td width=100% colspan=2 >
                <b>$empfullname</b>
             </td>
          </tr>";
     }
     echo "
          <tr>
-            <td width=75% nowrap align=left style='color:#27408b;'>
+            <td width=75% nowrap align=left >
                <b> <u>Date</u> </b>
             </td>
-            <td width=25% nowrap align=left style='color:#27408b;'>
+            <td width=25% nowrap align=left >
                <b> <u>Hours Worked</u> </b>
             </td>
          </tr>";
@@ -756,7 +760,7 @@ if ($request == 'GET' || (! $is_valid_input)) { // Get the employee's report sel
                 }
                 print "
                   <tr>
-                     <td nowrap style='font-size:11px;color:#000000;' align='left'>
+                     <td nowrap  align='left'>
                         ".date('l', $current_timestamp)."'s Total Hours
                      </td>
                      <td>
@@ -765,7 +769,7 @@ if ($request == 'GET' || (! $is_valid_input)) { // Get the employee's report sel
                      <td>
                         &nbsp;
                      </td>
-                     <td nowrap style='font-size:11px;color:#000000; padding-right:135px;' align='right'>
+                     <td nowrap align='right'>
                         ".number_format($daily_hour, 2)."
                      </td>
                   </tr>
@@ -803,7 +807,7 @@ if ($request == 'GET' || (! $is_valid_input)) { // Get the employee's report sel
     if ($total_hours != 0){ // Print last days hours and tally up the total period hours.
         print "
                   <tr>
-                     <td nowrap style='font-size:11px;color:#000000;' align='left'>
+                     <td nowrap  align='left'>
                         ".date('l', $current_timestamp)."'s Total Hours
                      </td>
                      <td>
@@ -812,35 +816,40 @@ if ($request == 'GET' || (! $is_valid_input)) { // Get the employee's report sel
                      <td>
                         &nbsp;
                      </td>
-                     <td nowrap style='font-size:11px;color:#000000; padding-right:135px;' align='right'>
+                     <td nowrap align='right'>
                         ".number_format($daily_hour, 2)."
                      </td>
                   </tr>
                </table>";
+
     }
     print "
                <tr align=\"left\">
-                  <td nowrap style='font-size:11px;color:#000000;border-style:solid;border-color:#888888; border-width:1px 0px 0px 0px;'>
+                  <td nowrap style='border-style:solid;border-color:#888888; border-width:1px 0px 0px 0px;'>
                      <b>Total Hours</b>
                   </td>";
     $total_hours = number_format($total_hours, 2);
     if ($total_hours < 10) {
         print "
-                  <td nowrap style='font-size:11px;color:#000000;border-style:solid;border-color:#888888; border-width:1px 0px 0px 0px;padding-left:30px;'>";
+                  <td nowrap style='border-style:solid;border-color:#888888; border-width:1px 0px 0px 0px;padding-left:30px;'>";
     } elseif ($total_hours < 100) {
         print "
-                  <td nowrap style='font-size:11px;color:#000000;border-style:solid;border-color:#888888; border-width:1px 0px 0px 0px;padding-left:23px;'>";
+                  <td nowrap style='border-style:solid;border-color:#888888; border-width:1px 0px 0px 0px;padding-left:23px;'>";
     } else {
         print "
-                  <td nowrap style='font-size:11px;color:#000000;border-style:solid;border-color:#888888; border-width:1px 0px 0px 0px;padding-left:15px;'>";
+                  <td nowrap style='border-style:solid;border-color:#888888; border-width:1px 0px 0px 0px;padding-left:15px;'>";
     }
     print "
                      <b>$total_hours</b>
                   </td>
                </tr>
             </td>
-         </tr>";
+         </tr></table>";
+	       echo '</div></div></div>';
 }
 include '../footer.php';
+include '../theme/templates/controlsidebar.inc'; 
+include '../theme/templates/endmain.inc';
+include '../theme/templates/adminfooterscripts.inc';
 exit;
 ?>

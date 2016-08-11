@@ -32,11 +32,13 @@ if ($use_reports_password == "yes") {
 
 if (!isset($_SESSION['valid_reports_user'])) {
 
-echo "<title>$title</title>\n";
+//echo "<title>$title</title>\n";
 include '../admin/header.php';
-include '../admin/topmain.php';
+include 'topmain.php';
+include 'leftmain.php';
 
-echo "<table width=100% border=0 cellpadding=7 cellspacing=1>\n";
+
+echo "<table class='table' width=100% border=0 cellpadding=7 cellspacing=1>\n";
 echo "  <tr class=right_main_text><td height=10 align=center valign=top scope=row class=title_underline>PHP Timeclock Reports</td></tr>\n";
 echo "  <tr class=right_main_text>\n";
 echo "    <td align=center valign=top scope=row>\n";
@@ -44,6 +46,8 @@ echo "      <table width=200 border=0 cellpadding=5 cellspacing=0>\n";
 echo "        <tr class=right_main_text><td align=center>You are not presently logged in, or do not have permission to view this page.</td></tr>\n";
 echo "        <tr class=right_main_text><td align=center>Click <a class=admin_headings href='../login.php?login_action=reports'><u>here</u></a> to login.</td></tr>\n";
 echo "      </table><br /></td></tr></table>\n"; exit;
+
+
 }
 }
 
@@ -55,31 +59,114 @@ include 'header_get_reports.php';
 
 if ($use_reports_password == "yes") {
 include '../admin/topmain.php';
+include 'leftmain.php';
 } else {
 include 'topmain.php';
+include 'leftmain.php';
 }
 
-echo "<table width=100% height=89% border=0 cellpadding=0 cellspacing=1>\n";
-echo "  <tr valign=top>\n";
-echo "    <td>\n";
-echo "      <table width=100% height=100% border=0 cellpadding=10 cellspacing=1>\n";
-echo "        <tr class=right_main_text>\n";
-echo "          <td valign=top>\n";
-echo "            <br />\n";
+
+echo ' <div class="row">
+ <div class="col-md-8">
+          <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title"><i class="fa fa-book"></i> Daily Time Report</h3>
+            </div>
+            <div class="box-body">';
+
 echo "            <form name='form' action='$self' method='post' onsubmit=\"return isFromOrToDate();\">\n";
-echo "            <table align=center class=table_border width=60% border=0 cellpadding=3 cellspacing=0>\n";
-echo "              <tr>\n";
-echo "                <th class=rightside_heading nowrap halign=left colspan=3><img src='../images/icons/report.png' />&nbsp;&nbsp;&nbsp;Daily
-                    Time Report</th></tr>\n";
-echo "              <tr><td height=15></td></tr>\n";
+
 echo "              <input type='hidden' name='date_format' value='$js_datefmt'>\n";
 if ($username_dropdown_only == "yes") {
 
 $query = "select * from ".$db_prefix."employees order by empfullname asc";
 $result = mysql_query($query);
 
-echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Username:</td><td colspan=2 align=left width=80%
-                      style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;'>
+echo "             <div class='form-group'><label> Username: </label>
+                  <select name='user_name' class='form-control select2 pull-right' style='width: 50%;'>\n";
+echo "                    <option value ='All'>All</option>\n";
+
+while ($row=mysql_fetch_array($result)) {
+  $tmp_empfullname = stripslashes("".$row['empfullname']."");
+  echo "                    <option>$tmp_empfullname</option>\n";
+}
+
+echo "                  </select></div> &nbsp;*\n";
+mysql_free_result($result);
+} else {
+
+echo "<div class='form-group'><label>Choose Office: </label> <select name='office_name' class='form-control select2 pull-right' style='width: 50%;' onchange='group_names();'></select></div>";
+
+echo "<div class='form-group'><label>Choose Group: </label> <select name='group_name' class='form-control select2 pull-right' style='width: 50%;' onchange='user_names();'></select></div>\n";
+
+echo "             <div class='form-group'><label>Choose Username: </label> <select name='user_name' class='form-control select2 pull-right' style='width: 50%;'></select></div>\n";
+
+}
+echo "              <div class='form-group'><label>From Date:" .($tmp_datefmt)."</label> <div class='input-group date'><i class='fa fa-calendar'></i><input type='text' maxlength='10' name='from_date' id='datepicker' class='form-control'> &nbsp;*&nbsp;&nbsp; </div></div>\n";
+
+
+echo "              <div class='form-group'><label>To Date:" .($tmp_datefmt)."</label> <div class='input-group date'>
+                    <i class='fa fa-calendar'></i><input type='text' maxlength='10' name='to_date' id='datepicker1' class='form-control'> &nbsp;*&nbsp;&nbsp;
+                     </div></div>";
+
+		     /* debug */
+
+
+echo "              <div class='form-group'><div class='radio'>
+                        <label>Export to CSV? (link to CSV file will be in the top right of the next page)</label></div> \n";
+     if (strtolower($export_csv) == "yes") {
+     echo "    <div class='radio'><label><input type='radio' name='csv' value='1' checked>&nbsp;Yes</label></div>\n";
+     echo "    <div class='radio'><label><input type='radio' name='csv' value='0'> &nbsp;No </label></div></div>\n";
+     } else {
+     echo "    <div class='radio'><label><input type='radio' name='csv' value='1'> Yes</label></div>   <div class='radio'><label><input type='radio' name='csv' value='0' checked>No</label></div></div>\n";
+     }
+      
+     
+     if (strtolower($ip_logging) == "yes") {
+     echo "              <div class='form-group'><div class='radio'><label>Display connecting ip address information?</label></div>\n";
+     if ($display_ip == "yes") {
+echo "              <div class='radio'><label><input type='radio' name='tmp_display_ip' value='1' checked>Yes</label></div> <div class='radio'><label><input type='radio' name='tmp_display_ip' value='0'>No</label></div></div>\n";
+     } else {
+echo "              <div class='radio'><label><input type='radio' name='tmp_display_ip' value='1' >Yes </label></div>
+              <div class='radio'><label><input type='radio' name='tmp_display_ip' value='0' checked> No</label></div></div>\n";
+     }
+     }
+
+
+		     /* debug */ 
+echo '<div class="box-footer">
+<a href="index.php"><button type="submit" name="submit" value="Edit Time" class="btn btn-default pull-right"><i class="fa fa-ban"></i>  Cancel</button></a>
+<button type="submit" class="btn btn-success">Next <i class="fa fa-arrow-right"></i></button></div>
+</div></form>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+
+        </div>
+        <!-- /.col (right) -->
+      </div>
+      <!-- /.row -->';
+
+
+
+      /*
+echo '<div class="row">
+        <div class="col-xs-8">
+          <div class="box box-info">
+
+            <!-- /.box-header -->';
+
+echo "            <form name='form' action='$self' method='post' onsubmit=\"return isFromOrToDate();\">\n";
+echo '<div class="box-header with-border"><h3 class="box-title">';
+echo "             <i class='fa fa-book'></i>&nbsp;&nbsp;&nbsp;Daily
+                    Time Report</div></div>\n";
+echo "              <input type='hidden' name='date_format' value='$js_datefmt'>\n";
+if ($username_dropdown_only == "yes") {
+
+$query = "select * from ".$db_prefix."employees order by empfullname asc";
+$result = mysql_query($query);
+
+echo "              Username:
                   <select name='user_name'>\n";
 echo "                    <option value ='All'>All</option>\n";
 
@@ -88,63 +175,62 @@ while ($row=mysql_fetch_array($result)) {
   echo "                    <option>$tmp_empfullname</option>\n";
 }
 
-echo "                  </select>&nbsp;*</td></tr>\n";
+echo "                  </select>&nbsp;*\n";
 mysql_free_result($result);
 } else {
-echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Choose Office:</td><td colspan=2 width=80%
-                      style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;'>
-                      <select name='office_name' onchange='group_names();'>\n";
-echo "                      </select></td></tr>\n";
-echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Choose Group:</td><td colspan=2 width=80%
-                      style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;'>
-                      <select name='group_name' onchange='user_names();'>\n";
-echo "                      </select></td></tr>\n";
-echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Choose Username:</td><td colspan=2 width=80%
-                      style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;'>
-                      <select name='user_name'>\n";
-echo "                      </select></td></tr>\n";
+
+echo "<div class='form-group'><label>Choose Office: </label> <select name='office_name' class='form-control select2 pull-right' style='width: 50%;' onchange='group_names();'></select></div>";
+
+echo "<div class='form-group'><label>Choose Group: </label> <select name='group_name' class='form-control select2 pull-right' style='width: 50%;' onchange='user_names();'></select></div>\n";
+
+echo "             <div class='form-group'><label>Choose Username: </label> <select name='user_name' class='form-control select2 pull-right' style='width: 50%;'></select></div>\n";
+
 }
-echo "              <tr><td class=table_rows style='padding-left:32px;' width=20% nowrap>From Date: ($tmp_datefmt)</td><td
-                      style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;' width=80% >
-                      <input type='text' size='10' maxlength='10' name='from_date' style='color:#27408b'>&nbsp;*&nbsp;&nbsp;
-                      <a href=\"#\" onclick=\"form.from_date.value='';cal.select(document.forms['form'].from_date,'from_date_anchor','$js_datefmt');
-                      return false;\" name=\"from_date_anchor\" id=\"from_date_anchor\" style='font-size:11px;color:#27408b;'>Pick Date</a></td><tr>\n";
-echo "              <tr><td class=table_rows style='padding-left:32px;' width=20% nowrap>To Date: ($tmp_datefmt)</td><td
-                      style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;' width=80% >
-                      <input type='text' size='10' maxlength='10' name='to_date' style='color:#27408b'>&nbsp;*&nbsp;&nbsp;
-                      <a href=\"#\" onclick=\"form.to_date.value='';cal.select(document.forms['form'].to_date,'to_date_anchor','$js_datefmt');
-                      return false;\" name=\"to_date_anchor\" id=\"to_date_anchor\" style='font-size:11px;color:#27408b;'>Pick Date</a></td><tr>\n";
-echo "              <tr><td class=table_rows align=right colspan=3 style='color:red;font-family:Tahoma;font-size:10px;'>*&nbsp;required&nbsp;</td></tr>\n";
-echo "            </table>\n";
-echo "            <div style=\"position:absolute;visibility:hidden;background-color:#ffffff;layer-background-color:#ffffff;\" id=\"mydiv\"
-                 height=200>&nbsp;</div>\n";
-echo "            <table align=center width=60% border=0 cellpadding=0 cellspacing=3>\n";
-echo "              <tr><td class=table_rows height=25 valign=bottom>1.&nbsp;&nbsp;&nbsp;Export to CSV? (link to CSV file will be in the top right of
-                      the next page)</td></tr>\n";
+echo "              From Date: ($tmp_datefmt) <div class='input-group date'><div class='input-group-addon'><i class='fa fa-calendar'></i></div><input type='text' size='10' maxlength='10' name='from_date' id='datepicker'>&nbsp;*&nbsp;&nbsp;</div></div>\n";
+
+echo "              To Date: ($tmp_datefmt)
+                      <div class='input-group date'><div class='input-group-addon'><i class='fa fa-calendar'></i></div><input type='text' size='10' maxlength='10' name='to_date' id='datepicker1'>&nbsp;*&nbsp;&nbsp;
+                     </div></div>";
+
+
+echo "              *&nbsp;required&nbsp;\n";
+
+echo "            <div id=\"mydiv\">&nbsp;</div>\n";
+echo "              <div class='form-group'><div class='radio'>
+                   <label>Export to CSV? (link to CSV file will be in the top right of the next page)</label>\n";
+
+
+echo "";
 if (strtolower($export_csv) == "yes") {
-echo "              <tr><td class=table_rows align=left nowrap style='padding-left:15px;'><input type='radio' name='csv' value='1' checked>&nbsp;Yes
-                      <input type='radio' name='csv' value='0'>&nbsp;No</td></tr>\n";
+echo "              <input type='radio' name='csv' value='1' checked>&nbsp;Yes\n";
+echo "    &nbsp;No                   <input type='radio' name='csv' value='0'></div></div>\n";
 } else {
-echo "              <tr><td class=table_rows align=left nowrap style='padding-left:15px;'><input type='radio' name='csv' value='1'>&nbsp;Yes
-                      <input type='radio' name='csv' value='0' checked>&nbsp;No</td></tr>\n";
+echo "              <tr><td><input type='radio' name='csv' value='1'>&nbsp;Yes &nbsp; No                   <input type='radio' name='csv' value='0' checked></div></div>\n";
 }
 if (strtolower($ip_logging) == "yes") {
-echo "              <tr><td class=table_rows height=25 valign=bottom>2.&nbsp;&nbsp;&nbsp;Display connecting ip address information?
-                      </td></tr>\n";
+echo "              <div class='form-group'><div class='radio'><label>&nbsp;&nbsp;&nbsp;Display connecting ip address information?</label>\n";
 if ($display_ip == "yes") {
-echo "              <tr><td class=table_rows align=left nowrap style='padding-left:15px;'><input type='radio' name='tmp_display_ip' value='1'
-                      checked>&nbsp;Yes<input type='radio' name='tmp_display_ip' value='0'>&nbsp;No</td></tr>\n";
+echo "              <input type='radio' name='tmp_display_ip' value='1' checked>&nbsp;Yes<input type='radio' name='tmp_display_ip' value='0'>&nbsp;No</div></div>\n";
 } else {
-echo "              <tr><td class=table_rows align=left nowrap style='padding-left:15px;'><input type='radio' name='tmp_display_ip' value='1' >&nbsp;Yes
-                      <input type='radio' name='tmp_display_ip' value='0' checked>&nbsp;No</td></tr>\n";
+echo "              <input type='radio' name='tmp_display_ip' value='1' >&nbsp;Yes
+                      <input type='radio' name='tmp_display_ip' value='0' checked>&nbsp;No</div></div>\n";
 }
 }
-echo "              <tr><td height=10></td></tr>\n";
-echo "            </table>\n";
-echo "            <table align=center width=60% border=0 cellpadding=0 cellspacing=3>\n";
-echo "              <tr><td width=30><input type='image' name='submit' value='Edit Time' align='middle'
-                      src='../images/buttons/next_button.png'></td><td><a href='index.php'><img src='../images/buttons/cancel_button.png'
-                      border='0'></td></tr></table></form></td></tr>\n"; include '../footer.php';
+
+echo '<div class="box-footer">';
+echo '
+		                   <a href="index.php"><button type="submit" name="submit" value="Edit Time" class="btn btn-default pull-right"><i class="fa fa-ban"></i>  Cancel</button></a>
+		                   <button type="submit" class="btn btn-success">Next <i class="fa fa-arrow-right"></i></button></div>
+		                 ';		      
+echo "	     </form>\n"; 
+      
+echo "</div></div></div></div>";
+      
+*/
+include '../footer.php';
+include '../theme/templates/controlsidebar.inc'; 
+include '../theme/templates/endmain.inc';
+include '../theme/templates/adminfooterscripts.inc';
 exit;
 
 } else {
@@ -197,8 +283,10 @@ if (($tmp_display_ip != '1') && (!empty($tmp_display_ip))) {
 $evil_post = '1';
 if ($use_reports_password == "yes") {
 include '../admin/topmain.php';
+include 'leftmain.php';
 } else {
 include 'topmain.php';
+include 'leftmain.php';
 }
 echo "<table width=100% height=89% border=0 cellpadding=0 cellspacing=1>\n";
 echo "  <tr valign=top>\n";
@@ -217,8 +305,10 @@ if (($tmp_csv != '1') && (!empty($tmp_csv))) {
 $evil_post = '1';
 if ($use_reports_password == "yes") {
 include '../admin/topmain.php';
+include 'leftmain.php';
 } else {
 include 'topmain.php';
+include 'leftmain.php';
 }
 echo "<table width=100% height=89% border=0 cellpadding=0 cellspacing=1>\n";
 echo "  <tr valign=top>\n";
@@ -238,8 +328,10 @@ if (empty($from_date)) {
 $evil_post = '1';
 if ($use_reports_password == "yes") {
 include '../admin/topmain.php';
+include 'leftmain.php';
 } else {
 include 'topmain.php';
+include 'leftmain.php';
 }
 echo "<table width=100% height=89% border=0 cellpadding=0 cellspacing=1>\n";
 echo "  <tr valign=top>\n";
@@ -257,8 +349,10 @@ elseif (!eregi ("^([0-9]?[0-9])+[-|/|.]+([0-9]?[0-9])+[-|/|.]+(([0-9]{2})|([0-9]
 $evil_post = '1';
 if ($use_reports_password == "yes") {
 include '../admin/topmain.php';
+include 'leftmain.php';
 } else {
 include 'topmain.php';
+include 'leftmain.php';
 }
 echo "<table width=100% height=89% border=0 cellpadding=0 cellspacing=1>\n";
 echo "  <tr valign=top>\n";
@@ -280,8 +374,10 @@ if ($from_month > 12 || $from_day > 31) {
 $evil_post = '1';
 if ($use_reports_password == "yes") {
 include '../admin/topmain.php';
+include 'leftmain.php';
 } else {
 include 'topmain.php';
+include 'leftmain.php';
 }
 echo "<table width=100% height=89% border=0 cellpadding=0 cellspacing=1>\n";
 echo "  <tr valign=top>\n";
@@ -302,8 +398,10 @@ if ($from_month > 12 || $from_day > 31) {
 $evil_post = '1';
 if ($use_reports_password == "yes") {
 include '../admin/topmain.php';
+include 'leftmain.php';
 } else {
 include 'topmain.php';
+include 'leftmain.php';
 }
 echo "<table width=100% height=89% border=0 cellpadding=0 cellspacing=1>\n";
 echo "  <tr valign=top>\n";
@@ -323,8 +421,10 @@ if (empty($to_date)) {
 $evil_post = '1';
 if ($use_reports_password == "yes") {
 include '../admin/topmain.php';
+include 'leftmain.php';
 } else {
 include 'topmain.php';
+include 'leftmain.php';
 }
 echo "<table width=100% height=89% border=0 cellpadding=0 cellspacing=1>\n";
 echo "  <tr valign=top>\n";
@@ -342,8 +442,10 @@ elseif (!eregi ("^([0-9]?[0-9])+[-|/|.]+([0-9]?[0-9])+[-|/|.]+(([0-9]{2})|([0-9]
 $evil_post = '1';
 if ($use_reports_password == "yes") {
 include '../admin/topmain.php';
+include 'leftmain.php';
 } else {
 include 'topmain.php';
+include 'leftmain.php';
 }
 echo "<table width=100% height=89% border=0 cellpadding=0 cellspacing=1>\n";
 echo "  <tr valign=top>\n";
@@ -365,8 +467,10 @@ if ($to_month > 12 || $to_day > 31) {
 $evil_post = '1';
 if ($use_reports_password == "yes") {
 include '../admin/topmain.php';
+include 'leftmain.php';
 } else {
 include 'topmain.php';
+include 'leftmain.php';
 }
 echo "<table width=100% height=89% border=0 cellpadding=0 cellspacing=1>\n";
 echo "  <tr valign=top>\n";
@@ -387,8 +491,10 @@ if ($to_month > 12 || $to_day > 31) {
 $evil_post = '1';
 if ($use_reports_password == "yes") {
 include '../admin/topmain.php';
+include 'leftmain.php';
 } else {
 include 'topmain.php';
+include 'leftmain.php';
 }
 echo "<table width=100% height=89% border=0 cellpadding=0 cellspacing=1>\n";
 echo "  <tr valign=top>\n";
@@ -417,8 +523,7 @@ if ($username_dropdown_only == "yes") {
 $query = "select * from ".$db_prefix."employees order by empfullname asc";
 $result = mysql_query($query);
 
-echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Username:</td><td colspan=2 align=left width=80%
-                      style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;'>
+echo "              <tr><td>Username:</td><td colspan=2>
                   <select name='user_name'>\n";
 echo "                    <option value ='All'>All</option>\n";
 
@@ -431,53 +536,47 @@ echo "                  </select>&nbsp;*</td></tr>\n";
 mysql_free_result($result);
 } else {
 
-echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Choose Office:</td><td colspan=2 width=80%
-                      style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;'>
+echo "              <tr><td>Choose Office:</td><td colspan=2>
                       <select name='office_name' onchange='group_names();'>\n";
 echo "                      </select></td></tr>\n";
-echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Choose Group:</td><td colspan=2 width=80%
-                      style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;'>
+echo "              <tr><td>Choose Group:</td><td colspan=2>
                       <select name='group_name' onfocus='group_names();'>
                           <option selected>$group_name</option>\n";
 echo "                      </select></td></tr>\n";
-echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Choose Username:</td><td colspan=2 width=80%
-                      style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;'>
+echo "              <tr><td>Choose Username:</td><td colspan=2>
                       <select name='user_name' onfocus='user_names();'>
                           <option selected>$fullname</option>\n";
 echo "                      </select></td></tr>\n";
 }
-echo "              <tr><td class=table_rows style='padding-left:32px;' width=20% nowrap>From Date: ($tmp_datefmt)</td><td
-                      style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;' width=80% >
+echo "              <tr><td>From Date: ($tmp_datefmt)</td><td>
                       <input type='text' size='10' maxlength='10' name='from_date' value='$from_date' style='color:#27408b'>&nbsp;*&nbsp;&nbsp;
                       <a href=\"#\" onclick=\"form.from_date.value='';cal.select(document.forms['form'].from_date,'from_date_anchor','$js_datefmt');
-                      return false;\" name=\"from_date_anchor\" id=\"from_date_anchor\" style='font-size:11px;color:#27408b;'>Pick Date</a></td><tr>\n";
-echo "              <tr><td class=table_rows style='padding-left:32px;' width=20% nowrap>To Date: ($tmp_datefmt)</td><td
-                      style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;' width=80% >
+                      return false;\" name=\"from_date_anchor\" id=\"from_date_anchor\" >Pick Date</a></td><tr>\n";
+echo "              <tr><td>To Date: ($tmp_datefmt)</td><td>
                       <input type='text' size='10' maxlength='10' name='to_date' value='$to_date' style='color:#27408b'>&nbsp;*&nbsp;&nbsp;
                       <a href=\"#\" onclick=\"form.to_date.value='';cal.select(document.forms['form'].to_date,'to_date_anchor','$js_datefmt');
-                      return false;\" name=\"to_date_anchor\" id=\"to_date_anchor\" style='font-size:11px;color:#27408b;'>Pick Date</a></td><tr>\n";
-echo "              <tr><td class=table_rows align=right colspan=3 style='color:red;font-family:Tahoma;font-size:10px;'>*&nbsp;required&nbsp;</td></tr>\n";
+                      return false;\" name=\"to_date_anchor\" id=\"to_date_anchor\">Pick Date</a></td><tr>\n";
+echo "              <tr><td colspan=3>*&nbsp;required&nbsp;</td></tr>\n";
 echo "            </table>\n";
-echo "            <div style=\"position:absolute;visibility:hidden;background-color:#ffffff;layer-background-color:#ffffff;\" id=\"mydiv\"
-                 height=200>&nbsp;</div>\n";
+echo "            <div id=\"mydiv\">&nbsp;</div>\n";
 echo "            <table align=center width=60% border=0 cellpadding=0 cellspacing=3>\n";
-echo "              <tr><td class=table_rows height=25 valign=bottom>1.&nbsp;&nbsp;&nbsp;Export to CSV? (link to CSV file will be in the top right of
+echo "              <tr><td>1.&nbsp;&nbsp;&nbsp;Export to CSV? (link to CSV file will be in the top right of
                       the next page)</td></tr>\n";
 if ($tmp_csv == "1") {
-echo "              <tr><td class=table_rows align=left nowrap style='padding-left:15px;'><input type='radio' name='csv' value='1'
+echo "              <tr><td><input type='radio' name='csv' value='1'
                       checked>&nbsp;Yes<input type='radio' name='csv' value='0'>&nbsp;No</td></tr>\n";
 } else {
-echo "              <tr><td class=table_rows align=left nowrap style='padding-left:15px;'><input type='radio' name='csv' value='1' >&nbsp;Yes
+echo "              <tr><td><input type='radio' name='csv' value='1' >&nbsp;Yes
                       <input type='radio' name='csv' value='0' checked>&nbsp;No</td></tr>\n";
 }
 if ($display_ip == "yes") {
-echo "              <tr><td class=table_rows height=25 valign=bottom>2.&nbsp;&nbsp;&nbsp;Display connecting ip address information?
+echo "              <tr><td>2.&nbsp;&nbsp;&nbsp;Display connecting ip address information?
                       </td></tr>\n";
 if ($tmp_display_ip == "1") {
-echo "              <tr><td class=table_rows align=left nowrap style='padding-left:15px;'><input type='radio' name='tmp_display_ip' value='1'
+echo "              <tr><td><input type='radio' name='tmp_display_ip' value='1'
                       checked>&nbsp;Yes<input type='radio' name='tmp_display_ip' value='0'>&nbsp;No</td></tr>\n";
 } else {
-echo "              <tr><td class=table_rows align=left nowrap style='padding-left:15px;'><input type='radio' name='tmp_display_ip' value='1' >&nbsp;Yes
+echo "              <tr><td><input type='radio' name='tmp_display_ip' value='1' >&nbsp;Yes
                       <input type='radio' name='tmp_display_ip' value='0' checked>&nbsp;No</td></tr>\n";
 }
 }
@@ -486,7 +585,11 @@ echo "            </table>\n";
 echo "            <table align=center width=60% border=0 cellpadding=0 cellspacing=3>\n";
 echo "              <tr><td width=30><input type='image' name='submit' value='Edit Time' align='middle'
                       src='../images/buttons/next_button.png'></td><td><a href='index.php'><img src='../images/buttons/cancel_button.png'
-                      border='0'></td></tr></table></form></td></tr>\n"; include '../footer.php';
+                      border='0'></td></tr></table></form>\n"; 
+include '../footer.php';
+include '../theme/templates/controlsidebar.inc'; 
+include '../theme/templates/endmain.inc';
+include '../theme/templates/adminfooterscripts.inc';
 exit;
 }
 

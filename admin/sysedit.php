@@ -34,6 +34,8 @@ include '../config.inc.php';
 if ($request == 'GET') {
     include 'header_get_sysedit.php';
     include 'topmain.php';
+    include 'leftmain.php';
+    
 }
 echo "<title>$title - Edit System Settings</title>\n";
 
@@ -62,6 +64,9 @@ if (!file_exists($filename)) {
     echo "                <td height=25 class=table_rows_red>It has either been deleted, renamed, moved, or was never installed.</td></tr>\n";
     echo "            </table></td></tr>\n";
     include '../footer.php';
+    include '../theme/templates/controlsidebar.inc'; 
+    include '../theme/templates/endmain.inc';
+    include '../theme/templates/adminfooterscripts.inc';
     exit;
 }
 
@@ -83,12 +88,18 @@ if (!is_readable($filename)) {
         echo $group["name"];
         echo "&nbsp;&nbsp;(user.group).</td></tr>\n";
     }
-    echo "            </table></td></tr>\n";
+    echo "            </table>\n";
     include '../footer.php';
+    include '../theme/templates/controlsidebar.inc'; 
+    include '../theme/templates/endmain.inc';
+    include '../theme/templates/adminfooterscripts.inc';
+
 }
 
 // Determine if we are displaying the information, or committing changes
 if ($request == 'GET') {
+
+	/* moved 
     echo "<table width=100% height=89% border=0 cellpadding=0 cellspacing=1>\n";
     echo "  <tr valign=top>\n";
     echo "    <td class=left_main width=180 align=left scope=col>\n";
@@ -121,13 +132,16 @@ if ($request == 'GET') {
     echo "      <table width=100% height=100% border=0 cellpadding=10 cellspacing=1>\n";
     echo "        <tr class=right_main_text>\n";
     echo "          <td valign=top>\n";
-
+end moved */
     // Display a message if the user can't edit the configuration file graphically.
     if ($disable_sysedit == "yes") {
         echo "            <table width=100% border=0 cellpadding=0 cellspacing=0>\n";
         echo "              <tr><td height=25 class=table_rows_red>This page has been <b>disabled</b> within config.inc.php.</td></tr>";
-        echo "            </table></td></tr>\n";
+        echo "            </table>\n";
         include '../footer.php';
+	include '../theme/templates/controlsidebar.inc'; 
+	include '../theme/templates/endmain.inc';
+	include '../theme/templates/adminfooterscripts.inc';
         exit;
     }
 
@@ -139,7 +153,7 @@ if ($request == 'GET') {
             $process_user = posix_getpwuid(posix_getuid());
             $process_group = posix_getgrgid(posix_getgid());
 
-            echo "            <table width=100% border=0 cellpadding=0 cellspacing=0>\n";
+            echo "            <table class='table' width=100% border=0 cellpadding=0 cellspacing=0>\n";
             echo "              <tr><td height=25 class=table_rows_red>The PHP Timeclock config file, config.inc.php, <b><i>is not writable</i></b> by your webserver user:&nbsp;";
             echo "<b>";
             echo $process_user['name'];
@@ -152,15 +166,21 @@ if ($request == 'GET') {
             echo "</b>.<b>";
             echo $group["name"];
             echo "</b>&nbsp;&nbsp;(user.group).</td></tr>\n";
-            echo "            </table></td></tr>\n";
+            echo "            </table>\n";
             include '../footer.php';
+	    include '../theme/templates/controlsidebar.inc'; 
+	    include '../theme/templates/endmain.inc';
+	    include '../theme/templates/adminfooterscripts.inc';
             exit;
         } else {
             echo "            <table width=100% border=0 cellpadding=0 cellspacing=0>\n";
             echo "              <tr><td height=25 class=table_rows_red>The PHP Timeclock config file, config.inc.php, <b><i>is not writable</i></b> by your webserver user!</td></tr>\n";
             echo "              <tr><td height=25 class=table_rows_red>To edit the System Settings within PHP Timeclock, either change the permissions on config.inc.php for this user, or assign this file to another owner, preferably your webserver user.</td></tr>\n";
-            echo "            </table></td></tr>\n";
+            echo "            </table>\n";
             include '../footer.php';
+	    include '../theme/templates/controlsidebar.inc'; 
+	    include '../theme/templates/endmain.inc';
+	    include '../theme/templates/adminfooterscripts.inc';
             exit;
         }
     }
@@ -332,7 +352,10 @@ if ($request == 'GET') {
     // end double-checking of some of the settings in config.inc.php
 
     // Display usage instructions
-    echo "            <table width=100% border=0 cellpadding=0 cellspacing=0>\n";
+
+
+
+    echo "            <table class='table table-hover'>\n";
     echo "              <tr><th colspan=3 class=table_heading_no_color nowrap align=left>Edit System Settings</th></tr>\n";
     echo "              <tr><td colspan=3 class=table_rows width=10% align=left style='padding-left:4px;'>Listed below are the settings that have been chosen within config.inc.php, the config file for PHP Timeclock. Edit as you see fit. Then click the \"Next\" button near the bottom of the page to continue.</td></tr>\n";
     echo "              <tr><td height=40 class=table_rows width=10% align=left style='padding-left:4px;color:#27408b;'><b><u>VARIABLE</u></b></td> <td class=table_rows width=10% align=left style='color:#27408b;'><b><u>VALUE</u></b></td> <td class=table_rows width=80% align=left style='padding-left:10px;color:#27408b;'><b><u>DESCRIPTION</u></b></td></tr>\n";
@@ -1077,12 +1100,16 @@ if ($request == 'GET') {
     $row_count++; $row_color = ($row_count % 2) ? $color2 : $color1;
     echo "            <table width=100% border=0 cellpadding=0 cellspacing=0>\n";
     echo "              <tr><td height=40>&nbsp;</td></tr>\n";
-    echo "              <tr><td width=62 valign=middle><input type='image' name='submit' value='Add Time' align='middle' src='../images/buttons/next_button.png'></td><td><a href='index.php'><img src='../images/buttons/cancel_button.png' border='0'></td></tr></table></form></td></tr>\n";
+    echo "              <tr><td width=62 valign=middle><input type='image' name='submit' value='Add Time' align='middle' src='../images/buttons/next_button.png'></td><td><a href='index.php'><img src='../images/buttons/cancel_button.png' border='0'></td></tr></table></form>\n";
     include '../footer.php';
+    include '../theme/templates/controlsidebar.inc'; 
+    include '../theme/templates/endmain.inc';
+    include '../theme/templates/adminfooterscripts.inc';
     exit;
 } elseif ($request == 'POST') { // Commit changes
     include 'header_post_sysedit.php';
     include 'topmain.php';
+    include 'leftmain.php';
 
     echo "<table width=100% height=89% border=0 cellpadding=0 cellspacing=1>\n";
     echo "  <tr valign=top>\n";
@@ -2187,8 +2214,11 @@ if ($request == 'GET') {
         $row_count++; $row_color = ($row_count % 2) ? $color2 : $color1;
         echo "            <table width=100% border=0 cellpadding=0 cellspacing=0>\n";
         echo "              <tr><td height=40>&nbsp;</td></tr>\n";
-        echo "              <tr><td width=62 valign=middle><input type='image' name='submit' value='Add Time' align='middle' src='../images/buttons/next_button.png'></td><td><a href='index.php'><img src='../images/buttons/cancel_button.png' border='0'></td></tr></table></form></td></tr>\n";
+        echo "              <tr><td width=62 valign=middle><input type='image' name='submit' value='Add Time' align='middle' src='../images/buttons/next_button.png'></td><td><a href='index.php'><img src='../images/buttons/cancel_button.png' border='0'></td></tr></table></form>\n";
         include '../footer.php';
+	include '../theme/templates/controlsidebar.inc'; 
+	include '../theme/templates/endmain.inc';
+	include '../theme/templates/adminfooterscripts.inc';
         exit;
     } else {
         if (!empty($post_use_persistent_connection)) {
@@ -2945,10 +2975,12 @@ $app_version = "'. $post_app_version .'";
         echo "            <table align=center class=table_border width=100% border=0 cellpadding=0 cellspacing=3>\n";
         echo "              <tr><td width=20 align=center height=25 class=table_rows><img src='../images/icons/accept.png' /></td> <td class=table_rows_green height=25>&nbsp;System Settings updated successfully.</td></tr>\n";
         echo "            </table>\n";
-        echo "            <br />\n";
-
+        echo "            \n";
         include '../templates/admin_index_tpl.php';
         include '../footer.php';
+	include '../theme/templates/controlsidebar.inc'; 
+	include '../theme/templates/endmain.inc';
+	include '../theme/templates/adminfooterscripts.inc';
         exit;
     }
 }

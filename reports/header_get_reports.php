@@ -1,5 +1,7 @@
-<html>
 <?php
+
+echo '<html>';
+
 /***************************************************************************
  *   Copyright (C) 2006 by Ken Papizan                                     *
  *   Copyright (C) 2008 by phpTimeClock Team                               *
@@ -90,15 +92,10 @@ if ($use_client_tz == "yes") {
       <meta http-equiv='refresh' content='0; URL=index.php'>";
     }
 }
+
+include '../theme/templates/adminheader.inc';
 echo "
-      <link rel='stylesheet' type='text/css' media='screen' href='../css/default.css' />
       <link rel='stylesheet' type='text/css' media='print' href='../css/print.css' />
-      <script language=\"javascript\" src=\"../scripts/CalendarPopup.js\">
-      </script>
-      <script language=\"javascript\">
-         document.write(getCalendarStyles());
-         var cal = new CalendarPopup('mydiv');
-      </script>
       <script language=\"javascript\" src=\"../scripts/pnguin.js\">
       </script>\n";
 include '../scripts/dropdown_get_reports.php';
@@ -117,5 +114,8 @@ if ($use_client_tz == "yes") {
 }
 echo "
 
-   <body onload='office_names();'>";
+   <body class='hold-transition skin-blue-light sidebar-mini' onload='office_names();'>
+<div id='wrapper'>
+";
+
 ?>

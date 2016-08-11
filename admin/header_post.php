@@ -1,5 +1,6 @@
-<html>
 <?php
+echo '<html>';
+
 /***************************************************************************
  *   Copyright (C) 2006 by Ken Papizan                                     *
  *   Copyright (C) 2008 by phpTimeClock Team                               *
@@ -83,8 +84,8 @@ include '../tzoffset.php';
 echo "<meta http-equiv='refresh' content='0;URL=index.php'>\n";}}
 echo "<link rel='stylesheet' type='text/css' media='screen' href='../css/default.css' />\n";
 echo "<link rel='stylesheet' type='text/css' media='print' href='../css/print.css' />\n";
-echo "<script type=\"text/javascript\" src=\"../scripts/CalendarPopup.js\"></script>\n";
-echo "<script language=\"javascript\">document.write(getCalendarStyles());</script>\n";
+// echo "<script type=\"text/javascript\" src=\"../scripts/CalendarPopup.js\"></script>\n";
+// echo "<script language=\"javascript\">document.write(getCalendarStyles());</script>\n";
 echo "<script language=\"javascript\" src=\"../scripts/pnguin.js\"></script>\n";
 include '../scripts/dropdown_post.php';
 echo "</head>\n";
