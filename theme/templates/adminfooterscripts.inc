@@ -33,11 +33,11 @@
 //Date picker
     $('#datepicker').datepicker({
       autoclose: true,
-      format: 'd.m.yyyy'
+      format: 'm/d/yyyy'
     });
     $('#datepicker1').datepicker({
       autoclose: true,
-      format: 'd.m.yyyy'
+      format: 'm/d/yyyy'
     });
 </script>
 

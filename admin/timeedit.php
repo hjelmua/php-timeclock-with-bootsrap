@@ -24,6 +24,7 @@ session_start();
 include '../config.inc.php';
 include 'header_date.php';
 include 'topmain.php';
+include 'leftmain-time.php';
 
 /**
  * This module will edit an employee's punch time, and update the current
@@ -47,7 +48,7 @@ if (($timefmt == "G:i") || ($timefmt == "H:i")) {
 
 // Ensure the user has access rights to editing time.
 if ((!isset($_SESSION['valid_user'])) && (!isset($_SESSION['time_admin_valid_user']))) {
-    echo "<table width=100% border=0 cellpadding=7 cellspacing=1>\n";
+    echo "<table class='table' width=100% border=0 cellpadding=7 cellspacing=1>\n";
     echo "  <tr class=right_main_text><td height=10 align=center valign=top scope=row class=title_underline>PHP Timeclock Administration</td></tr>\n";
     echo "  <tr class=right_main_text>\n";
     echo "    <td align=center valign=top scope=row>\n";
@@ -60,7 +61,7 @@ if ((!isset($_SESSION['valid_user'])) && (!isset($_SESSION['time_admin_valid_use
 
 if ($request == 'GET') { // Display employee select interface for editing an employee's time
     if (!isset($_GET['username'])) { // Make sure there is a logged in user
-        echo "<table width=100% border=0 cellpadding=7 cellspacing=1>\n";
+        echo "<table class='table' width=100% border=0 cellpadding=7 cellspacing=1>\n";
         echo "  <tr class=right_main_text><td height=10 align=center valign=top scope=row class=title_underline>PHP Timeclock Error!</td></tr>\n";
         echo "  <tr class=right_main_text>\n";
         echo "    <td align=center valign=top scope=row>\n";
@@ -71,6 +72,7 @@ if ($request == 'GET') { // Display employee select interface for editing an emp
         exit;
     }
 
+	/*
     $get_user = stripslashes($_GET['username']);
 
     disabled_acct($get_user);
@@ -78,7 +80,7 @@ if ($request == 'GET') { // Display employee select interface for editing an emp
     echo "<table width=100% height=89% border=0 cellpadding=0 cellspacing=1>\n";
     echo "  <tr valign=top>\n";
     echo "    <td class=left_main width=180 align=left scope=col>\n";
-    echo "      <table class=hide width=100% border=0 cellpadding=1 cellspacing=0>\n";
+    echo "      <table width=100% border=0 cellpadding=1 cellspacing=0>\n";
     echo "        <tr><td class=left_rows height=11></td></tr>\n";
     echo "        <tr><td class=left_rows_headings height=18 valign=middle>Users</td></tr>\n";
     echo "        <tr><td class=left_rows height=18 align=left valign=middle><img src='../images/icons/user.png' alt='User Summary' />&nbsp;&nbsp; <a class=admin_headings href='useradmin.php'>User Summary</a></td></tr>\n";
@@ -104,7 +106,8 @@ if ($request == 'GET') { // Display employee select interface for editing an emp
     echo "        <tr><td class=left_rows_indent height=18 align=left valign=middle><img src='../images/icons/arrow_right.png' alt='Delete Time' /> &nbsp;&nbsp;<a class=admin_headings href=\"timedelete.php?username=$get_user\">Delete Time</a></td></tr>\n";
     echo "        <tr><td class=left_rows_border_top height=18 align=left valign=middle><img src='../images/icons/application_edit.png' alt='Edit System Settings' /> &nbsp;&nbsp;<a class=admin_headings href='sysedit.php'>Edit System Settings</a></td></tr>\n";
     echo "        <tr><td class=left_rows height=18 align=left valign=middle><img src='../images/icons/database_go.png' alt='Manage Database' />&nbsp;&nbsp;&nbsp;<a class=admin_headings href='database_management.php'>Manage Database</a></td></tr>\n";
-    echo "      </table></td>\n";
+    echo "      </table></td>\n"; 
+	*/
 
     $get_user = addslashes($get_user);
 
@@ -118,31 +121,36 @@ if ($request == 'GET') { // Display employee select interface for editing an emp
     mysql_free_result($result);
     $get_user = stripslashes($get_user);
 
-    echo "    <td align=left class=right_main scope=col>\n";
-    echo "      <table width=100% height=100% border=0 cellpadding=10 cellspacing=1>\n";
-    echo "        <tr class=right_main_text>\n";
-    echo "          <td valign=top>\n";
-    echo "            <br />\n";
+
     echo "            <form name='form' action='$self' method='post' onsubmit=\"return isDate()\">\n";
-    echo "            <table align=center class=table_border width=60% border=0 cellpadding=3 cellspacing=0>\n";
+    echo "            <table class='table' align=center class=table_border width=60% border=0 cellpadding=3 cellspacing=0>\n";
     echo "              <tr>\n";
     echo "                <th class=rightside_heading nowrap halign=left colspan=3><img src='../images/icons/clock_edit.png' />&nbsp;&nbsp;&nbsp;Edit Time </th></tr>\n";
     echo "              <tr><td height=15></td></tr>\n";
+	/*
     echo "                <input type='hidden' name='date_format' value='$js_datefmt'>\n";
+*/
     echo "              <tr><td class=table_rows height=25 style='padding-left:32px;' width=20% nowrap>Username:</td><td align=left class=table_rows width=80% style='padding-left:20px;'> <input type='hidden' name='post_username' value=\"$username\">$username</td></tr>\n";
     echo "              <tr><td class=table_rows height=25 style='padding-left:32px;' width=20% nowrap>Display Name:</td><td align=left class=table_rows width=80% style='padding-left:20px;'> <input type='hidden' name='post_displayname' value=\"$displayname\">$displayname</td></tr>\n";
-    echo "              <tr><td class=table_rows height=25 style='padding-left:32px;' width=20% nowrap>Date: ($tmp_datefmt)</td><td style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;' width=80%> <input type='text' size='10' maxlength='10' name='post_date' style='color:#27408b'>&nbsp;*&nbsp;&nbsp; <a href=\"#\" onclick=\"form.post_date.value='';cal.select(document.forms['form'].post_date,'post_date_anchor','$js_datefmt'); return false;\" name=\"post_date_anchor\" id=\"post_date_anchor\" style='font-size:11px;color:#27408b;'>Pick Date</a></td><tr>\n";
+
+
+    echo "              <tr><td><div class='form-group'><label>From Date:" .($tmp_datefmt)."</label> </td><td> <div class='input-group date'><i class='fa fa-calendar'></i><input type='text' maxlength='10' name='post_date' id='datepicker' class='form-control'> &nbsp;*&nbsp;&nbsp; </div></div></td><tr>\n";
     echo "                <input type='hidden' name='get_user' value=\"$get_user\">\n";
+	/*
     echo "                <input type='hidden' name='timefmt_24hr' value=\"$timefmt_24hr\">\n";
     echo "                <input type='hidden' name='timefmt_24hr_text' value=\"$timefmt_24hr_text\">\n";
     echo "                <input type='hidden' name='timefmt_size' value=\"$timefmt_size\">\n";
-    echo "              <tr><td class=table_rows align=right colspan=3 style='color:red;font-family:Tahoma;font-size:10px;'>*&nbsp;required&nbsp;</td></tr>\n";
+    */
+	echo "              <tr><td class=table_rows align=right colspan=3 style='color:red;font-family:Tahoma;font-size:10px;'>*&nbsp;required&nbsp;</td></tr>\n";
     echo "            </table>\n";
     echo "            <div style=\"position:absolute;visibility:hidden;background-color:#ffffff;layer-background-color:#ffffff;\" id=\"mydiv\" height=200>&nbsp;</div>\n";
     echo "            <table align=center width=60% border=0 cellpadding=0 cellspacing=3>\n";
     echo "              <tr><td height=40>&nbsp;</td></tr>\n";
-    echo "              <tr><td width=30><input type='image' name='submit' value='Edit Time' align='middle' src='../images/buttons/next_button.png'></td><td><a href='timeadmin.php'><img src='../images/buttons/cancel_button.png' border='0'></td></tr></table></form></td></tr>\n";
+    echo "              <tr><td width=30><input type='image' name='submit' value='Edit Time' align='middle' src='../images/buttons/next_button.png'></td><td><a href='timeadmin.php'><img src='../images/buttons/cancel_button.png' border='0'></td></tr></table></form>\n";
     include '../footer.php';
+	include '../theme/templates/controlsidebar.inc'; 
+	include '../theme/templates/endmain.inc';
+	include '../theme/templates/adminfooterscripts.inc';
     exit;
 } elseif ($request == 'POST') { // Display interface for editing the selected employee's time.
     $get_user = stripslashes($_POST['get_user']);
@@ -218,10 +226,11 @@ if ($request == 'GET') { // Display employee select interface for editing an emp
 
     // end post validation //
 
+	/*
     echo "<table width=100% height=89% border=0 cellpadding=0 cellspacing=1>\n";
     echo "  <tr valign=top>\n";
     echo "    <td class=left_main width=180 align=left scope=col>\n";
-    echo "      <table class=hide width=100% border=0 cellpadding=1 cellspacing=0>\n";
+    echo "      <table width=100% border=0 cellpadding=1 cellspacing=0>\n";
     echo "        <tr><td class=left_rows height=11></td></tr>\n";
     echo "        <tr><td class=left_rows_headings height=18 valign=middle>Users</td></tr>\n";
     echo "        <tr><td class=left_rows height=18 align=left valign=middle><img src='../images/icons/user.png' alt='User Summary' />&nbsp;&nbsp; <a class=admin_headings href='useradmin.php'>User Summary</a></td></tr>\n";
@@ -253,6 +262,7 @@ if ($request == 'GET') { // Display employee select interface for editing an emp
     echo "        <tr class=right_main_text>\n";
     echo "          <td valign=top>\n";
     echo "            <br />\n";
+*/
 
     // begin post validation //
 
@@ -315,6 +325,9 @@ if ($request == 'GET') { // Display employee select interface for editing an emp
         echo "              <tr><td height=40>&nbsp;</td></tr>\n";
         echo "              <tr><td width=30><input type='image' name='submit' value='Edit Time' align='middle' src='../images/buttons/next_button.png'></td><td><a href='timeadmin.php'><img src='../images/buttons/cancel_button.png' border='0'></td></tr></table></form></td></tr>\n";
         include '../footer.php';
+		include '../theme/templates/controlsidebar.inc'; 
+		include '../theme/templates/endmain.inc';
+		include '../theme/templates/adminfooterscripts.inc';
         exit;
     } else { // Commit changes to employee's time and audit log
         if (isset($_POST['tmp_var'])) { // begin post validation //
@@ -379,7 +392,7 @@ if ($request == 'GET') { // Display employee select interface for editing an emp
                     if ($calendar_style == "euro") {
                         $post_date = "$day/$month/$year";
                     } elseif ($calendar_style == "amer") {
-                        $post_date = "$month/$day/$year";
+                     //   $post_date = "$month/$day/$year";
                     }
 
                     $tmp_timestamp = strtotime($post_date) - @$tzo;
@@ -491,6 +504,10 @@ if ($request == 'GET') { // Display employee select interface for editing an emp
                 echo "              <tr><td height=40>&nbsp;</td></tr>\n";
                 echo "              <tr><td width=30><input type='image' name='submit' value='Edit Time' align='middle' src='../images/buttons/next_button.png'></td><td><a href='timeadmin.php'><img src='../images/buttons/cancel_button.png' border='0'></td></tr></table></form></td></tr>\n";
                 include '../footer.php';
+				include '../theme/templates/controlsidebar.inc'; 
+				include '../theme/templates/endmain.inc';
+				include '../theme/templates/adminfooterscripts.inc';
+				
                 exit;
             } elseif (!isset($evil_time) && ((($require_time_admin_edit_reason == "yes") && (!empty($post_why))) || ($require_time_admin_edit_reason == "no"))) { // Commit employee's time, status changes and audit log to the database
                 echo "            <table align=center class=table_border width=60% border=0 cellpadding=0 cellspacing=3>\n";
@@ -606,6 +623,9 @@ if ($request == 'GET') { // Display employee select interface for editing an emp
                 echo "              <tr><td height=20 align=left>&nbsp;</td></tr>\n";
                 echo "              <tr><td><a href='timeadmin.php'><img src='../images/buttons/done_button.png' border='0'></td></tr></table></td></tr>\n";
                 include '../footer.php';
+				include '../theme/templates/controlsidebar.inc'; 
+				include '../theme/templates/endmain.inc';
+				include '../theme/templates/adminfooterscripts.inc';
                 exit;
             }
         } else { // Display time editing interface
@@ -673,6 +693,9 @@ if ($request == 'GET') { // Display employee select interface for editing an emp
             echo "              <tr><td height=40>&nbsp;</td></tr>\n";
             echo "              <tr><td width=30><input type='image' name='submit' value='Edit Time' align='middle' src='../images/buttons/next_button.png'></td><td><a href='timeadmin.php'><img src='../images/buttons/cancel_button.png' border='0'></td></tr></table></form></td></tr>\n";
             include '../footer.php';
+			include '../theme/templates/controlsidebar.inc'; 
+			include '../theme/templates/endmain.inc';
+			include '../theme/templates/adminfooterscripts.inc';
             exit;
         }
 
@@ -738,6 +761,9 @@ if ($request == 'GET') { // Display employee select interface for editing an emp
             echo "              <tr><td height=40>&nbsp;</td></tr>\n";
             echo "              <tr><td width=30><input type='image' name='submit' value='Edit Time' align='middle' src='../images/buttons/next_button.png'></td><td><a href='timeadmin.php'><img src='../images/buttons/cancel_button.png' border='0'></td></tr></table></form></td></tr>\n";
             include '../footer.php';
+			include '../theme/templates/controlsidebar.inc'; 
+			include '../theme/templates/endmain.inc';
+			include '../theme/templates/adminfooterscripts.inc';
             exit;
         }
     }

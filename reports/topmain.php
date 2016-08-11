@@ -21,182 +21,115 @@
  ***************************************************************************/
 
 /**
- * This module creates the navigation interface for the reports directory.
+ * This module creates the navigation interface for the top level directory.
  */
 
-echo "
-      <!-- Top Level Reports Interface -->
-      <table class=header width=100% border=0 cellpadding=0 cellspacing=1>
-         <tr>";
 
-// display the logo in top left of each page. This will be $logo you setup in config.inc.php. //
-// It will also link you back to your index page. //
-if ($logo == "none") {
-    echo "
-            <td height=35 align=left> </td>";
-} else {
-    echo "
-            <td align=left>
-               <a href='index.php'>
-                  <img border=0 src='../$logo'>
-               </a>
-            </td>";
-}
+
+echo '
+<!-- Main Header -->
+  <header class="main-header">';
+
+  // display the logo in top left of each page. This will be $logo you setup in config.inc.php. //
+  // It will also link you back to your index page. //
+echo '    <!-- Logo -->
+    <a href="index.php" class="logo">
+      <!-- mini logo for sidebar mini 50x50 pixels -->
+      <span class="logo-mini"><b>A</b><i class="fa fa-clock-o"></i></span>
+      <!-- logo for regular state and mobile devices -->';
+if ($logo == "none") {     echo '<span class="logo-lg"><b>PHP</b> <i class="fa fa-clock-o"></i> Timeclock</span></a>'; }
+else { echo "<span class='logo-lg'><img border='0' src='$logo'></span></a>"; }
+
+include '../theme/templates/topnavpart1.inc';
 
 // if db is out of date, report it here //
 if (($dbexists <> "1") || (@$my_dbversion <> $dbversion)) {
     echo "
-            <td no class=notprint valign=middle align=left style='font-size:13;font-weight:bold;color:#AA0000'>
-               <p>
-                 ***Your database is out of date.*** <br />
-                 &nbsp;&nbsp;&nbsp; Upgrade it via the admin section.
-               </p>
-            </td>";
+                 <li><a href=#>***Your database is out of date.*** 
+                 &nbsp;&nbsp;&nbsp; Upgrade it via the admin section.</a></li>";
 }
+
+
 
 // display a 'reset cookie' message if $use_client_tz = "yes" //
 if ($date_link == "none") {
     if ($use_client_tz == "yes") {
         echo "
-            <td class=notprint valign=middle align=right style='font-size:9px;'>
-               <p>
+            
                   If the times below appear to be an hour off, click
-                  <a href='../resetcookie.php' style='font-size:9px;'>
+                  <a href='../resetcookie.php'>
                      here
                   </a> to reset. <br />
-                  If that doesn't work, restart your web browser and reset again.
-               </p>
-            </td>";
+                  If that doesn't work, restart your web browser and reset again.";
     }
 
-    echo "
-            <td colspan=2 scope=col align=right valign=middle>
-               <a style='color:#000000;font-family:Tahoma;font-size:10pt;text-decoration:none;'>";
+
 } else {
     if ($use_client_tz == "yes") {
         echo "
-            <td class=notprint valign=middle align=right style='font-size:9px;'>
-               <p>
+            
+               
                   If the times below appear to be an hour off, click
-                  <a href='../resetcookie.php' style='font-size:9px;'>
+                  <a href='../resetcookie.php'>
                      here
-                  </a> to reset. <br />
-                 If that doesn't work, restart your web browser and reset again.
-               </p>
-            </td>";
+                  </a> to reset. 
+                 If that doesn't work, restart your web browser and reset again.";
     }
 
-    echo "
-            <td colspan=2 scope=col align=right valign=middle>
-               <a href='$date_link' style='color:#000000;font-family:Tahoma;font-size:10pt; text-decoration:none;'>";
+
+
 }
 
 // display today's date in top right of each page. This will link to $date_link you setup in config.inc.php. //
 $todaydate=date('F j, Y');
 echo "
-                  $todaydate&nbsp;&nbsp;
-               </a>
-            </td>
-         </tr>
-      </table>";
+<li><a href='$date_link'>$todaydate</a></li>
+";
 
 // display the topbar //
-echo "
-      <table class=topmain_row_color width=100% border=0 cellpadding=0 cellspacing=0>
-         <tr>";
 
-// Add any logged in user
+
+/* moved to leftmain 
 if (isset($_SESSION['valid_user'])) {
     $logged_in_user = $_SESSION['valid_user'];
     echo "
-            <td align=left valign=middle width=10 style='padding-left:12px;'>
-               <img src='../images/icons/user_orange.png' border='0'>
-            </td>
-            <td align=left valign=middle style='color:#000000;font-family:Tahoma;font-size:10pt;padding-left:8px;'>
-               Logged in as: $logged_in_user
-            </td>";
+            
+               <li><a href='login.php'><i class='fa fa-user-secret text-orange'></i> Logged in as: $logged_in_user</a></li>";
 } else if (isset($_SESSION['time_admin_valid_user'])) {
     $logged_in_user = $_SESSION['time_admin_valid_user'];
     echo "
-            <td align=left valign=middle width=10 style='padding-left:12px;'>
-               <img src='../images/icons/user_red.png' border='0'>
-            </td>
-            <td align=left valign=middle style='color:#000000;font-family:Tahoma;font-size:10pt;padding-left:8px;'>
-               Logged in as: $logged_in_user
-            </td>";
+            
+               <li><a href='login.php'><i class='fa fa-user-secret text-red'></i> Logged in as: $logged_in_user</a></li>";
 } else if (isset($_SESSION['valid_reports_user'])) {
     $logged_in_user = $_SESSION['valid_reports_user'];
     echo "
-            <td align=left valign=middle width=10 style='padding-left:12px;'>
-               <img src='../images/icons/user_suit.png' border='0'>
-            </td>
-            <td align=left valign=middle style='color:#000000;font-family:Tahoma;font-size:10pt;padding-left:8px;'>
-               Logged in as: $logged_in_user
-            </td>";
+            
+               <li><a href='login.php'><i class='fa fa-user-plus'></i> Logged in as: $logged_in_user</a></li>";
 } else if (isset($_SESSION['valid_report_employee'])) {
     $logged_in_user = $_SESSION['valid_report_employee'];
     echo "
-            <td align=left valign=middle width=10 style='padding-left:12px;'>
-               <img src='../images/icons/user_suit.png' border='0'>
-            </td>
-            <td align=left valign=middle style='color:#000000;font-family:Tahoma;font-size:10pt;padding-left:8px;'>
-               Logged in as: $logged_in_user
-            </td>";
+            
+               <li><a href='login.php'><i class='fa fa-user'></i> Logged in as: $logged_in_user</a></li>";
 }
 
-// Add navigation interface
-echo "
-            <td align=right valign=middle>
-               <img src='../images/icons/house.png' border='0'>&nbsp;&nbsp;
-            </td>
-            <td align=right valign=middle width=10>
-               <a href='../index.php' style='color:#000000;font-family:Tahoma;font-size:10pt;text-decoration:none;'>
-                  Home&nbsp;&nbsp;
-               </a>
-            </td>
-            <td align=right valign=middle width=23>
-               <img src='../images/icons/bricks.png' border='0'> &nbsp;&nbsp;
-            </td>
-            <td align=right valign=middle width=10>
-               <a href='../login.php?login_action=admin' style='color:#000000;font-family:Tahoma;font-size:10pt;text-decoration:none;'>
-                  Administration&nbsp;&nbsp;
-               </a>
-            </td>
-            <td align=right valign=middle width=23>
-               <img src='../images/icons/report.png' border='0' >&nbsp;&nbsp;
-            </td>";
+end moved to leftmain  */
 
-// Setup reports links
+echo "
+               <li><a href='../index.php'><i class='fa fa-home'></i> Home</a></li>
+            
+               <li><a href='../login.php?login_action=admin'><i class='fa fa-globe'></i> Administration</a></li>";
+
 if ($use_reports_password == "yes") {
     echo "
-            <td align=right valign=middle width=10>
-               <a href='../login.php?login_action=reports' style='color:#000000;font-family:Tahoma;font-size:10pt; text-decoration:none;'>
-                  Reports&nbsp;&nbsp;
-               </a>
-            </td>";
+            
+               <li><a href='../login.php?login_action=reports'><i class='fa fa-globe'></i> Reports</a></li>";
 } elseif ($use_reports_password == "no") {
-    echo "
-            <td align=right valign=middle width=10>
-               <a href='../reports/index.php' style='color:#000000;font-family:Tahoma;font-size:10pt; text-decoration:none;'>
-                  Reports&nbsp;&nbsp;
-               </a>
-            </td>";
+    echo " <li><a href='../reports/index.php'><i class='fa fa-list-alt'></i> Reports</a></li>";
 }
 
-// Add a logout link if a user is logged in
 if ((isset($_SESSION['valid_user'])) || (isset($_SESSION['valid_reports_user'])) || (isset($_SESSION['valid_report_employee'])) || (isset($_SESSION['time_admin_valid_user']))) {
-    echo "
-            <td align=right valign=middle width=20>
-               <img src='../images/icons/arrow_rotate_clockwise.png' border='0'> &nbsp;
-            </td>
-            <td align=right valign=middle width=10>
-               <a href='../logout.php' style='color:#000000;font-family:Tahoma;font-size:10pt;text-decoration:none;'>
-                  Logout&nbsp;&nbsp;
-               </a>
-            </td>";
+    echo " <li><a href='../logout.php'><i class='fa fa-sign-out'></i>Logout</a></li>";
 }
 
-echo "
-         </tr>
-      </table>";
+include '../theme/templates/topnavpart2.inc'
 ?>

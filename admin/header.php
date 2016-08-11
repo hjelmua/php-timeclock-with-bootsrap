@@ -94,7 +94,9 @@ if (empty($creating_backup_file)) { // This allows the database backup code to c
         }
     }
     echo "
-      <link rel='stylesheet' type='text/css' media='screen' href='../css/default.css' />
+    	<title>$title</title>";
+          include '../theme/templates/adminheader.inc';
+    echo "
       <link rel='stylesheet' type='text/css' media='print' href='../css/print.css' />
       <script language=\"javascript\" src=\"../scripts/pnguin.js\"> </script>
    </head>\n";
@@ -109,8 +111,9 @@ if (empty($creating_backup_file)) { // This allows the database backup code to c
     } else {
         $tzo = "1";
     }
+include '../theme/templates/mainstart.inc';
     echo "
-   <body>
+   
 ";
 }
 ?>

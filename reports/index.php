@@ -31,38 +31,73 @@ if ($use_reports_password == "yes") {
 
 if (!isset($_SESSION['valid_reports_user'])) {
 
-echo "<title>$title</title>\n";
 include '../admin/header.php';
 include 'topmain.php';
+include 'leftmain.php';
 
-echo "<table width=100% border=0 cellpadding=7 cellspacing=1>\n";
-echo "  <tr class=right_main_text><td height=10 align=center valign=top scope=row class=title_underline>PHP Timeclock Reports</td></tr>\n";
-echo "  <tr class=right_main_text>\n";
-echo "    <td align=center valign=top scope=row>\n";
-echo "      <table width=200 border=0 cellpadding=5 cellspacing=0>\n";
-echo "        <tr class=right_main_text><td align=center>You are not presently logged in, or do not have permission to view this page.</td></tr>\n";
-echo "        <tr class=right_main_text><td align=center>Click <a class=admin_headings href='../login.php?login_action=reports'><u>here</u></a> to login.</td></tr>\n";
-echo "      </table><br /></td></tr></table>\n"; exit;
 }
 }
 
 include '../admin/header.php';
 
 if ($use_reports_password == "yes") {
-include 'topmain.php';
+	include 'topmain.php';
+	include 'leftmain.php';
 } else {
-include 'topmain.php';
+	include 'topmain.php';
+	include 'leftmain.php';
 }
-echo "<title>$title - Reports</title>\n";
 
-echo "<table width=100% height=89% border=0 cellpadding=0 cellspacing=1>\n";
-echo "  <tr class=right_main_text height=40><td align=center class=title_underline style='color:#853d27;'>Run Reports</td></tr>\n";
-echo "  <tr class=right_main_text height=25>\n";
-echo "    <td align=center valign=top>&#8226;&nbsp;<a class=admin_headings href='timerpt.php'>Daily Time Report</a>&nbsp;&#8226;</td></tr>\n";
-echo "  <tr class=right_main_text height=25>\n";
-echo "    <td align=center valign=top>&#8226;&nbsp;<a class=admin_headings href='total_hours.php'>Hours Worked Report</a>&nbsp;&#8226;</td></tr>\n";
-echo "  <tr class=right_main_text height=92%>\n";
-echo "    <td align=center valign=top>&#8226;&nbsp;<a class=admin_headings href='audit.php'>Audit Log</a>&nbsp;&#8226;</td></tr>\n";
+
+echo '
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h1>
+    Run Reports
+    <small>it all starts here</small>
+  </h1>
+  <ol class="breadcrumb">
+    <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+    <li class="active"><a href="#">Run Reports</a></li>
+  </ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+  <!-- Default box -->
+  <div class="box">
+    <div class="box-header with-border">
+      <h3 class="box-title">Title</h3>
+
+      <div class="box-tools pull-right">
+        <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+          <i class="fa fa-minus"></i></button>
+        <button type="button" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove">
+          <i class="fa fa-times"></i></button>
+      </div>
+    </div>
+    <div class="box-body">
+      Start creating your amazing application!
+    </div>
+    <!-- /.box-body -->
+    <div class="box-footer">
+      Footer
+    </div>
+    <!-- /.box-footer-->
+  </div>
+  <!-- /.box -->
+
+</section>
+<!-- /.content -->
+
+';
+
+
+
 include '../footer.php';
+include '../theme/templates/controlsidebar.inc'; 
+include '../theme/templates/endmain.inc';
+include '../theme/templates/adminfooterscripts.inc';
 ?>
 

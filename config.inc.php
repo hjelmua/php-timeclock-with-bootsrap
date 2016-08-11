@@ -281,13 +281,13 @@ topleft side of each page (leftmain.php). These links can link to anything you w
 them to -- websites, other web-based applications, etc. Default number of links is 6.
 Set $links to "none" to ignore this option. Ex: $links = "none"; */
 
-$links = array("http://www.phptimeclock.com","http://trac.phptimeclock.com/");
+$links = array("https://github.com/hjelmua/php-timeclock-with-bootsrap");
 
 
 /* Insert/change/delete below the display names for the links you inserted above.
 If $links is set to "none", this option is ignored. */
 
-$display_links = array("PhpTimeClock Homepage","Development Site");
+$display_links = array("Development Site");
 
 
 /* The message of the day to display to all employee's. Set to "none" to disable. */

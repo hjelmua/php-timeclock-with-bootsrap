@@ -60,7 +60,6 @@ Powered by <a class="footer_links" href="http://nginx.org/">NGINX</a> &nbsp;&#17
  </footer>
 ';
 
-include './theme/templates/controlsidebar.inc'; 
 // Finish up the HTML to make it valid
 
 ?>
