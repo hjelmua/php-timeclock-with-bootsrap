@@ -26,23 +26,25 @@ $self = $_SERVER['PHP_SELF'];
 $request = $_SERVER['REQUEST_METHOD'];
 
 include '../config.inc.php';
-if ($request !== 'POST') {include 'header_get.php';include 'topmain.php';}
+if ($request !== 'POST') {include 'header_get.php';include 'topmain.php'; include 'leftmain.php';}
 echo "<title>$title - User Search</title>\n";
 
 if (!isset($_SESSION['valid_user'])) {
 
-echo "<table width=100% border=0 cellpadding=7 cellspacing=1>\n";
-echo "  <tr class=right_main_text><td height=10 align=center valign=top scope=row class=title_underline>PHP Timeclock Administration</td></tr>\n";
-echo "  <tr class=right_main_text>\n";
-echo "    <td align=center valign=top scope=row>\n";
-echo "      <table width=200 border=0 cellpadding=5 cellspacing=0>\n";
-echo "        <tr class=right_main_text><td align=center>You are not presently logged in, or do not have permission to view this page.</td></tr>\n";
-echo "        <tr class=right_main_text><td align=center>Click <a class=admin_headings href='../login.php?login_action=admin'><u>here</u></a> to login.</td></tr>\n";
-echo "      </table><br /></td></tr></table>\n"; exit;
+
+	echo ' <div class="col-md-4"><div class="alert alert-danger alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <h4><i class="icon fa fa-warning"></i> PHP Timeclock Administration</h4>
+                You are not presently logged in, or do not have permission to view this page. Click <a class=admin_headings href="../login.php?login_action=admin"><u>here</u></a> to login.
+              </div></div>';
+
+
+exit;
 }
 
 if ($request !== 'POST') {
 
+	/*
 echo "<table width=100% height=89% border=0 cellpadding=0 cellspacing=1>\n";
 echo "  <tr valign=top>\n";
 echo "    <td class=left_main width=180 align=left scope=col>\n";
@@ -87,13 +89,17 @@ echo "      <table width=100% height=100% border=0 cellpadding=10 cellspacing=1>
 echo "        <tr class=right_main_text>\n";
 echo "          <td valign=top>\n";
 echo "            <br />\n";
+	*/
+	
+	echo '<div class="row">
+        <div class="col-md-8">
+          <div class="box box-info"> ';
+    echo '<div class="box-header with-border">
+	                 <h3 class="box-title"><i class="fa fa-search-plus"></i> Search for User</h3>
+	               </div><div class="box-body">';
+		       
 echo "            <form name='form' action='$self' method='post'>\n";
-echo "            <table align=center class=table_border width=60% border=0 cellpadding=3 cellspacing=0>\n";
-echo "              <tr>\n";
-echo "                <th class=rightside_heading nowrap halign=left colspan=3><img src='../images/icons/magnifier.png' />&nbsp;&nbsp;&nbsp;Search for User
-                </th>\n";
-echo "              </tr>\n";
-echo "              <tr><td height=15></td></tr>\n";
+echo "            <table align=center class=table>\n";
 echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Username:</td><td colspan=2 width=80%
                       style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;'><input type='text'
                       size='25' maxlength='50' name='post_username'
@@ -118,19 +124,25 @@ echo "              <tr><td class=table_rows height=25 width=20% style='padding-
                       <select name='group_name'>\n";
 echo "                      </select></td></tr>\n";
 
-echo "              <tr><td class=table_rows align=right colspan=3 style='color:#27408b;font-family:Tahoma;'><a class=footer_links
-                      href=\"usersearch.php\" style='text-decoration:underline;'>reset form</a>&nbsp;</td></tr>\n";
+echo "              <tr><td class=table_rows align=right colspan=3>&nbsp;</td></tr>\n";
 echo "            </table>\n";
-echo "            <table align=center width=60% border=0 cellpadding=0 cellspacing=3>\n";
-echo "              <tr><td height=40>&nbsp;</td></tr>\n";
-echo "              <tr><td width=30><input type='image' name='submit' value='Create User' align='middle'
-                      src='../images/buttons/search_button.png'></td><td><a href='useradmin.php'><img src='../images/buttons/cancel_button.png'
-                      border='0'></td></tr></table></form></td></tr>\n";include '../footer.php'; exit;
+
+		      echo '<div class="box-footer">
+		                  <button type="submit" name="submit" value="Create User" class="btn btn-info">Search</button>
+		                  <button class="btn btn-default pull-right"><a href="usersearch.php">Cancel</a></button>   
+		                </div></form>';
+		      echo '</div></div></div></div>';
+		      include '../theme/templates/endmaincontent.inc';
+		      include '../footer.php';
+		      include '../theme/templates/controlsidebar.inc'; 
+		      include '../theme/templates/endmain.inc';
+		      include '../theme/templates/adminfooterscripts.inc';
+		       exit;
 }
 
 elseif ($request == 'POST') {
 
-include 'header_post.php';include 'topmain.php';
+include 'header_post.php';include 'topmain.php'; include 'leftmain.php';
 
 @$post_username = stripslashes($_POST['post_username']);
 @$display_name = stripslashes($_POST['display_name']);
@@ -148,6 +160,7 @@ include 'header_post.php';include 'topmain.php';
 if ((!eregi ("^([[:alnum:]]| |-|'|,)+$", $post_username)) || (!eregi ("^([[:alnum:]]| |-|'|,)+$", $display_name)) ||
 (!eregi ("^([[:alnum:]]|_|\.|-|@)+$", $email_addy))) {
 
+	/*
 echo "<table width=100% height=89% border=0 cellpadding=0 cellspacing=1>\n";
 echo "  <tr valign=top>\n";
 echo "    <td class=left_main width=180 align=left scope=col>\n";
@@ -191,43 +204,49 @@ echo "    <td align=left class=right_main scope=col>\n";
 echo "      <table width=100% height=100% border=0 cellpadding=10 cellspacing=1>\n";
 echo "        <tr class=right_main_text>\n";
 echo "          <td valign=top>\n";
+	
+	*/
 if (!eregi ("^([[:alnum:]]| |-|'|,)+$", $post_username)) {
 if ($post_username == "") {} else {
-echo "            <br />\n";
-echo "            <table align=center class=table_border width=60% border=0 cellpadding=0 cellspacing=3>\n";
-echo "              <tr>\n";
-echo "                <td class=table_rows width=20 align=center><img src='../images/icons/cancel.png' /></td><td class=table_rows_red nowrap>
-                    &nbsp;Alphanumeric characters, hyphens, apostrophes, commas, and spaces are allowed when searching for a Username.</td></tr>\n";
-echo "            </table>\n";
+
+	echo ' <div class="col-md-4"><div class="alert alert-warning alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <h4><i class="icon fa fa-warning"></i> Alert!</h4>
+                Alphanumeric characters, hyphens, apostrophes, commas, and spaces are allowed when searching for a Username.
+              </div></div>';
+			  
 $evil_input = "1";
 }}
 if (!eregi ("^([[:alnum:]]| |-|'|,)+$", $display_name)) {
 if ($display_name == "") {} else {
-echo "            <br />\n";
-echo "            <table align=center class=table_border width=60% border=0 cellpadding=0 cellspacing=3>\n";
-echo "              <tr>\n";
-echo "                <td class=table_rows width=20 align=center><img src='../images/icons/cancel.png' /></td><td class=table_rows_red nowrap>
-                    &nbsp;Alphanumeric characters, hyphens, apostrophes, commas, and spaces are allowed when searching for a Display Name.</td></tr>\n";
-echo "            </table>\n";
+
+	echo ' <div class="col-md-4"><div class="alert alert-warning alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <h4><i class="icon fa fa-warning"></i> Alert!</h4>
+                Alphanumeric characters, hyphens, apostrophes, commas, and spaces are allowed when searching for a Display Name.
+              </div></div>';
+
 $evil_input = "1";
 }}
 if (!eregi ("^([[:alnum:]]|_|\.|-|@)+$", $email_addy)) {
 if ($email_addy == "") {} else {
-echo "            <br />\n";
-echo "            <table align=center class=table_border width=60% border=0 cellpadding=0 cellspacing=3>\n";
-echo "              <tr>\n";
-echo "                <td class=table_rows width=20 align=center><img src='../images/icons/cancel.png' /></td><td class=table_rows_red nowrap>
-                    &nbsp;Alphanumeric characters, underscores, periods, and hyphens are allowed when searching for an Email Address.</td></tr>\n";
-echo "            </table>\n";
+
+	echo ' <div class="col-md-4"><div class="alert alert-warning alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <h4><i class="icon fa fa-warning"></i> Alert!</h4>
+                Alphanumeric characters, underscores, periods, and hyphens are allowed when searching for an Email Address
+              </div></div>';
 $evil_input = "1";
 }}
 if (($post_username == "") && ($display_name == "") && ($email_addy == "")) {
-echo "            <br />\n";
-echo "            <table align=center class=table_border width=60% border=0 cellpadding=0 cellspacing=3>\n";
-echo "              <tr>\n";
-echo "                <td class=table_rows width=20 align=center><img src='../images/icons/cancel.png' /></td><td class=table_rows_red nowrap>
-                    &nbsp;A Username, Display Name, or Email Address is required.</td></tr>\n";
-echo "            </table>\n";
+
+	echo ' <div class="col-md-4"><div class="alert alert-warning alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <h4><i class="icon fa fa-warning"></i> Alert!</h4>
+                A Username, Display Name, or Email Address is required.
+              </div></div>';
+
+
 $evil_input = "1";
 }
 
@@ -255,13 +274,15 @@ if (!isset($tmp_officename)) {echo "Group is not defined.\n"; exit;}
 
 if (isset($evil_input)) {
 
-echo "            <br />\n";
+	echo '<div class="row">
+        <div class="col-md-8">
+          <div class="box box-info"> ';
+    echo '<div class="box-header with-border">
+	                 <h3 class="box-title"><i class="fa fa-search-plus"></i> Search for User</h3>
+	               </div><div class="box-body">';
+				   
 echo "            <form name='form' action='$self' method='post'>\n";
-echo "            <table align=center class=table_border width=60% border=0 cellpadding=3 cellspacing=0>\n";
-echo "              <tr>\n";
-echo "                <th class=rightside_heading nowrap halign=left colspan=3><img src='../images/icons/magnifier.png' />&nbsp;&nbsp;&nbsp;Search for User
-                </th></tr>\n";
-echo "              <tr><td height=15></td></tr>\n";
+echo "            <table align=center class=table>\n";
 echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Username:</td><td colspan=2 width=80%
                       style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;'><input type='text' style='color:red;' size='25' maxlength='50'
                       name='post_username' value='$post_username'
@@ -289,12 +310,16 @@ echo "                      </select></td></tr>\n";
 echo "              <tr><td class=table_rows align=right colspan=3 style='color:#27408b;font-family:Tahoma;'><a class=footer_links
                       href=\"usersearch.php\" style='text-decoration:underline;'>reset form</a></td></tr>\n";
 echo "            </table>\n";
-echo "            <table align=center width=60% border=0 cellpadding=0 cellspacing=3>\n";
-echo "              <tr><td height=40>&nbsp;</td></tr>\n";
-echo "              <tr><td width=30><input type='image' name='submit' value='Create User' align='middle'
-                      src='../images/buttons/search_button.png'></td><td><a href='useradmin.php'><img src='../images/buttons/cancel_button.png'
-                      border='0'></td></tr></table></form></td></tr>\n";
-include '../footer.php';
+				      echo '<div class="box-footer">
+				                  <button type="submit" name="submit" value="Create User" class="btn btn-info">Search</button>
+				                  <button class="btn btn-default pull-right"><a href="usersearch.php">Cancel</a></button>   
+				                </div></form>';
+			echo '</div></div></div></div>';		  
+		      include '../theme/templates/endmaincontent.inc';
+		      include '../footer.php';
+		      include '../theme/templates/controlsidebar.inc'; 
+		      include '../theme/templates/endmain.inc';
+		      include '../theme/templates/adminfooterscripts.inc';
 exit;
 
 } else {
@@ -390,25 +415,25 @@ $row_count++;
 
 if ($row_count == "1") {
 
-echo "            <table width=90% align=center height=40 border=0 cellpadding=0 cellspacing=0>\n";
-echo "              <tr><th class=table_heading_no_color nowrap width=100% halign=left>User Search Summary</th></tr>\n";
-echo "              <tr><td height=40 class=table_rows nowrap halign=left>Search Results for \"$tmp_var\" in $tmp_var2</td></tr>\n";
+echo "            <table class='table'>\n";
+echo "              <tr><th>User Search Summary</th></tr>\n";
+echo "              <tr><td>Search Results for \"$tmp_var\" in $tmp_var2</td></tr>\n";
 echo "            </table>\n";
-echo "            <table class=table_border width=90% align=center border=0 cellpadding=0 cellspacing=0>\n";
+echo "            <table class=table>\n";
 echo "              <tr>\n";
-echo "                <th class=table_heading nowrap width=3% align=left>&nbsp;</th>\n";
-echo "                <th class=table_heading nowrap width=13% align=left>Username</th>\n";
-echo "                <th class=table_heading nowrap width=18% align=left>Display Name</th>\n";
-//echo "                <th class=table_heading nowrap width=23% align=left>Email Address</th>\n";
-echo "                <th class=table_heading nowrap width=10% align=left>Office</th>\n";
-echo "                <th class=table_heading nowrap width=10% align=left>Group</th>\n";
-echo "                <th class=table_heading width=3% align=center>Disabled</th>\n";
-echo "                <th class=table_heading width=3% align=center>Sys Admin</th>\n";
-echo "                <th class=table_heading width=3% align=center>Time Admin</th>\n";
-echo "                <th class=table_heading nowrap width=3% align=center>Reports</th>\n";
-echo "                <th class=table_heading nowrap width=3% align=center>Edit</th>\n";
-echo "                <th class=table_heading width=3% align=center>Chg Pwd</th>\n";
-echo "                <th class=table_heading nowrap width=3% align=center>Delete</th>\n";
+echo "                <th>&nbsp;</th>\n";
+echo "                <th>Username</th>\n";
+echo "                <th>Display Name</th>\n";
+// echo "                <th>Email Address</th>\n";
+echo "                <th>Office</th>\n";
+echo "                <th>Group</th>\n";
+echo "                <th>Disabled</th>\n";
+echo "                <th>Sys Admin</th>\n";
+echo "                <th>Time Admin</th>\n";
+echo "                <th>Reports</th>\n";
+echo "                <th>Edit</th>\n";
+echo "                <th>Chg Pwd</th>\n";
+echo "                <th>Delete</th>\n";
 echo "              </tr>\n";
 }
 
@@ -416,48 +441,48 @@ $row_color = ($row_count % 2) ? $color2 : $color1;
 $empfullname = stripslashes("".$row['empfullname']."");
 $displayname = stripslashes("".$row['displayname']."");
 
-echo "              <tr class=table_border bgcolor='$row_color'><td class=table_rows width=3%>&nbsp;$row_count</td>\n";
-echo "                <td class=table_rows width=13%>&nbsp;<a class=footer_links title=\"Edit User: $empfullname\"
+echo "              <tr><td>&nbsp;$row_count</td>\n";
+echo "                <td>&nbsp;<a class=footer_links title=\"Edit User: $empfullname\"
                     href=\"useredit.php?username=$empfullname&officename=".$row["office"]."\">$empfullname</a></td>\n";
-echo "                <td class=table_rows width=18%>$displayname</td>\n";
-//echo "                <td class=table_rows width=23%>".$row["email"]."</td>\n";
-echo "                <td class=table_rows width=10%>".$row['office']."</td>\n";
-echo "                <td class=table_rows width=10%>".$row['groups']."</td>\n";
+echo "                <td>$displayname</td>\n";
+// echo "                <td>".$row["email"]."</td>\n";
+echo "                <td>".$row['office']."</td>\n";
+echo "                <td>".$row['groups']."</td>\n";
 
 if ("".$row["disabled"]."" == 1) {
-  echo "                <td class=table_rows width=3% align=center><img src='../images/icons/cross.png' /></td>\n";
+  echo "                <td><img src='../images/icons/cross.png' /></td>\n";
 } else {
   $disabled = "";
-  echo "                <td class=table_rows width=3% align=center>".$disabled."</td>\n";
+  echo "                <td>".$disabled."</td>\n";
 }
 if ("".$row["admin"]."" == 1) {
-  echo "                <td class=table_rows width=3% align=center><img src='../images/icons/accept.png' /></td>\n";
+  echo "                <td><img src='../images/icons/accept.png' /></td>\n";
 } else {
   $admin = "";
-  echo "                <td class=table_rows width=3% align=center>".$admin."</td>\n";
+  echo "                <td>".$admin."</td>\n";
 }
 if ("".$row["time_admin"]."" == 1) {
-  echo "                <td class=table_rows width=3% align=center><img src='../images/icons/accept.png' /></td>\n";
+  echo "                <td><img src='../images/icons/accept.png' /></td>\n";
 } else {
   $time_admin = "";
-  echo "                <td class=table_rows width=3% align=center>".$time_admin."</td>\n";
+  echo "                <td>".$time_admin."</td>\n";
 }
 if ("".$row["reports"]."" == 1) {
-  echo "                <td class=table_rows width=3% align=center><img src='../images/icons/accept.png' /></td>\n";
+  echo "                <td><img src='../images/icons/accept.png' /></td>\n";
 } else {
   $reports = "";
-  echo "                <td class=table_rows width=3% align=center>".$reports."</td>\n";
+  echo "                <td>".$reports."</td>\n";
 }
 
 
-echo "                <td class=table_rows width=3% align=center>
+echo "                <td>
                     <a title=\"Edit User: $empfullname\" href=\"useredit.php?username=$empfullname&officename=".$row["office"]."\">
                     <img border=0 src='../images/icons/application_edit.png' /></td>\n";
-echo "                <td class=table_rows width=3% align=center>
+echo "                <td>
                     <a title=\"Change Password: $empfullname\"
                     href=\"chngpasswd.php?username=$empfullname&officename=".$row["office"]."\">
                     <img border=0 src='../images/icons/lock_edit.png' /></td>\n";
-echo "                <td class=table_rows width=3% align=center>
+echo "                <td>
                     <a title=\"Delete User: $empfullname\" href=\"userdelete.php?username=$empfullname&officename=".$row["office"]."\">
                     <img border=0 src='../images/icons/delete.png' /></td>\n";
 echo "              </tr>\n";
@@ -468,19 +493,21 @@ if ($row_count == "0") {
 
 $post_username = stripslashes($post_username);
 
-echo "            <br />\n";
-echo "            <table align=center class=table_border width=60% border=0 cellpadding=0 cellspacing=3>\n";
-echo "              <tr>\n";
-echo "                <td class=table_rows width=20 align=center><img src='../images/icons/cancel.png' /></td><td class=table_rows_red nowrap>
-                    &nbsp;A user was not found matching your criteria. Please try again.</td></tr>\n";
-echo "            </table>\n";
-echo "            <br />\n";
+echo ' <div class="col-md-4"><div class="alert alert-warning alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <h4><i class="icon fa fa-warning"></i> Alert!</h4>
+            A user was not found matching your criteria. Please try again.
+          </div></div>';
+
+
+echo '<div class="row">
+    <div class="col-md-8">
+      <div class="box box-info"> ';
+echo '<div class="box-header with-border">
+                 <h3 class="box-title"><i class="fa fa-search-plus"></i> Search for User</h3>
+               </div><div class="box-body">';
 echo "            <form name='form' action='$self' method='post'>\n";
-echo "            <table align=center class=table_border width=60% border=0 cellpadding=3 cellspacing=0>\n";
-echo "              <tr>\n";
-echo "                <th class=rightside_heading nowrap halign=left colspan=3><img src='../images/icons/magnifier.png' />&nbsp;&nbsp;&nbsp;Search for User
-                </th></tr>\n";
-echo "              <tr><td height=15></td></tr>\n";
+echo "            <table align=center class=table>\n";
 echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Username:</td><td colspan=2 width=80%
                       style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;'><input type='text' style='color:red;' size='25' maxlength='50'
                       name='post_username' value=\"$post_username\"
@@ -505,17 +532,28 @@ echo "              <tr><td class=table_rows height=25 width=20% style='padding-
                       <select name='group_name' onfocus='group_names();'>
                         <option selected>$group_name</option>\n";
 echo "                      </select></td></tr>\n";
-echo "              <tr><td class=table_rows align=right colspan=3 style='color:#27408b;font-family:Tahoma;'><a class=footer_links
-                      href=\"usersearch.php\" style='text-decoration:underline;'>reset form</a></td></tr>\n";
+echo "              <tr><td class=table_rows align=right colspan=3> </td></tr>\n";
 echo "            </table>\n";
-echo "            <table align=center width=60% border=0 cellpadding=0 cellspacing=3>\n";
-echo "              <tr><td height=40>&nbsp;</td></tr>\n";
-echo "              <tr><td width=30><input type='image' name='submit' value='Create User' align='middle'
-                      src='../images/buttons/search_button.png'></td><td><a href='useradmin.php'><img src='../images/buttons/cancel_button.png'
-                      border='0'></td></tr></table></form></td></tr>\n";include '../footer.php'; exit;
+				      echo '<div class="box-footer">
+				                  <button type="submit" name="submit" value="Create User" class="btn btn-info">Search</button>
+				                  <button class="btn btn-default pull-right"><a href="usersearch.php">Cancel</a></button>   
+				                </div></form>';
+			echo '</div></div></div></div>';				  
+					  
+		      include '../theme/templates/endmaincontent.inc';
+		      include '../footer.php';
+		      include '../theme/templates/controlsidebar.inc'; 
+		      include '../theme/templates/endmain.inc';
+		      include '../theme/templates/adminfooterscripts.inc';
+		      exit;
 } else {
 
-echo "            </table></td></tr>\n";
-include '../footer.php'; exit;
+echo "            </table>\n";
+include '../theme/templates/endmaincontent.inc';
+include '../footer.php';
+include '../theme/templates/controlsidebar.inc'; 
+include '../theme/templates/endmain.inc';
+include '../theme/templates/adminfooterscripts.inc';
+ exit;
 }}}}
 ?>

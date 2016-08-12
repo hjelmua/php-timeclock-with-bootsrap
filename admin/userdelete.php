@@ -25,6 +25,7 @@ session_start();
 include '../config.inc.php';
 include 'header.php';
 include 'topmain.php';
+include 'leftmain.php';
 echo "<title>$title - Delete User</title>\n";
 
 $self = $_SERVER['PHP_SELF'];
@@ -60,6 +61,7 @@ echo "      </table><br /></td></tr></table>\n"; exit;
 $get_user = stripslashes($_GET['username']);
 @$get_office = $_GET['officename'];
 
+/*
 echo "<table width=100% height=89% border=0 cellpadding=0 cellspacing=1>\n";
 echo "  <tr valign=top>\n";
 echo "    <td class=left_main width=180 align=left scope=col>\n";
@@ -109,6 +111,7 @@ echo "    <td align=left class=right_main scope=col>\n";
 echo "      <table width=100% height=100% border=0 cellpadding=10 cellspacing=1>\n";
 echo "        <tr class=right_main_text>\n";
 echo "          <td valign=top>\n";
+*/
 
 $get_user = addslashes($get_user);
 
@@ -141,7 +144,9 @@ if (!empty($admin)) {
   }
 }
 if (isset($evil)) {
-echo "            <br />\n";
+
+
+
 echo "            <table align=center class=table_border width=60% border=0 cellpadding=0 cellspacing=3>\n";
 echo "              <tr>\n";
 echo "                <td class=table_rows width=20 align=center><img src='../images/icons/cancel.png' /></td><td class=table_rows_red>
@@ -149,8 +154,14 @@ echo "                <td class=table_rows width=20 align=center><img src='../im
                     privileges before attempting to delete this user again.</td></tr>\n";
 echo "            </table>\n";
 }
-echo "            <br />\n";
-echo "            <table align=center class=table_border width=60% border=0 cellpadding=3 cellspacing=0>\n";
+
+echo '<div class="row">
+    <div class="col-md-8">
+      <div class="box box-info"> ';
+echo '<div class="box-header with-border">
+    <h3 class="box-title"><i class="fa fa-user-plus"></i> Delete User</h3>
+  </div><div class="box-body">';
+echo "            <table class=table>\n";
 echo "            <form name='form' action='$self' method='post'>\n";
 echo "              <tr>\n";
 echo "                <th class=rightside_heading nowrap halign=left colspan=3><img src='../images/icons/user_delete.png' />&nbsp;&nbsp;&nbsp;Delete
@@ -188,14 +199,27 @@ echo "            <table align=center width=60% border=0 cellpadding=0 cellspaci
 echo "              <tr><td class=table_rows height=40 width=10><input type='checkbox' name='delete_all_user_data' value='1'></td>
                   <td class=table_rows height=53>Delete all punch-in/out history for this user?</td></tr></table>\n";
 if (isset($evil)) {
-echo "            <table style='display:none;' align=center width=60% border=0 cellpadding=0 cellspacing=3>\n";
+echo "              </table>\n";
+echo '<div class="box-footer">
+            <button class="btn btn-default pull-right"><a href="useradmin.php">Cancel</a></button>   
+          </div></form>';	
 } else {
-echo "            <table align=center width=60% border=0 cellpadding=0 cellspacing=3>\n";
+echo "              </table>\n";
+echo '<div class="box-footer">
+            <button type="submit" name="submit" value="Delete User" class="btn btn-danger">Delete User</button>
+            <button class="btn btn-default pull-right"><a href="useradmin.php">Cancel</a></button>   
+          </div></form>';	
 }
-echo "              <tr><td width=30><input type='image' name='submit' value='Delete User'
-                    src='../images/buttons/next_button.png'></td><td><a href='useradmin.php'><img src='../images/buttons/cancel_button.png'
-                    border='0'></td></tr></table></form></td></tr>\n";
-include '../footer.php'; exit;
+
+			     
+					
+echo '</div></div></div></div>';							
+include '../theme/templates/endmaincontent.inc';
+include '../footer.php'; 
+include '../theme/templates/controlsidebar.inc'; 
+include '../theme/templates/endmain.inc';
+include '../theme/templates/adminfooterscripts.inc';
+ exit;
 }
 
 elseif ($request == 'POST') {
@@ -278,6 +302,7 @@ $result3 = mysql_query($query3);
 $post_username = stripslashes($post_username);
 $display_name = stripslashes($display_name);
 
+/*
 echo "<table width=100% height=89% border=0 cellpadding=0 cellspacing=1>\n";
 echo "  <tr valign=top>\n";
 echo "    <td class=left_main width=180 align=left scope=col>\n";
@@ -328,17 +353,17 @@ echo "      <table width=100% height=100% border=0 cellpadding=10 cellspacing=1>
 echo "        <tr class=right_main_text>\n";
 echo "          <td valign=top>\n";
 echo "            <br />\n";
-echo "            <table align=center class=table_border width=60% border=0 cellpadding=0 cellspacing=3>\n";
-echo "              <tr>\n";
-echo "                <td class=table_rows width=20 align=center><img src='../images/icons/accept.png' /></td><td class=table_rows_green>&nbsp;User
-                    deleted successfully.</td></tr>\n";
-echo "            </table>\n";
-echo "            <br />\n";
-echo "            <table align=center class=table_border width=60% border=0 cellpadding=3 cellspacing=0>\n";
-echo "              <tr>\n";
-echo "                <th class=rightside_heading nowrap halign=left colspan=3><img src='../images/icons/user_delete.png' />&nbsp;&nbsp;&nbsp;Delete
-                    User</th></tr>\n";
-echo "              <tr><td height=15></td></tr>\n";
+*/
+
+
+echo '<div class="row">
+    <div class="col-md-8">
+      <div class="box box-info"> ';
+echo '<div class="box-header with-border">
+    <h3 class="box-title"><i class="fa fa-user-plus"></i> User deleted successfully.</h3>
+  </div><div class="box-body">';
+
+echo "            <table class=table>\n";
 echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Username:</td><td align=left class=table_rows
                       width=80% style='padding-left:20px;'><input type='hidden' name='post_username' value=\"$post_username\">$post_username</td></tr>\n";
 echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Display Name:</td><td align=left class=table_rows
@@ -363,9 +388,17 @@ echo "                  <td class=table_rows align=left width=80% style='padding
                       value='$reports_perms'>$reports_yes_no</td></tr>\n";
 echo "              <tr><td height=15></td></tr>\n";
 echo "            </table>\n";
-echo "            <table align=center width=60% border=0 cellpadding=0 cellspacing=3>\n";
-echo "              <tr><td height=20 align=left>&nbsp;</td></tr>\n";
-echo "              <tr><td><a href='useradmin.php'><img src='../images/buttons/done_button.png' border='0'></td></tr></table></td></tr>\n";
-include '../footer.php'; exit;
+echo '<div class="box-footer">
+            <a href="useradmin.php"><button class="btn btn-success">Done</button> 
+          </div>';	
+
+echo '</div></div></div></div>';							
+include '../theme/templates/endmaincontent.inc';
+include '../footer.php'; 
+include '../theme/templates/controlsidebar.inc'; 
+include '../theme/templates/endmain.inc';
+include '../theme/templates/adminfooterscripts.inc';
+
+ exit;
 }
 ?>

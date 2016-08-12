@@ -39,6 +39,17 @@
       autoclose: true,
       format: 'm/d/yyyy'
     });
+
+	     $("#timepicker1").timepicker({
+	              template: false,
+	              showInputs: false,
+	              minuteStep: 15
+	          });
+
+	    //Timepicker
+	    $(".timepicker").timepicker({
+	      showInputs: false
+	    });	
 </script>
 
 </body>

@@ -25,6 +25,7 @@ session_start();
 include '../config.inc.php';
 include 'header.php';
 include 'topmain.php';
+include 'leftmain.php';
 echo "<title>$title - Change Password</title>\n";
 
 $self = $_SERVER['PHP_SELF'];
@@ -62,6 +63,7 @@ $get_user = $_GET['username'];
 
 if (get_magic_quotes_gpc()) {$get_user = stripslashes($get_user);}
 
+/*
 echo "<table width=100% height=89% border=0 cellpadding=0 cellspacing=1>\n";
 echo "  <tr valign=top>\n";
 echo "    <td class=left_main width=180 align=left scope=col>\n";
@@ -115,6 +117,7 @@ echo "      <table width=100% height=100% border=0 cellpadding=10 cellspacing=1>
 echo "        <tr class=right_main_text>\n";
 echo "          <td valign=top>\n";
 echo "            <br />\n";
+*/
 
 $get_user = addslashes($get_user);
 
@@ -136,7 +139,7 @@ mysql_free_result($result);
 }
 if (!isset($getoffice)) {echo "Office is not defined for this user. Go back and associate this user with an office.\n"; exit;}
 
-echo "            <table align=center class=table_border width=60% border=0 cellpadding=3 cellspacing=0>\n";
+echo "            <table class=table>\n";
 echo "            <form name='form' action='$self' method='post'>\n";
 echo "              <tr><th class=rightside_heading nowrap halign=left colspan=3><img src='../images/icons/lock_edit.png' />&nbsp;&nbsp;&nbsp;Change
                       Password</th></tr>\n";
@@ -155,8 +158,12 @@ echo "            <table align=center width=60% border=0 cellpadding=0 cellspaci
 echo "              <tr><td height=40>&nbsp;</td></tr>\n";
 echo "              <tr><td width=30><input type='image' name='submit' value='Change Password'
                   src='../images/buttons/next_button.png'></td>
-                  <td><a href='useradmin.php'><img src='../images/buttons/cancel_button.png' border='0'></td></tr></table></form></td></tr>\n";
-include '../footer.php';
+                  <td><a href='useradmin.php'><img src='../images/buttons/cancel_button.png' border='0'></td></tr></table></form>\n";
+	      include '../theme/templates/endmaincontent.inc';
+	      include '../footer.php';
+	      include '../theme/templates/controlsidebar.inc'; 
+	      include '../theme/templates/endmain.inc';
+	      include '../theme/templates/adminfooterscripts.inc';
 exit;
 }
 
@@ -289,8 +296,12 @@ echo "              <tr><td height=40>&nbsp;</td></tr>\n";
 echo "              <input type='hidden' name='get_office' value=\"$get_office\">\n";
 echo "              <tr><td width=30><input type='image' name='submit' value='Change Password'
                       src='../images/buttons/next_button.png'></td><td><a href='useradmin.php'>
-                      <img src='../images/buttons/cancel_button.png' border='0'></td></tr></table></form></td></tr>\n";
-include '../footer.php';
+                      <img src='../images/buttons/cancel_button.png' border='0'></td></tr></table></form>\n";
+		      include '../theme/templates/endmaincontent.inc';
+		      include '../footer.php';
+		      include '../theme/templates/controlsidebar.inc'; 
+		      include '../theme/templates/endmain.inc';
+		      include '../theme/templates/adminfooterscripts.inc';
 exit;
 
 } else {
@@ -323,8 +334,13 @@ echo "            </table>\n";
 echo "            <table align=center width=60% border=0 cellpadding=0 cellspacing=3>\n";
 echo "              <tr><td height=40>&nbsp;</td></tr>\n";
 echo "              <tr><td><a href='useradmin.php'><img src='../images/buttons/done_button.png' border='0'></td></tr>
-            </table></td></tr>\n";
+            </table>\n";
+include '../theme/templates/endmaincontent.inc';
 include '../footer.php';
+include '../theme/templates/controlsidebar.inc'; 
+include '../theme/templates/endmain.inc';
+include '../theme/templates/adminfooterscripts.inc';
+
 exit;
 }
 }

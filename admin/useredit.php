@@ -26,7 +26,7 @@ $self = $_SERVER['PHP_SELF'];
 $request = $_SERVER['REQUEST_METHOD'];
 
 include '../config.inc.php';
-if ($request !== 'POST') {include 'header_get.php';include 'topmain.php';}
+if ($request !== 'POST') {include 'header_get.php';include 'topmain.php'; include 'leftmain.php';}
 echo "<title>$title - Edit User</title>\n";
 
 if (!isset($_SESSION['valid_user'])) {
@@ -61,6 +61,7 @@ $get_user = $_GET['username'];
 
 if (get_magic_quotes_gpc()) {$get_user = stripslashes($get_user);}
 
+/*
 echo "<table width=100% height=89% border=0 cellpadding=0 cellspacing=1>\n";
 echo "  <tr valign=top>\n";
 echo "    <td class=left_main width=180 align=left scope=col>\n";
@@ -110,6 +111,7 @@ echo "    <td align=left class=right_main scope=col>\n";
 echo "      <table width=100% height=100% border=0 cellpadding=10 cellspacing=1>\n";
 echo "        <tr class=right_main_text>\n";
 echo "          <td valign=top>\n";
+*/
 
 $get_user = addslashes($get_user);
 
@@ -145,8 +147,8 @@ if (!empty($admin)) {
   }
 }
 if (isset($evil)) {
-echo "            <br />\n";
-echo "            <table align=center class=table_border width=60% border=0 cellpadding=0 cellspacing=3>\n";
+
+echo "            <table  class=table>\n";
 echo "              <tr>\n";
 echo "                <td class=table_rows width=20 align=center><img src='../images/icons/cancel.png' /></td><td class=table_rows_red>
                     Cannot edit the Sys Admin properties of this user as this user is the last Sys Admin User in the system. Go back and give another user
@@ -155,7 +157,7 @@ echo "            </table>\n";
 }
 echo "            <br />\n";
 echo "            <form name='form' action='$self' method='post'>\n";
-echo "            <table align=center class=table_border width=60% border=0 cellpadding=3 cellspacing=0>\n";
+echo "            <table class=table>\n";
 echo "              <tr>\n";
 echo "                <th class=rightside_heading nowrap halign=left colspan=3><img src='../images/icons/user_edit.png' />&nbsp;&nbsp;&nbsp;Edit User</th>\n";
 echo "              </tr>\n";
@@ -237,12 +239,18 @@ echo "              <tr><td height=40>&nbsp;</td></tr>\n";
 echo "                  <input type='hidden' name='get_office' value='$get_office'>\n";
 echo "              <tr><td width=30><input type='image' name='submit' value='Edit User' align='middle'
                       src='../images/buttons/next_button.png'></td><td><a href='useradmin.php'><img src='../images/buttons/cancel_button.png'
-                      border='0'></td></tr></table></form></td></tr>\n";include '../footer.php'; exit;
+                      border='0'></td></tr></table></form>\n";
+		      include '../theme/templates/endmaincontent.inc';
+		      include '../footer.php';
+		      include '../theme/templates/controlsidebar.inc'; 
+		      include '../theme/templates/endmain.inc';
+		      include '../theme/templates/adminfooterscripts.inc';
+		      exit;
 }
 
 elseif ($request == 'POST') {
 
-include 'header_post.php';include 'topmain.php';
+include 'header_post.php';include 'topmain.php'; include 'leftmain.php';
 
 $post_username = stripslashes($_POST['post_username']);
 $display_name = stripslashes($_POST['display_name']);
@@ -508,7 +516,12 @@ echo "              <tr><td height=40>&nbsp;</td></tr>\n";
 echo "                  <input type='hidden' name='get_office' value='$get_office'>\n";
 echo "              <tr><td width=30><input type='image' name='submit' value='Edit User' align='middle'
                       src='../images/buttons/next_button.png'></td><td><a href='useradmin.php'><img src='../images/buttons/cancel_button.png'
-                      border='0'></td></tr></table></form></td></tr>\n";include '../footer.php';
+                      border='0'></td></tr></table></form>\n";
+		      include '../theme/templates/endmaincontent.inc';
+		      include '../footer.php';
+		      include '../theme/templates/controlsidebar.inc'; 
+		      include '../theme/templates/endmain.inc';
+		      include '../theme/templates/adminfooterscripts.inc';
 $post_username = stripslashes($post_username);
 $display_name = stripslashes($display_name);
 exit;
@@ -634,7 +647,12 @@ echo "              <tr><td height=15></td></tr>\n";
 echo "            </table>\n";
 echo "            <table align=center width=60% border=0 cellpadding=0 cellspacing=3>\n";
 echo "              <tr><td height=20 align=left>&nbsp;</td></tr>\n";
-echo "              <tr><td><a href='useradmin.php'><img src='../images/buttons/done_button.png' border='0'></a></td></tr></table></td></tr>\n";
-include '../footer.php'; exit;
+echo "              <tr><td><a href='useradmin.php'><img src='../images/buttons/done_button.png' border='0'></a></td></tr></table>\n";
+include '../theme/templates/endmaincontent.inc';
+include '../footer.php';
+include '../theme/templates/controlsidebar.inc'; 
+include '../theme/templates/endmain.inc';
+include '../theme/templates/adminfooterscripts.inc';
+ exit;
 }
 ?>

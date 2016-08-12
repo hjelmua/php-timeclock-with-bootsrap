@@ -77,36 +77,7 @@ if ($request == 'GET') { // Display employee add time interface
 
     disabled_acct($get_user);
 
-    echo "<table width=100% height=89% border=0 cellpadding=0 cellspacing=1>\n";
-    echo "  <tr valign=top>\n";
-    echo "    <td class=left_main width=180 align=left scope=col>\n";
-    echo "      <table class=hide width=100% border=0 cellpadding=1 cellspacing=0>\n";
-    echo "        <tr><td class=left_rows height=11></td></tr>\n";
-    echo "        <tr><td class=left_rows_headings height=18 valign=middle>Users</td></tr>\n";
-    echo "        <tr><td class=left_rows height=18 align=left valign=middle><img src='../images/icons/user.png' alt='User Summary' />&nbsp;&nbsp; <a class=admin_headings href='useradmin.php'>User Summary</a></td></tr>\n";
-    echo "        <tr><td class=left_rows height=18 align=left valign=middle><img src='../images/icons/user_add.png' alt='Create New User' />&nbsp;&nbsp; <a class=admin_headings href='usercreate.php'>Create New User</a></td></tr>\n";
-    echo "        <tr><td class=left_rows height=18 align=left valign=middle><img src='../images/icons/magnifier.png' alt='User Search' />&nbsp;&nbsp; <a class=admin_headings href='usersearch.php'>User Search</a></td></tr>\n";
-    echo "        <tr><td class=left_rows height=33></td></tr>\n";
-    echo "        <tr><td class=left_rows_headings height=18 valign=middle>Offices</td></tr>\n";
-    echo "        <tr><td class=left_rows height=18 align=left valign=middle><img src='../images/icons/brick.png' alt='Office Summary' />&nbsp;&nbsp; <a class=admin_headings href='officeadmin.php'>Office Summary</a></td></tr>\n";
-    echo "        <tr><td class=left_rows height=18 align=left valign=middle><img src='../images/icons/brick_add.png' alt='Create New Office' />&nbsp;&nbsp; <a class=admin_headings href='officecreate.php'>Create New Office</a></td></tr>\n";
-    echo "        <tr><td class=left_rows height=33></td></tr>\n";
-    echo "        <tr><td class=left_rows_headings height=18 valign=middle>Groups</td></tr>\n";
-    echo "        <tr><td class=left_rows height=18 align=left valign=middle><img src='../images/icons/group.png' alt='Group Summary' />&nbsp;&nbsp; <a class=admin_headings href='groupadmin.php'>Group Summary</a></td></tr>\n";
-    echo "        <tr><td class=left_rows height=18 align=left valign=middle><img src='../images/icons/group_add.png' alt='Create New Group' />&nbsp;&nbsp; <a class=admin_headings href='groupcreate.php'>Create New Group</a></td></tr>\n";
-    echo "        <tr><td class=left_rows height=33></td></tr>\n";
-    echo "        <tr><td class=left_rows_headings height=18 valign=middle colspan=2>In/Out Status</td></tr>\n";
-    echo "        <tr><td class=left_rows height=18 align=left valign=middle><img src='../images/icons/application.png' alt='Status Summary' /> &nbsp;&nbsp;<a class=admin_headings href='statusadmin.php'>Status Summary</a></td></tr>\n";
-    echo "        <tr><td class=left_rows height=18 align=left valign=middle><img src='../images/icons/application_add.png' alt='Create Status' />&nbsp;&nbsp; <a class=admin_headings href='statuscreate.php'>Create Status</a></td></tr>\n";
-    echo "        <tr><td class=left_rows height=33></td></tr>\n";
-    echo "        <tr><td class=left_rows_headings height=18 valign=middle colspan=2>Miscellaneous</td></tr>\n";
-    echo "        <tr><td class=left_rows height=18 align=left valign=middle><img src='../images/icons/clock.png' alt='Modify Time' /> &nbsp;&nbsp;<a class=admin_headings href='timeadmin.php'>Modify Time</a></td></tr>\n";
-    echo "        <tr><td class=current_left_rows_indent height=18 align=left valign=middle><img src='../images/icons/arrow_right.png' alt='Add Time' /> &nbsp;&nbsp;<a class=admin_headings href=\"timeadd.php?username=$get_user\">Add Time</a></td></tr>\n";
-    echo "        <tr><td class=left_rows_indent height=18 align=left valign=middle><img src='../images/icons/arrow_right.png' alt='Edit Time' /> &nbsp;&nbsp;<a class=admin_headings href=\"timeedit.php?username=$get_user\">Edit Time</a></td></tr>\n";
-    echo "        <tr><td class=left_rows_indent height=18 align=left valign=middle><img src='../images/icons/arrow_right.png' alt='Delete Time' /> &nbsp;&nbsp;<a class=admin_headings href=\"timedelete.php?username=$get_user\">Delete Time</a></td></tr>\n";
-    echo "        <tr><td class=left_rows_border_top height=18 align=left valign=middle><img src='../images/icons/application_edit.png' alt='Edit System Settings' /> &nbsp;&nbsp;<a class=admin_headings href='sysedit.php'>Edit System Settings</a></td></tr>\n";
-    echo "        <tr><td class=left_rows height=18 align=left valign=middle><img src='../images/icons/database_go.png' alt='Manage Database' />&nbsp;&nbsp;&nbsp;<a class=admin_headings href='database_management.php'>Manage Database</a></td></tr>\n";
-    echo "      </table></td>\n";
+
 
 */
     $get_user = addslashes($get_user);
@@ -129,17 +100,46 @@ if ($request == 'GET') { // Display employee add time interface
     echo "          <td valign=top>\n";
     echo "            <br />\n";
 	*/
+	
+	
+
+	echo '<div class="row">
+        <div class="col-md-6">
+          <div class="box box-info"> ';
+    echo '<div class="box-header with-border">
+	                 <h3 class="box-title">Add Time</h3>
+	               </div><div class="box-body">';
     echo "            <form name='form' action='$self' method='post' onsubmit=\"return isDate()\">\n";
-    echo "            <table class='table'>\n";
-    echo "              <tr>\n";
-    echo "                <th class=rightside_heading nowrap halign=left colspan=3><img src='../images/icons/clock_add.png' />&nbsp;&nbsp;&nbsp;Add Time </th>\n";
-    echo "              </tr>\n";
-    echo "              <tr><td height=15></td></tr>\n";
     echo "                <input type='hidden' name='date_format' value='$js_datefmt'>\n";
-    echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Username:</td><td align=left class=table_rows colspan=2 width=80% style='padding-left:20px;'> <input type='hidden' name='post_username' value=\"$username\">$username</td></tr>\n";
-    echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Display Name:</td><td align=left class=table_rows colspan=2 width=80% style='padding-left:20px;'> <input type='hidden' name='post_displayname' value=\"$displayname\">$displayname</td></tr>\n";
-    echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Date: ($tmp_datefmt)</td><td colspan=2 width=80% style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;'><input type='text' size='10' maxlength='10' name='post_date'>&nbsp;*&nbsp;&nbsp;&nbsp;<a href=\"#\" onclick=\"form.post_date.value='';cal.select(document.forms['form'].post_date,'post_date_anchor','$js_datefmt'); return false;\" name=\"post_date_anchor\" id=\"post_date_anchor\" style='font-size:11px;color:#27408b;'>Pick Date</a></td><tr>\n";
-    echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Time:</td><td colspan=2 width=80% style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;'> <input type='text' size='10' maxlength='$timefmt_size' name='post_time'>&nbsp;*&nbsp;&nbsp; <a style='text-decoration:none;font-size:11px;color:#27408b;'>($timefmt_24hr_text)</a></td></tr>\n";
+    echo '<div class="form-group"><label>Username:</label><div class="input-group">';
+    echo "               <input type='hidden' name='post_username' value=\"$username\">$username\n";
+    echo '</div></div>';
+    echo '<div class="form-group"><label>Display Name:</label><div class="input-group">';
+    echo "               <input type='hidden' name='post_displayname' value=\"$displayname\">$displayname\n";
+        echo '</div></div>';
+    echo '<div class="form-group"><label>Date: ('.$tmp_datefmt.')</label><div class="input-group">';
+    echo "              <input class='form-control' type='text' size='12' maxlength='12' id='datepicker' name='post_date'>&nbsp;*&nbsp;&nbsp;&nbsp;\n";
+        echo '</div></div>';
+
+ 
+echo'    <div class="bootstrap-timepicker">
+    	                   <div class="form-group">
+    	                     <label>Time: ('.$timefmt_24hr_text.')</label>';
+
+echo'    	                     <div class="input-group">
+    	                       <input type="text" size="10" maxlength="10" class="form-control timepicker" name="post_time">';
+echo'    	                       <div class="input-group-addon">
+    	                         <i class="fa fa-clock-o"></i>
+    	                       </div>
+    	                     </div>
+    	                     <!-- /.input group -->
+    	                   </div>
+    	                   <!-- /.form group -->
+    	                 </div>
+    	               ';
+
+
+//    echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Time:</td><td colspan=2 width=80% style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;'> <div class='bootstrap-timepicker'><input id='timepicker1' type='text' class='form-control bootstrap-timepicker timepicker' size='10'  name='post_time'><i class='icon-time'></i>&nbsp;*&nbsp;&nbsp; <a style='text-decoration:none;font-size:11px;color:#27408b;'>($timefmt_24hr_text)</a></div></td></tr>\n";
     echo "                <input type='hidden' name='get_user' value=\"$get_user\">\n";
     echo "                <input type='hidden' name='timefmt_24hr' value=\"$timefmt_24hr\">\n";
     echo "                <input type='hidden' name='timefmt_24hr_text' value=\"$timefmt_24hr_text\">\n";
@@ -149,28 +149,40 @@ if ($request == 'GET') { // Display employee add time interface
 
     $query2 = "select * from ".$db_prefix."punchlist order by punchitems asc";
     $result2 = mysql_query($query2);
-
-    echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Status:</td><td colspan=2 width=80% style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;'> <select name='post_statusname'>\n";
-    echo "                        <option value ='1'>Choose One</option>\n";
+    echo '<div class="form-group"><label>Status:</label>';
+    echo "             <select class='form-control select2' name='post_statusname'>\n";
+    echo "                      <option value ='1'>Choose One</option>\n";
 
     while ($row2=mysql_fetch_array($result2)) {
         echo "                        <option>".$row2['punchitems']."</option>\n";
     }
-    echo "                      </select>&nbsp;*</td></tr>\n";
+    echo "                      </select>&nbsp;*\n";
+    echo '</div>';
     mysql_free_result($result2);
-
-    echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Notes:</td><td align=left colspan=2 width=80% style='padding-left:20px;'><input type='text' size='25' maxlength='250' name='post_notes'></td></tr>\n";
+    echo '<div class="form-group"><label>Notes:</label><div class="input-group">';
+    echo "              <input type='text' size='25' maxlength='250' name='post_notes'>\n";
+            echo '</div></div>';
     if ($require_time_admin_edit_reason == "yes") {
-        echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Reason For Addition:</td><td colspan=2 width=80% style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;'><input type='text' size='25' maxlength='250' name='post_why'>&nbsp;*</td></tr>\n";
+	    echo '<div class="form-group"><label>Reason For Addition:</label><div class="input-group">';
+        echo "              <input type='text' size='25' maxlength='250' name='post_why'>&nbsp;*\n";
+	echo '</div></div>';
     } else if ($require_time_admin_edit_reason == "no") {
-        echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Reason For Addition:</td><td colspan=2 width=80% style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;'><input type='text' size='25' maxlength='250' name='post_why'> </td></tr>\n";
+	    echo '<div class="form-group"><label>Reason For Addition:</label><div class="input-group">';
+        echo "     <input type='text' size='25' maxlength='250' name='post_why'>\n";
+	echo '</div></div>';
     }
-    echo "              <tr><td class=table_rows align=right colspan=3 style='color:red;font-family:Tahoma;font-size:10px;'>*&nbsp;required&nbsp;</td></tr>\n";
-    echo "            </table>\n";
-    echo "            <div style=\"position:absolute;visibility:hidden;background-color:#ffffff;layer-background-color:#ffffff;\" id=\"mydiv\" height=200>&nbsp;</div>\n";
-    echo "            <table align=center width=60% border=0 cellpadding=0 cellspacing=3>\n";
-    echo "              <tr><td height=40>&nbsp;</td></tr>\n";
-    echo "              <tr><td width=30><input type='image' name='submit' value='Add Time' align='middle' src='../images/buttons/next_button.png'></td><td><a href='timeadmin.php'><img src='../images/buttons/cancel_button.png' border='0'></td></tr></table></form>\n";
+    echo "              *&nbsp;required&nbsp;\n";
+    echo "            \n";
+
+    echo "            \n";
+    echo "              \n";
+    echo '<div class="box-footer">
+                <button type="submit" name="submit" value="Add Time" class="btn btn-info">Add time</button>
+                <button type="submit" name="cancel" class="btn btn-default pull-right">Cancel</button>   
+              </div></form>';
+
+    echo '</div></div></div></div>';
+    include '../theme/templates/endmaincontent.inc';
     include '../footer.php';
 	include '../theme/templates/controlsidebar.inc'; 
 	include '../theme/templates/endmain.inc';
@@ -303,42 +315,10 @@ if ($request == 'GET') { // Display employee add time interface
     $post_username = stripslashes($post_username);
     $post_displayname = stripslashes($post_displayname);
 
-    echo "<table width=100% height=89% border=0 cellpadding=0 cellspacing=1>\n";
-    echo "  <tr valign=top>\n";
-    echo "    <td class=left_main width=180 align=left scope=col>\n";
-    echo "      <table class=hide width=100% border=0 cellpadding=1 cellspacing=0>\n";
-    echo "        <tr><td class=left_rows height=11></td></tr>\n";
-    echo "        <tr><td class=left_rows_headings height=18 valign=middle>Users</td></tr>\n";
-    echo "        <tr><td class=left_rows height=18 align=left valign=middle><img src='../images/icons/user.png' alt='User Summary' />&nbsp;&nbsp; <a class=admin_headings href='useradmin.php'>User Summary</a></td></tr>\n";
-    echo "        <tr><td class=left_rows height=18 align=left valign=middle><img src='../images/icons/user_add.png' alt='Create New User' />&nbsp;&nbsp; <a class=admin_headings href='usercreate.php'>Create New User</a></td></tr>\n";
-    echo "        <tr><td class=left_rows height=18 align=left valign=middle><img src='../images/icons/magnifier.png' alt='User Search' />&nbsp;&nbsp; <a class=admin_headings href='usersearch.php'>User Search</a></td></tr>\n";
-    echo "        <tr><td class=left_rows height=33></td></tr>\n";
-    echo "        <tr><td class=left_rows_headings height=18 valign=middle>Offices</td></tr>\n";
-    echo "        <tr><td class=left_rows height=18 align=left valign=middle><img src='../images/icons/brick.png' alt='Office Summary' />&nbsp;&nbsp; <a class=admin_headings href='officeadmin.php'>Office Summary</a></td></tr>\n";
-    echo "        <tr><td class=left_rows height=18 align=left valign=middle><img src='../images/icons/brick_add.png' alt='Create New Office' />&nbsp;&nbsp; <a class=admin_headings href='officecreate.php'>Create New Office</a></td></tr>\n";
-    echo "        <tr><td class=left_rows height=33></td></tr>\n";
-    echo "        <tr><td class=left_rows_headings height=18 valign=middle>Groups</td></tr>\n";
-    echo "        <tr><td class=left_rows height=18 align=left valign=middle><img src='../images/icons/group.png' alt='Group Summary' />&nbsp;&nbsp; <a class=admin_headings href='groupadmin.php'>Group Summary</a></td></tr>\n";
-    echo "        <tr><td class=left_rows height=18 align=left valign=middle><img src='../images/icons/group_add.png' alt='Create New Group' />&nbsp;&nbsp; <a class=admin_headings href='groupcreate.php'>Create New Group</a></td></tr>\n";
-    echo "        <tr><td class=left_rows height=33></td></tr>\n";
-    echo "        <tr><td class=left_rows_headings height=18 valign=middle colspan=2>In/Out Status</td></tr>\n";
-    echo "        <tr><td class=left_rows height=18 align=left valign=middle><img src='../images/icons/application.png' alt='Status Summary' /> &nbsp;&nbsp;<a class=admin_headings href='statusadmin.php'>Status Summary</a></td></tr>\n";
-    echo "        <tr><td class=left_rows height=18 align=left valign=middle><img src='../images/icons/application_add.png' alt='Create Status' />&nbsp;&nbsp; <a class=admin_headings href='statuscreate.php'>Create Status</a></td></tr>\n";
-    echo "        <tr><td class=left_rows height=33></td></tr>\n";
-    echo "        <tr><td class=left_rows_headings height=18 valign=middle colspan=2>Miscellaneous</td></tr>\n";
-    echo "        <tr><td class=left_rows height=18 align=left valign=middle><img src='../images/icons/clock.png' alt='Modify Time' /> &nbsp;&nbsp;<a class=admin_headings href='timeadmin.php'>Modify Time</a></td></tr>\n";
-    echo "        <tr><td class=current_left_rows_indent height=18 align=left valign=middle><img src='../images/icons/arrow_right.png' alt='Add Time' /> &nbsp;&nbsp;<a class=admin_headings href=\"timeadd.php?username=$get_user\">Add Time</a></td></tr>\n";
-    echo "        <tr><td class=left_rows_indent height=18 align=left valign=middle><img src='../images/icons/arrow_right.png' alt='Edit Time' /> &nbsp;&nbsp;<a class=admin_headings href=\"timeedit.php?username=$get_user\">Edit Time</a></td></tr>\n";
-    echo "        <tr><td class=left_rows_indent height=18 align=left valign=middle><img src='../images/icons/arrow_right.png' alt='Delete Time' /> &nbsp;&nbsp;<a class=admin_headings href=\"timedelete.php?username=$get_user\">Delete Time</a></td></tr>\n";
-    echo "        <tr><td class=left_rows_border_top height=18 align=left valign=middle><img src='../images/icons/application_edit.png' alt='Edit System Settings' /> &nbsp;&nbsp;<a class=admin_headings href='sysedit.php'>Edit System Settings</a></td></tr>\n";
-    echo "        <tr><td class=left_rows height=18 align=left valign=middle><img src='../images/icons/database_go.png' alt='Manage Database' />&nbsp;&nbsp;&nbsp;<a class=admin_headings href='database_management.php'>Manage Database</a></td></tr>\n";
-    echo "      </table></td>\n";
-    echo "    <td align=left class=right_main scope=col>\n";
-    echo "      <table width=100% height=100% border=0 cellpadding=10 cellspacing=1>\n";
-    echo "        <tr class=right_main_text>\n";
-    echo "          <td valign=top>\n";
-    echo "            <br />\n";
+    /*
 
+*/
+    
     if ((empty($post_date)) || (empty($post_time)) || ($post_statusname == '1') || (!eregi ("^([[:alnum:]]| |-|_|\.)+$", $post_statusname)) || (!eregi ("^([0-9]{1,2})[-,/,.]([0-9]{1,2})[-,/,.](([0-9]{2})|([0-9]{4}))$", $post_date))) {
         $evil_post = '1';
         if (empty($post_date)) {
@@ -457,7 +437,7 @@ if ($request == 'GET') { // Display employee add time interface
     if ((isset($evil_post)) || (isset($evil_date)) || (isset($evil_time)) || (isset($evil_why))) { // Display error message
         echo "            <br />\n";
         echo "            <form name='form' action='$self' method='post' onsubmit=\"return isDate()\">\n";
-        echo "            <table align=center class=table_border width=60% border=0 cellpadding=3 cellspacing=0>\n";
+        echo "            <table align=center class=table width=60% border=0 cellpadding=3 cellspacing=0>\n";
         echo "              <tr>\n";
         echo "                <th class=rightside_heading nowrap halign=left colspan=3><img src='../images/icons/clock_add.png' />&nbsp;&nbsp;&nbsp;Add Time </th>\n";
         echo "              </tr>\n";
@@ -502,6 +482,7 @@ if ($request == 'GET') { // Display employee add time interface
         echo "            <table align=center width=60% border=0 cellpadding=0 cellspacing=3>\n";
         echo "              <tr><td height=40>&nbsp;</td></tr>\n";
         echo "              <tr><td width=30><input type='image' name='submit' value='Add Time' align='middle' src='../images/buttons/next_button.png'></td><td><a href='timeadmin.php'><img src='../images/buttons/cancel_button.png' border='0'></td></tr></table></form>\n";
+	include '../theme/templates/endmaincontent.inc';
         include '../footer.php';
 		include '../theme/templates/controlsidebar.inc'; 
 		include '../theme/templates/endmain.inc';
@@ -532,12 +513,12 @@ if ($request == 'GET') { // Display employee add time interface
         while ($row=mysql_fetch_array($result)) {
             $info_table_timestamp = "".$row['timestamp']."";
             if ($timestamp == $info_table_timestamp) {
-                echo "            <table align=center class=table_border width=60% border=0 cellpadding=0 cellspacing=3>\n";
+                echo "            <table align=center class=table width=60% border=0 cellpadding=0 cellspacing=3>\n";
                 echo "              <tr>\n";
                 echo "                <td class=table_rows width=20 align=center><img src='../images/icons/cancel.png' /></td><td class=table_rows_red> Duplicate time exists for this user on this date. Time not added..</td></tr>\n";
                 echo "            </table>\n";
                 echo "            <br />\n";
-                echo "            <form name='form' action='$self' method='post' onsubmit=\"return isDate()\">\n";
+                echo "            <form name='form' class='form-control' action='$self' method='post' onsubmit=\"return isDate()\">\n";
                 echo "            <table align=center class=table_border width=60% border=0 cellpadding=3 cellspacing=0>\n";
                 echo "              <tr>\n";
                 echo "                <th class=rightside_heading nowrap halign=left colspan=3><img src='../images/icons/clock_add.png' />&nbsp;&nbsp;&nbsp;Add Time </th>\n";
@@ -578,6 +559,7 @@ if ($request == 'GET') { // Display employee add time interface
                 echo "            <table align=center width=60% border=0 cellpadding=0 cellspacing=3>\n";
                 echo "              <tr><td height=40>&nbsp;</td></tr>\n";
                 echo "              <tr><td width=30><input type='image' name='submit' value='Add Time' align='middle' src='../images/buttons/next_button.png'></td><td><a href='timeadmin.php'><img src='../images/buttons/cancel_button.png' border='0'></td></tr></table></form>\n";
+		include '../theme/templates/endmaincontent.inc';
                 include '../footer.php';
 				include '../theme/templates/controlsidebar.inc'; 
 				include '../theme/templates/endmain.inc';
@@ -640,13 +622,14 @@ if ($request == 'GET') { // Display employee add time interface
         $post_displayname = stripslashes($post_displayname);
         $post_date = date($datefmt, $timestamp + $tzo);
 
-        echo "            <table align=center class=table_border width=60% border=0 cellpadding=0 cellspacing=3>\n";
-        echo "              <tr>\n";
-        echo "              <td class=table_rows width=20 align=center><img src='../images/icons/accept.png' /></td><td class=table_rows_green> &nbsp;Time added successfully.</td></tr>\n";
-        echo "            </table>\n";
-        echo "            <br />\n";
+	echo '<div class="row">
+    <div class="col-md-8">
+      <div class="box box-info"> ';
+echo '<div class="box-header with-border">
+                 <h3 class="box-title"><i class="fa fa-clock-o"></i> Time added successfully</h3>
+               </div><div class="box-body">';
         echo "            <form name='form' action='$self' method='post' onsubmit=\"return isDate();\">\n";
-        echo "            <table align=center class=table_border width=60% border=0 cellpadding=3 cellspacing=0>\n";
+        echo "            <table align=center class='table'>\n";
         echo "              <tr>\n";
         echo "                <th class=rightside_heading nowrap halign=left colspan=3><img src='../images/icons/clock_add.png' />&nbsp;&nbsp;&nbsp;Add Time </th>\n";
         echo "              </tr>\n";
@@ -662,7 +645,9 @@ if ($request == 'GET') { // Display employee add time interface
         echo "            </table>\n";
         echo "            <table align=center width=60% border=0 cellpadding=0 cellspacing=3>\n";
         echo "              <tr><td height=20 align=left>&nbsp;</td></tr>\n";
-        echo "              <tr><td><a href='timeadmin.php'><img src='../images/buttons/done_button.png' border='0'></td></tr></table></td></tr>\n";
+        echo "              <tr><td><a href='timeadmin.php'><img src='../images/buttons/done_button.png' border='0'></td></tr></table>\n";
+	echo'</div></div></div></div>';
+	include '../theme/templates/endmaincontent.inc';
         include '../footer.php';
 		include '../theme/templates/controlsidebar.inc'; 
 		include '../theme/templates/endmain.inc';

@@ -130,26 +130,31 @@ if ($request == 'GET') { // Display employee select interface for deleting an em
     echo "          <td valign=top>\n";
     echo "            <br />\n";
 	*/
+	
+	echo '<div class="row">
+	    <div class="col-md-6">
+	      <div class="box box-info"> ';
+	echo '<div class="box-header with-border">
+	                 <h3 class="box-title"><i class="fa fa-clock-o"></i> Delete Time</h3>
+	               </div><div class="box-body">';
+		       
     echo "            <form name='form' action='$self' method='post' onsubmit=\"return isDate()\">\n";
-    echo "            <table class='table'>\n";
-    echo "              <tr>\n";
-    echo "                <th class=rightside_heading nowrap halign=left colspan=3><img src='../images/icons/clock_delete.png' />&nbsp;&nbsp;&nbsp;Delete Time </th>\n";
-    echo "              </tr>\n";
-    echo "              <tr><td height=15></td></tr>\n";
     echo "                <input type='hidden' name='date_format' value='$js_datefmt'>\n";
-    echo "              <tr><td class=table_rows height=25 style='padding-left:32px;' width=20% nowrap>Username:</td><td align=left class=table_rows width=80% style='padding-left:20px;'> <input type='hidden' name='post_username' value=\"$username\">$username</td></tr>\n";
-    echo "              <tr><td class=table_rows height=25 style='padding-left:32px;' width=20% nowrap>Display Name:</td><td align=left class=table_rows width=80% style='padding-left:20px;'> <input type='hidden' name='post_displayname' value=\"$displayname\">$displayname</td></tr>\n";
-    echo "              <tr><td class=table_rows height=25 style='padding-left:32px;' width=20% nowrap>Date: ($tmp_datefmt)</td><td style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;' width=80% > <input type='text' size='10' maxlength='10' name='post_date' style='color:#27408b'>&nbsp;*&nbsp;&nbsp; <a href=\"#\" onclick=\"form.post_date.value='';cal.select(document.forms['form'].post_date,'post_date_anchor','$js_datefmt'); return false;\" name=\"post_date_anchor\" id=\"post_date_anchor\" style='font-size:11px;color:#27408b;'>Pick Date</a></td><tr>\n";
+    echo "               <div class='form-group'><label>Username: $username</label><input type='hidden' name='post_username' value=\"$username\"></div>\n";
+    echo "              <div class='form-group'><label>Display Name: $displayname</label><input type='hidden' name='post_displayname' value=\"$displayname\"></div>\n";
+    echo "              <div class='form-group'><label>Date: ($tmp_datefmt)</label><div class='input-group date'><i class='fa fa-calendar'></i> <input type='text' id='datepicker' name='post_date'>&nbsp;*&nbsp;&nbsp;</div></div> \n";
     echo "                <input type='hidden' name='get_user' value=\"$get_user\">\n";
     echo "                <input type='hidden' name='timefmt_24hr' value=\"$timefmt_24hr\">\n";
     echo "                <input type='hidden' name='timefmt_24hr_text' value=\"$timefmt_24hr_text\">\n";
     echo "                <input type='hidden' name='timefmt_size' value=\"$timefmt_size\">\n";
-    echo "              <tr><td class=table_rows align=right colspan=3 style='color:red;font-family:Tahoma;font-size:10px;'>*&nbsp;required&nbsp;</td></tr>\n";
-    echo "            </table>\n";
-    echo "            <div style=\"position:absolute;visibility:hidden;background-color:#ffffff;layer-background-color:#ffffff;\" id=\"mydiv\" height=200>&nbsp;</div>\n";
-    echo "            <table align=center width=60% border=0 cellpadding=0 cellspacing=3>\n";
-    echo "              <tr><td height=40>&nbsp;</td></tr>\n";
-    echo "              <tr><td width=30><input type='image' name='submit' value='Delete Time' align='middle' src='../images/buttons/next_button.png'></td><td><a href='timeadmin.php'><img src='../images/buttons/cancel_button.png' border='0'></td></tr></table></form>\n";
+    echo "                <div class='form-group'><label class='text-muted'>*&nbsp;required&nbsp;</label></div>\n";
+    echo '<div class="box-footer">
+                <button type="submit" name="submit" value="Delete Time" class="btn btn-danger">Delete Time</button>
+                <button type="submit" name="cancel" class="btn btn-default pull-right">Cancel</button>   
+              </div></form>';
+
+    echo '</div></div></div></div>';
+        include '../theme/templates/endmaincontent.inc';
     include '../footer.php';
 	include '../theme/templates/controlsidebar.inc'; 
 	include '../theme/templates/endmain.inc';
@@ -226,6 +231,7 @@ if ($request == 'GET') { // Display employee select interface for deleting an em
 
     // end post validation //
 
+    /*
     echo "<table width=100% height=89% border=0 cellpadding=0 cellspacing=1>\n";
     echo "  <tr valign=top>\n";
     echo "    <td class=left_main width=180 align=left scope=col>\n";
@@ -261,12 +267,12 @@ if ($request == 'GET') { // Display employee select interface for deleting an em
     echo "        <tr class=right_main_text>\n";
     echo "          <td valign=top>\n";
     echo "            <br />\n";
-
+*/
     // begin post validation //
 
     if (empty($post_date)) {
         $evil_post = '1';
-        echo "            <table align=center class=table_border width=60% border=0 cellpadding=0 cellspacing=3>\n";
+        echo "            <table align=center class=table width=60% border=0 cellpadding=0 cellspacing=3>\n";
         echo "              <tr>\n";
         echo "                <td class=table_rows width=20 align=center><img src='../images/icons/cancel.png' /></td><td class=table_rows_red> A valid Date is required.</td></tr>\n";
         echo "            </table>\n";
@@ -322,6 +328,7 @@ if ($request == 'GET') { // Display employee select interface for deleting an em
         echo "            <table align=center width=60% border=0 cellpadding=0 cellspacing=3>\n";
         echo "              <tr><td height=40>&nbsp;</td></tr>\n";
         echo "              <tr><td width=30><input type='image' name='submit' value='Delete Time' align='middle' src='../images/buttons/next_button.png'></td><td><a href='timeadmin.php'><img src='../images/buttons/cancel_button.png' border='0'></td></tr></table></form>\n";
+	        include '../theme/templates/endmaincontent.inc';
         include '../footer.php';
 		include '../theme/templates/controlsidebar.inc'; 
 		include '../theme/templates/endmain.inc';
@@ -330,7 +337,7 @@ if ($request == 'GET') { // Display employee select interface for deleting an em
         // end post validation //
     } else { // Display delete employee's time interface
         if (isset($_POST['delete_time_checkbox']) && (((!empty($_POST['post_why'])) && ($require_time_admin_edit_reason == "yes")) || ($require_time_admin_edit_reason == "no"))) { // Display successful time delete
-            echo "            <table align=center class=table_border width=60% border=0 cellpadding=0 cellspacing=3>\n";
+            echo "            <table align=center class=table width=60% border=0 cellpadding=0 cellspacing=3>\n";
             echo "              <tr>\n";
             echo "              <td class=table_rows width=20 align=center><img src='../images/icons/accept.png' /></td><td class=table_rows_green> &nbsp;Time deleted successfully.</td></tr>\n";
             echo "            </table>\n";
@@ -490,7 +497,8 @@ if ($request == 'GET') { // Display employee select interface for deleting an em
             echo "            </table>\n";
             echo "            <table align=center width=60% border=0 cellpadding=0 cellspacing=3>\n";
             echo "              <tr><td height=20 align=left>&nbsp;</td></tr>\n";
-            echo "              <tr><td><a href='timeadmin.php'><img src='../images/buttons/done_button.png' border='0'></td></tr></table></td></tr>\n";
+            echo "              <tr><td><a href='timeadmin.php'><img src='../images/buttons/done_button.png' border='0'></td></tr></table>\n";
+	    include '../theme/templates/endmaincontent.inc';
             include '../footer.php';
 			include '../theme/templates/controlsidebar.inc'; 
 			include '../theme/templates/endmain.inc';
@@ -538,19 +546,22 @@ if ($request == 'GET') { // Display employee select interface for deleting an em
             $num_rows = mysql_num_rows($result);
 
             $post_username = stripslashes($post_username);
-
-            echo "            <table align=center class=table_border width=60% border=0 cellpadding=0 cellspacing=3>\n";
-            echo "              <tr>\n";
+	    echo '<div class="box box-default">
+        <div class="box-header with-border">
+          <h3 class="box-title"><i class="fa fa-tag"></i> Please choose a time or times to delete</h3>
+	  <small>A reason for the deletion is required.</small>
+        </div>
+        <div class="box-body">';
+            echo " \n";
+            echo "  <tr>\n";
             if (empty($delete_time_checkbox)) {
-                echo "                <td class=table_rows width=20 align=center><img src='../images/icons/cancel.png' /></td><td class=table_rows_red> Please choose a time or times to delete.</td></tr>\n";
+                echo "                 Please choose a time or times to delete.\n";
             }
             if (empty($post_why) && ($require_time_admin_edit_reason == "yes")) {
-                echo "                <td class=table_rows width=20 align=center><img src='../images/icons/cancel.png' /></td><td class=table_rows_red> A reason for the deletion is required.</td></tr>\n";
+                echo "                 A reason for the deletion is required.\n";
             }
-            echo "            </table>\n";
-            echo "            <br />\n";
             echo "            <form name='form' action='$self' method='post'>\n";
-            echo "            <table align=center class=table_border width=60% border=0 cellpadding=3 cellspacing=0>\n";
+            echo "            <table class='table' align=center class=table_border width=60% border=0 cellpadding=3 cellspacing=0>\n";
             echo "              <tr>\n";
             echo "                <th class=rightside_heading nowrap halign=left colspan=4><img src='../images/icons/clock_delete.png' />&nbsp;&nbsp;&nbsp;Delete Time for $post_username on $post_date</th></tr>\n";
             echo "              <tr><td height=15></td></tr>\n";
@@ -596,6 +607,7 @@ if ($request == 'GET') { // Display employee select interface for deleting an em
             echo "            <table align=center width=60% border=0 cellpadding=0 cellspacing=3>\n";
             echo "              <tr><td height=40>&nbsp;</td></tr>\n";
             echo "              <tr><td width=30><input type='image' name='submit' value='Delete Time' align='middle' src='../images/buttons/next_button.png'></td><td><a href='timeadmin.php'><img src='../images/buttons/cancel_button.png' border='0'></td></tr></table></form>\n";
+	    include '../theme/templates/endmaincontent.inc';
             include '../footer.php';
 			include '../theme/templates/controlsidebar.inc'; 
 			include '../theme/templates/endmain.inc';
@@ -662,6 +674,7 @@ if ($request == 'GET') { // Display employee select interface for deleting an em
             echo "            <table align=center width=60% border=0 cellpadding=0 cellspacing=3>\n";
             echo "              <tr><td height=40>&nbsp;</td></tr>\n";
             echo "              <tr><td width=30><input type='image' name='submit' value='Delete Time' align='middle' src='../images/buttons/next_button.png'></td><td><a href='timeadmin.php'><img src='../images/buttons/cancel_button.png' border='0'></td></tr></table></form>\n";
+	    include '../theme/templates/endmaincontent.inc';
             include '../footer.php';
 			include '../theme/templates/controlsidebar.inc'; 
 			include '../theme/templates/endmain.inc';
@@ -669,13 +682,14 @@ if ($request == 'GET') { // Display employee select interface for deleting an em
             exit;
         }
 
+    echo '<div class="box box-default">
+    <div class="box-header with-border">
+      <h3 class="box-title"><i class="fa fa-tag"></i> Please choose a time or times to delete</h3>
+  <small>A reason for the deletion is required.</small>
+    </div>
+    <div class="box-body">';
         echo "            <form name='form' action='$self' method='post'>\n";
-        echo "            <table align=center class=table_border width=60% border=0 cellpadding=0 cellspacing=3>\n";
-        echo "              <tr>\n";
-        echo "                <td class=table_rows width=20 align=center><img src='../images/icons/time.png' /></td><td class=table_rows style='color:#3366CC;'> Please choose a time or times to delete.</td></tr>\n";
-        echo "            </table>\n";
-        echo "            <br />\n";
-        echo "            <table align=center class=table_border width=60% border=0 cellpadding=3 cellspacing=0>\n";
+        echo "            <table align=center class='table'>\n";
         echo "              <tr>\n";
 
         // configure date to display correctly //
@@ -728,7 +742,8 @@ if ($request == 'GET') { // Display employee select interface for deleting an em
             echo "            <input type='hidden' name='final_num_rows' value=\"$num_rows\">\n";
             echo "            <table align=center width=60% border=0 cellpadding=0 cellspacing=3>\n";
             echo "              <tr><td height=40>&nbsp;</td></tr>\n";
-            echo "              <tr><td width=30><input type='image' name='submit' value='Delete Time' align='middle' src='../images/buttons/next_button.png'></td><td><a href='timeadmin.php'><img src='../images/buttons/cancel_button.png' border='0'></td></tr></table></form>\n";
+            echo "              <tr><td width=30><input type='image' name='submit' value='Delete Time' align='middle' src='../images/buttons/next_button.png'></td><td><a href='timeadmin.php'><img src='../images/buttons/cancel_button.png' border='0'></td></tr></table></form></div></div></div>\n";
+	    include '../theme/templates/endmaincontent.inc';
             include '../footer.php';
 			include '../theme/templates/controlsidebar.inc'; 
 			include '../theme/templates/endmain.inc';

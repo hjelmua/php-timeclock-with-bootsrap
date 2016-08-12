@@ -227,6 +227,7 @@ echo "	     </form>\n";
 echo "</div></div></div></div>";
       
 */
+include '../theme/templates/endmaincontent.inc';
 include '../footer.php';
 include '../theme/templates/controlsidebar.inc'; 
 include '../theme/templates/endmain.inc';

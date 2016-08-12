@@ -82,7 +82,7 @@ if ($use_client_tz == "yes") {
 if (!isset($_COOKIE['tzoffset'])) {
 include '../tzoffset.php';
 echo "<meta http-equiv='refresh' content='0;URL=index.php'>\n";}}
-echo "<link rel='stylesheet' type='text/css' media='screen' href='../css/default.css' />\n";
+include '../theme/templates/adminheader.inc';
 echo "<link rel='stylesheet' type='text/css' media='print' href='../css/print.css' />\n";
 // echo "<script type=\"text/javascript\" src=\"../scripts/CalendarPopup.js\"></script>\n";
 // echo "<script language=\"javascript\">document.write(getCalendarStyles());</script>\n";
@@ -99,6 +99,8 @@ $tzo = $tzo * 60;}
   $tzo = date('Z');
 } else {
   $tzo = "1";}
-//echo "<body>\n";
-echo "<body onload='office_names();'>\n";
+
+echo "<body class='hold-transition skin-blue-light sidebar-mini' onload='office_names();'>\n";
+echo '<div id="wrapper">
+  ';
 ?>
