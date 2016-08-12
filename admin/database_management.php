@@ -29,6 +29,7 @@ session_start();
 include '../config.inc.php';
 include 'header.php';
 include 'topmain.php';
+include 'leftmain.php';
 
 $self = $_SERVER['PHP_SELF'];
 $request = $_SERVER['REQUEST_METHOD'];
@@ -38,8 +39,7 @@ if (! isset($_SESSION['valid_user'])) {
     write_admin_interface($title);
     echo "
             <!-- Display User Is Not Logged In -->
-            <td align=left class=right_main scope=col>
-               <table width=100% border=0 cellpadding=7 cellspacing=1>
+               <table class='table'>
                   <tr class=right_main_text>
                      <td height=10 align=center valign=top scope=row class=title_underline>
                         PHP Timeclock Administration
@@ -65,9 +65,7 @@ if (! isset($_SESSION['valid_user'])) {
                         <br />
                      </td>
                   </tr>
-               </table>
-            </td>
-         </tr>";
+               </table>";
     include "../footer.php";
     exit;
 }
@@ -77,161 +75,22 @@ if (! isset($_SESSION['valid_user'])) {
  * @param $title adds the bookmark title.
  */
 function write_admin_interface($title) {
-    echo "
-      <title>
-         $title - Manage Database
-      </title>
-      <!-- Administration Interface -->
-      <table width=100% height=89% border=0 cellpadding=0 cellspacing=1>
-         <tr valign=top>
-            <td class=left_main width=180 align=left scope=col>
-               <table class=hide width=100% border=0 cellpadding=1 cellspacing=0>
-                  <tr>
-                     <td class=left_rows height=11> </td>
-                  </tr>
-                  <tr>
-                     <td class=left_rows_headings height=18 valign=middle>
-                        Users
-                     </td>
-                  </tr>
-                  <tr>
-                     <td class=left_rows height=18 align=left valign=middle>
-                        <img src='../images/icons/user.png' alt='User Summary' />&nbsp;&nbsp;
-                        <a class=admin_headings href='useradmin.php'>
-                           User Summary
-                        </a>
-                     </td>
-                  </tr>
-                  <tr>
-                     <td class=left_rows height=18 align=left valign=middle>
-                        <img src='../images/icons/user_add.png' alt='Create New User' />&nbsp;&nbsp;
-                        <a class=admin_headings href='usercreate.php'>
-                           Create New User
-                        </a>
-                     </td>
-                  </tr>
-                  <tr>
-                     <td class=left_rows height=18 align=left valign=middle>
-                        <img src='../images/icons/magnifier.png' alt='User Search' />&nbsp;&nbsp;
-                        <a class=admin_headings href='usersearch.php'>
-                           User Search
-                        </a>
-                     </td>
-                  </tr>
-                  <tr>
-                     <td class=left_rows height=33 > </td>
-                  </tr>
-                  <tr>
-                     <td class=left_rows_headings height=18 valign=middle>
-                        Offices
-                     </td>
-                  </tr>
-                  <tr>
-                     <td class=left_rows height=18 align=left valign=middle>
-                        <img src='../images/icons/brick.png' alt='Office Summary' />&nbsp;&nbsp;
-                        <a class=admin_headings href='officeadmin.php'>
-                           Office Summary
-                        </a>
-                     </td>
-                  </tr>
-                  <tr>
-                     <td class=left_rows height=18 align=left valign=middle>
-                        <img src='../images/icons/brick_add.png' alt='Create New Office' />&nbsp;&nbsp;
-                        <a class=admin_headings href='officecreate.php'>
-                           Create New Office
-                        </a>
-                     </td>
-                  </tr>
-                  <tr>
-                     <td class=left_rows height=33> </td>
-                  </tr>
-                  <tr>
-                     <td class=left_rows_headings height=18 valign=middle>
-                        Groups
-                     </td>
-                  </tr>
-                  <tr>
-                     <td class=left_rows height=18 align=left valign=middle>
-                        <img src='../images/icons/group.png' alt='Group Summary' />&nbsp;&nbsp;
-                        <a class=admin_headings href='groupadmin.php'>
-                           Group Summary
-                        </a>
-                     </td>
-                  </tr>
-                  <tr>
-                     <td class=left_rows height=18 align=left valign=middle>
-                        <img src='../images/icons/group_add.png' alt='Create New Group' />&nbsp;&nbsp;
-                        <a class=admin_headings href='groupcreate.php'>
-                           Create New Group
-                        </a>
-                     </td>
-                  </tr>
-                  <tr>
-                     <td class=left_rows height=33> </td>
-                  </tr>
-                  <tr>
-                     <td class=left_rows_headings height=18 valign=middle colspan=2>
-                        In/Out Status
-                     </td>
-                  </tr>
-                  <tr>
-                     <td class=left_rows height=18 align=left valign=middle>
-                        <img src='../images/icons/application.png' alt='Status Summary' />&nbsp;&nbsp;
-                        <a class=admin_headings href='statusadmin.php'>
-                           Status Summary
-                        </a>
-                     </td>
-                  </tr>
-                  <tr>
-                     <td class=left_rows height=18 align=left valign=middle>
-                        <img src='../images/icons/application_add.png' alt='Create Status' />&nbsp;&nbsp;
-                        <a class=admin_headings href='statuscreate.php'>
-                           Create Status
-                        </a>
-                     </td>
-                  </tr>
-                  <tr>
-                     <td class=left_rows height=33> </td>
-                  </tr>
-                  <tr>
-                     <td class=left_rows_headings height=18 valign=middle colspan=2>
-                        Miscellaneous
-                     </td>
-                  </tr>
-                  <tr>
-                     <td class=left_rows height=18 align=left valign=middle>
-                        <img src='../images/icons/clock.png' alt='Modify Time' />&nbsp;&nbsp;
-                        <a class=admin_headings href='timeadmin.php'>
-                           Modify Time
-                        </a>
-                     </td>
-                  </tr>
-                  <tr>
-                     <td class=left_rows height=18 align=left valign=middle>
-                        <img src='../images/icons/application_edit.png' alt='Edit System Settings' />&nbsp;&nbsp;
-                        <a class=admin_headings href='sysedit.php'>
-                           Edit System Settings
-                        </a>
-                    </td>
-                  </tr>
-                  <tr>
-                     <td class=current_left_rows height=18 align=left valign=middle>
-                        <img src='../images/icons/database_go.png' alt='Manage Database' />&nbsp;&nbsp;&nbsp;
-                        <a class=admin_headings href='database_management.php'>
-                           Manage Database
-                        </a>
-                     </td>
-                  </tr>
-               </table>
-            </td>";
+
+	echo '<div class="row">
+	    <div class="col-md-8">
+	      <div class="box box-info"> ';
+	echo '<div class="box-header with-border">
+	    <h3 class="box-title"><i class="fa fa-user-plus"></i> '.$title.' - Manage Database</h3>
+	  </div><div class="box-body table-responsive">';
+	          
+	
+
 }
 
 // Create Database Management Interface
 write_admin_interface($title);
 echo "
-            <!-- Database Management Interface -->
-            <td align=left class=right_main scope=col>
-               <table width=90% align=center height=40 border=0 cellpadding=0 cellspacing=0>
+            <table class='table table-hover'>
                   <tr>
                      <th class=table_heading_no_color nowrap width=100% align=left>
                         Manage Database
@@ -264,9 +123,13 @@ echo "
                      </td>
                   </tr>
                </table>
-            </td>
-         </tr>";
+";
+echo "          </div></div></div></div>\n";
 // Add HTML clean up and footer
+include '../theme/templates/endmaincontent.inc';
 include '../footer.php';
+include '../theme/templates/controlsidebar.inc'; 
+include '../theme/templates/endmain.inc';
+include '../theme/templates/adminfooterscripts.inc';
 exit;
 ?>

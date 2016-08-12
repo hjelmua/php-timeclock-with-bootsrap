@@ -32,6 +32,7 @@ $request = $_SERVER['REQUEST_METHOD'];
 include '../config.inc.php';
 include 'header.php';
 include 'topmain.php';
+include 'leftmain.php';
 
 
 // Ensure that the curent user has system access
@@ -39,7 +40,6 @@ if (! isset($_SESSION['valid_user'])) {
     write_admin_interface($title);
     echo "
             <!-- Display User Is Not Logged In -->
-            <td align=left class=right_main scope=col>
                <table width=100% border=0 cellpadding=7 cellspacing=1>
                   <tr class=right_main_text>
                      <td height=10 align=center valign=top scope=row class=title_underline>
@@ -66,9 +66,7 @@ if (! isset($_SESSION['valid_user'])) {
                         <br />
                      </td>
                   </tr>
-               </table>
-            </td>
-         </tr>";
+               </table>";
     include "../footer.php";
     exit;
 }
@@ -78,153 +76,12 @@ if (! isset($_SESSION['valid_user'])) {
  * @param $title is the title of the website bookmarks.
  */
 function write_admin_interface($title) {
-    echo "
-      <title>
-         $title - Restore Database
-      </title>
-      <!-- Administration Interface -->
-      <table width=100% height=89% border=0 cellpadding=0 cellspacing=1>
-         <tr valign=top>
-            <td class=left_main width=180 align=left scope=col>
-               <table class=hide width=100% border=0 cellpadding=1 cellspacing=0>
-                  <tr>
-                     <td class=left_rows height=11> </td>
-                  </tr>
-                  <tr>
-                     <td class=left_rows_headings height=18 valign=middle>
-                        Users
-                     </td>
-                  </tr>
-                  <tr>
-                     <td class=left_rows height=18 align=left valign=middle>
-                        <img src='../images/icons/user.png' alt='User Summary' />&nbsp;&nbsp;
-                        <a class=admin_headings href='useradmin.php'>
-                           User Summary
-                        </a>
-                     </td>
-                  </tr>
-                  <tr>
-                     <td class=left_rows height=18 align=left valign=middle>
-                        <img src='../images/icons/user_add.png' alt='Create New User' />&nbsp;&nbsp;
-                        <a class=admin_headings href='usercreate.php'>
-                           Create New User
-                        </a>
-                     </td>
-                  </tr>
-                  <tr>
-                     <td class=left_rows height=18 align=left valign=middle>
-                        <img src='../images/icons/magnifier.png' alt='User Search' />&nbsp;&nbsp;
-                        <a class=admin_headings href='usersearch.php'>
-                           User Search
-                        </a>
-                     </td>
-                  </tr>
-                  <tr>
-                     <td class=left_rows height=33 > </td>
-                  </tr>
-                  <tr>
-                     <td class=left_rows_headings height=18 valign=middle>
-                        Offices
-                     </td>
-                  </tr>
-                  <tr>
-                     <td class=left_rows height=18 align=left valign=middle>
-                        <img src='../images/icons/brick.png' alt='Office Summary' />&nbsp;&nbsp;
-                        <a class=admin_headings href='officeadmin.php'>
-                           Office Summary
-                        </a>
-                     </td>
-                  </tr>
-                  <tr>
-                     <td class=left_rows height=18 align=left valign=middle>
-                        <img src='../images/icons/brick_add.png' alt='Create New Office' />&nbsp;&nbsp;
-                        <a class=admin_headings href='officecreate.php'>
-                           Create New Office
-                        </a>
-                     </td>
-                  </tr>
-                  <tr>
-                     <td class=left_rows height=33> </td>
-                  </tr>
-                  <tr>
-                     <td class=left_rows_headings height=18 valign=middle>
-                        Groups
-                     </td>
-                  </tr>
-                  <tr>
-                     <td class=left_rows height=18 align=left valign=middle>
-                        <img src='../images/icons/group.png' alt='Group Summary' />&nbsp;&nbsp;
-                        <a class=admin_headings href='groupadmin.php'>
-                           Group Summary
-                        </a>
-                     </td>
-                  </tr>
-                  <tr>
-                     <td class=left_rows height=18 align=left valign=middle>
-                        <img src='../images/icons/group_add.png' alt='Create New Group' />&nbsp;&nbsp;
-                        <a class=admin_headings href='groupcreate.php'>
-                           Create New Group
-                        </a>
-                     </td>
-                  </tr>
-                  <tr>
-                     <td class=left_rows height=33> </td>
-                  </tr>
-                  <tr>
-                     <td class=left_rows_headings height=18 valign=middle colspan=2>
-                        In/Out Status
-                     </td>
-                  </tr>
-                  <tr>
-                     <td class=left_rows height=18 align=left valign=middle>
-                        <img src='../images/icons/application.png' alt='Status Summary' />&nbsp;&nbsp;
-                        <a class=admin_headings href='statusadmin.php'>
-                           Status Summary
-                        </a>
-                     </td>
-                  </tr>
-                  <tr>
-                     <td class=left_rows height=18 align=left valign=middle>
-                        <img src='../images/icons/application_add.png' alt='Create Status' />&nbsp;&nbsp;
-                        <a class=admin_headings href='statuscreate.php'>
-                           Create Status
-                        </a>
-                     </td>
-                  </tr>
-                  <tr>
-                     <td class=left_rows height=33> </td>
-                  </tr>
-                  <tr>
-                     <td class=left_rows_headings height=18 valign=middle colspan=2>
-                        Miscellaneous
-                     </td>
-                  </tr>
-                  <tr>
-                     <td class=left_rows height=18 align=left valign=middle>
-                        <img src='../images/icons/clock.png' alt='Modify Time' />&nbsp;&nbsp;
-                        <a class=admin_headings href='timeadmin.php'>
-                           Modify Time
-                        </a>
-                     </td>
-                  </tr>
-                  <tr>
-                     <td class=left_rows height=18 align=left valign=middle>
-                        <img src='../images/icons/application_edit.png' alt='Edit System Settings' />&nbsp;&nbsp;
-                        <a class=admin_headings href='sysedit.php'>
-                           Edit System Settings
-                        </a>
-                    </td>
-                  </tr>
-                  <tr>
-                     <td class=current_left_rows height=18 align=left valign=middle>
-                        <img src='../images/icons/database_go.png' alt='Manage Database' />&nbsp;&nbsp;&nbsp;
-                        <a class=admin_headings href='database_management.php'>
-                           Manage Database
-                        </a>
-                     </td>
-                  </tr>
-               </table>
-            </td>";
+	echo '<div class="row">
+	    <div class="col-md-10">
+	      <div class="box box-info"> ';
+	echo '<div class="box-header with-border">
+	    <h3 class="box-title"><i class="fa fa-clock-o"></i> '.$title.' - Restore Database</h3>
+	  </div><div class="box-body">';
 }
 
 /**
@@ -237,14 +94,14 @@ function validInput($backup_file) {
     if (! is_uploaded_file($backup_file['tmp_name'])) { // Ensure a backup file name was given
         echo "
             <!-- Backup Filename Missing Message -->
-            <td valign=top>
+            
                <table width=90% align=center height=40 border=0 cellpadding=0 cellspacing=0>
                   <tr>
                      <td class=table_rows_red>
                         No backup file was uploaded.
                      </td>
                   </tr>
-            </td>";
+            </td></table>";
         $is_valid_input = False;
     }
 
@@ -306,11 +163,11 @@ if ($request == 'POST') {
 if (($request == 'GET') || (! $is_valid_input)) { // Output Restore Backup Interface
     echo "
             <!-- Restore Interface -->
-            <td valign=top>";
+            ";
 
     if ($is_valid_input) { // Add table if no error message have been displayed
         echo "
-               <table width=90% align=center height=40 border=0 cellpadding=0 cellspacing=0>";
+               <table class='table'>";
     }
 
     echo "
@@ -320,7 +177,7 @@ if (($request == 'GET') || (! $is_valid_input)) { // Output Restore Backup Inter
                      </th>
                   </tr>
                </table>
-               <table class=table_border width=90% align=center border=0 cellpadding=0 cellspacing=0>
+               <table class=table>
                   <form name='form' enctype='multipart/form-data' action='$self' method='post'>
                      <tr>
                         <td height=11> </td>
@@ -333,21 +190,13 @@ if (($request == 'GET') || (! $is_valid_input)) { // Output Restore Backup Inter
                            <input type='file' name='backup_file' size=40>
                         </td>
                      </tr>
-                     <div style='position:absolute; visibility:hidden; background-color:#ffffff; layer-background-color:#ffffff;' id='mydiv' height=200>
-                        &nbsp;
-                     </div>
-                     <tr>
-                        <td>
-                           <input type='image' name='submit' value='restore' src='../images/buttons/next_button.png'>
-                           <a href='database_management.php'>
-                              <img src='../images/buttons/cancel_button.png' border='0'>
-                           </a>
-                        </td>
-                     </tr>
-                  </form>
-               </table>
-            </td>
-         </tr>";
+               </table>";
+	       echo '<div class="box-footer">
+	                   <button type="submit" name="submit" value="restore" class="btn btn-warning">Next <i class="glyphicon glyphicon-arrow-right"></i></button>
+	                   <button class="btn btn-default pull-right"><a href="database_management.php"><i class="glyphicon glyphicon-remove-circle text-red"></i> Cancel</a></button>   
+	                 </div></form>';
+			 
+echo "          </div></div></div></div>\n";
 } else if ($request == 'POST') { // Restore the database with the backup file
     echo "
             <!-- Restore Progress Interface -->
@@ -406,11 +255,13 @@ if (($request == 'GET') || (! $is_valid_input)) { // Output Restore Backup Inter
                         </a>
                      </td>
                   </tr>
-               </table>
-            </td>
-         </tr>";
+               </table>";
 }
 // Add footer information and clean up left over HTML
-include "../footer.php";
+include '../theme/templates/endmaincontent.inc';
+include '../footer.php';
+include '../theme/templates/controlsidebar.inc'; 
+include '../theme/templates/endmain.inc';
+include '../theme/templates/adminfooterscripts.inc';
 exit;
 ?>

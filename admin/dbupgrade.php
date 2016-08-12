@@ -29,11 +29,14 @@ session_start();
 include '../config.inc.php';
 include 'header.php';
 include 'topmain.php';
+include 'leftmain.php';
 
-echo "
-   <title>
-      $title - Upgrade Database
-   </title>";
+	echo '<div class="row">
+	    <div class="col-md-10">
+	      <div class="box box-info"> ';
+	echo '<div class="box-header with-border">
+	    <h3 class="box-title"><i class="fa fa-clock-o"></i> '.$title.' - Upgrade Database</h3>
+	  </div><div class="box-body">';
 
 $self = $_SERVER['PHP_SELF'];
 $request = $_SERVER['REQUEST_METHOD'];
@@ -78,152 +81,8 @@ $passed_or_not = "0";
 $gmt_offset = date('Z');
 
 echo "
-<!-- Create Administration Interface -->
-<table width=100% height=89% border=0 cellpadding=0 cellspacing=1>
-   <tr valign=top>
-      <td class=left_main width=180 align=left scope=col>
-         <table class=hide width=100% border=0 cellpadding=1 cellspacing=0>
-            <tr>
-               <td class=left_rows height=11> </td>
-            </tr>
-            <tr>
-               <td class=left_rows_headings height=18 valign=middle>
-                  Users
-               </td>
-            </tr>
-            <tr>
-               <td class=left_rows height=18 align=left valign=middle>
-                  <img src='../images/icons/user.png' alt='User Summary' /> &nbsp; &nbsp;
-                  <a class=admin_headings href='useradmin.php'>
-                     User Summary
-                  </a>
-               </td>
-            </tr>
-            <tr>
-               <td class=left_rows height=18 align=left valign=middle>
-                  <img src='../images/icons/user_add.png' alt='Create New User' /> &nbsp; &nbsp;
-                  <a class=admin_headings href='usercreate.php'>
-                     Create New User
-                  </a>
-               </td>
-            </tr>
-            <tr>
-               <td class=left_rows height=18 align=left valign=middle>
-                  <img src='../images/icons/magnifier.png' alt='User Search' /> &nbsp; &nbsp;
-                  <a class=admin_headings href='usersearch.php'>
-                     User Search
-                  </a></td></tr>
-            <tr>
-               <td class=left_rows height=33 ></td>
-            </tr>
-            <tr>
-               <td class=left_rows_headings height=18 valign=middle>
-                  Offices
-               </td>
-            </tr>
-            <tr>
-               <td class=left_rows height=18 align=left valign=middle>
-                  <img src='../images/icons/brick.png' alt='Office Summary' /> &nbsp; &nbsp;
-                  <a class=admin_headings href='officeadmin.php'>
-                     Office Summary
-                  </a>
-               </td>
-            </tr>
-            <tr>
-               <td class=left_rows height=18 align=left valign=middle>
-                  <img src='../images/icons/brick_add.png' alt='Create New Office' /> &nbsp; &nbsp;
-                  <a class=admin_headings href='officecreate.php'>
-                     Create New Office
-                  </a>
-               </td>
-            </tr>
-            <tr>
-               <td class=left_rows height=33> </td>
-            </tr>
-            <tr>
-               <td class=left_rows_headings height=18 valign=middle>
-                  Groups
-               </td>
-            </tr>
-            <tr>
-               <td class=left_rows height=18 align=left valign=middle>
-                  <img src='../images/icons/group.png' alt='Group Summary' /> &nbsp; &nbsp;
-                  <a class=admin_headings href='groupadmin.php'>
-                     Group Summary
-                  </a>
-               </td>
-            </tr>
-            <tr>
-               <td class=left_rows height=18 align=left valign=middle>
-                  <img src='../images/icons/group_add.png' alt='Create New Group' /> &nbsp; &nbsp;
-                  <a class=admin_headings href='groupcreate.php'>
-                     Create New Group
-                  </a>
-               </td>
-            </tr>
-            <tr>
-               <td class=left_rows height=33> </td>
-            </tr>
-            <tr>
-               <td class=left_rows_headings height=18 valign=middle colspan=2>
-                  In/Out Status
-               </td>
-            </tr>
-            <tr>
-               <td class=left_rows height=18 align=left valign=middle>
-                  <img src='../images/icons/application.png' alt='Status Summary' /> &nbsp; &nbsp;
-                  <a class=admin_headings href='statusadmin.php'>
-                     Status Summary
-                  </a>
-               </td>
-            </tr>
-            <tr>
-               <td class=left_rows height=18 align=left valign=middle>
-                  <img src='../images/icons/application_add.png' alt='Create Status' /> &nbsp; &nbsp;
-                  <a class=admin_headings href='statuscreate.php'>
-                     Create Status
-                  </a>
-               </td>
-            </tr>
-            <tr>
-               <td class=left_rows height=33> </td>
-            </tr>
-            <tr>
-               <td class=left_rows_headings height=18 valign=middle colspan=2>
-                  Miscellaneous
-               </td>
-            </tr>
-            <tr>
-               <td class=left_rows height=18 align=left valign=middle>
-                  <img src='../images/icons/clock.png' alt='Modify Time' /> &nbsp; &nbsp;
-                  <a class=admin_headings href='timeadmin.php'>
-                     Modify Time
-                  </a>
-               </td>
-            </tr>
-            <tr>
-               <td class=left_rows height=18 align=left valign=middle>
-                  <img src='../images/icons/application_edit.png' alt='Edit System Settings' /> &nbsp; &nbsp;
-                  <a class=admin_headings href='sysedit.php'>
-                     Edit System Settings
-                  </a>
-              </td>
-            </tr>
-            <tr>
-               <td class=current_left_rows height=18 align=left valign=middle>
-                  <img src='../images/icons/database_go.png' alt='Manage Database' /> &nbsp; &nbsp;&nbsp;
-                  <a class=admin_headings href='database_management.php'>
-                     Manage Database
-                  </a>
-               </td>
-           </tr>
-         </table>
-      </td>
-      <td align=left class=right_main scope=col>
-         <table width=100% height=100% border=0 cellpadding=10 cellspacing=1>
-            <tr class=right_main_text>
-               <td valign=top>
-                  <br />";
+
+";
 
 // determine the privileges of the PHP Timeclock user //
 $result = mysql_query("show grants for current_user()");
@@ -243,7 +102,7 @@ if (! empty($count)) {
             $user_admin = "".$row["empfullname"]."";
         }
         echo " <form name='form' action='$self' method='post'>
-                  <table align=center class=table_border width=60% border=0 cellpadding=3 cellspacing=0>
+                  <table class=table>
                      <tr>
                         <th class=rightside_heading nowrap halign=left colspan=3>
                            <img src='../images/icons/database_go.png' />
@@ -302,21 +161,18 @@ if (! empty($count)) {
                      </tr>";
         }
 
-        echo "       <tr>
-                        <td width=30>
-                           <input type='image' name='submit' value='Upgrade DB' align='middle'
-                            src='../images/buttons/next_button.png'>
-                        </td>
-                        <td>
-                           <a href='database_management.php'>
-                              <img src='../images/buttons/cancel_button.png' border='0'>
-                         </td>
-                     </tr>
-                  </table>
-               </form>
-            </td>
-         </tr>";
-        include '../footer.php';
+        echo " 
+                  </table>";
+	       echo '<div class="box-footer">
+	                   <button type="submit" name="submit" value="Upgrade DB" class="btn btn-warning">Next <i class="fa fa-long-arrow-right"></i></button>
+	                   <button class="btn btn-default pull-right"><a href="database_management.php">Cancel</a></button>   
+	                 </div></form>';
+	       echo "          </div></div></div></div>\n";
+	       include '../theme/templates/endmaincontent.inc';
+	       include '../footer.php';
+	       include '../theme/templates/controlsidebar.inc'; 
+	       include '../theme/templates/endmain.inc';
+	       include '../theme/templates/adminfooterscripts.inc';
         exit;
     } else { // Upgrade the database
         @$recreate_admin = $_POST['recreate_admin'];
@@ -853,10 +709,12 @@ if (! empty($count)) {
             </tr>";
         }
         echo "
-         </table>
-      </td>
-   </tr>";
-        include '../footer.php';
+         </table>";
+       include '../theme/templates/endmaincontent.inc';
+       include '../footer.php';
+       include '../theme/templates/controlsidebar.inc'; 
+       include '../theme/templates/endmain.inc';
+       include '../theme/templates/adminfooterscripts.inc';
         exit;
     }
 } else {
@@ -886,10 +744,12 @@ if (! empty($count)) {
       <tr>
          <td height=15> </td>
       </tr>
-   </table>
-</td>
-</tr>";
-    include '../footer.php';
+   </table>";
+   include '../theme/templates/endmaincontent.inc';
+   include '../footer.php';
+   include '../theme/templates/controlsidebar.inc'; 
+   include '../theme/templates/endmain.inc';
+   include '../theme/templates/adminfooterscripts.inc';
     exit;
 }
 ?>
