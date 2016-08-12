@@ -133,7 +133,8 @@ $tclock_sec = gmdate('s',$time);
 $tclock_month = gmdate('m',$time);
 $tclock_day = gmdate('d',$time);
 $tclock_year = gmdate('Y',$time);
-$tclock_stamp = mktime ($tclock_hour, $tclock_min, $tclock_sec, $tclock_month, $tclock_day, $tclock_year);
+// $tclock_stamp = mktime($tclock_hour, $tclock_min, $tclock_sec, $tclock_month, $tclock_day, $tclock_year);
+$tclock_stamp = time($tclock_hour, $tclock_min, $tclock_sec, $tclock_month, $tclock_day, $tclock_year);
 
 $tclock_stamp = $tclock_stamp + @$tzo;
 $tclock_time = date($timefmt, $tclock_stamp);

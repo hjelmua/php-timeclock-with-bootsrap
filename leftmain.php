@@ -413,7 +413,7 @@ if ($show_display_name == "yes") {
     $query = "select displayname from ".$db_prefix."employees where disabled <> '1'  and empfullname <> 'admin' order by displayname";
     $emp_name_result = mysql_query($query);
     echo "
-                           <select multiple class='form-control' name='left_displayname' tabindex=1>
+                           <select multiple class='form-control' name='left_displayname' size='6' tabindex=1>
                               <option value =''>
                                  ...
                               </option>";
@@ -804,7 +804,9 @@ if ($request == 'POST') { // Process employee's punch information
     $month = gmdate('m',$time);
     $day = gmdate('d',$time);
     $year = gmdate('Y',$time);
-    $tz_stamp = mktime ($hour, $min, $sec, $month, $day, $year);
+  //  $tz_stamp = mktime ($hour, $min, $sec, $month, $day, $year);
+  // testing better ways 
+  $tz_stamp = time ($hour, $min, $sec, $month, $day, $year);
 
     if ($show_display_name == "yes") {
         $sel_query = "select empfullname from ".$db_prefix."employees where displayname = '".$displayname."'";
