@@ -64,3 +64,10 @@ This software and changes made are licensed under the GNU GENERAL PUBLIC LICENSE
 ##Swedish 
 ________
 Digital stämplelklocka i PHP och Bootstrap
+
+
+![Startpage](screenshots/start.jpg?raw=true "The start page")
+
+![User create page](screenshots/createuser.jpg?raw=true "The page to create a user")
+
+![Reportpage](screenshots/report.jpg?raw=true "A report page")
