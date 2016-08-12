@@ -1,5 +1,5 @@
-<?php
 <html>
+<?php
 /***************************************************************************
  *   Copyright (C) 2006 by Ken Papizan                                     *
  *   Copyright (C) 2008 by phpTimeClock Team                               *
@@ -99,8 +99,6 @@ $tzo = $tzo * 60;}
 } else {
   $tzo = "1";}
 //echo "<body>\n";
-// echo "<body onload='office_names();'>\n";
-echo '<body class="hold-transition skin-blue-light" sidebar-mini onload="office_names();">
-
-<div id="wrapper">';
+echo "<body class='hold-transition skin-blue-light sidebar-mini' onload='office_names();'>\n";
+echo '<div id="wrapper">';
 ?>
