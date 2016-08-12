@@ -65,6 +65,8 @@ This software and changes made are licensed under the GNU GENERAL PUBLIC LICENSE
 ________
 Digital stämplelklocka i PHP och Bootstrap
 
+##Screenshots
+________
 
 ![Startpage](screenshots/start.jpg?raw=true "The start page")
 
