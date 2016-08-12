@@ -44,47 +44,6 @@ echo "        <tr class=right_main_text><td align=center>Click <a class=admin_he
 echo "      </table><br /></td></tr></table>\n"; exit;
 }
 
-/* moved
-echo "<table width=100% height=89% border=0 cellpadding=0 cellspacing=1>\n";
-echo "  <tr valign=top>\n";
-echo "    <td class=left_main width=180 align=left scope=col>\n";
-echo "      <table class=hide width=100% border=0 cellpadding=1 cellspacing=0>\n";
-echo "        <tr><td class=left_rows height=11></td></tr>\n";
-echo "        <tr><td class=left_rows_headings height=18 valign=middle>Users</td></tr>\n";
-echo "        <tr><td class=current_left_rows height=18 align=left valign=middle><img src='../images/icons/user.png' alt='User Summary' />&nbsp;&nbsp;
-                <a class=admin_headings href='useradmin.php'>User Summary</a></td></tr>\n";
-echo "        <tr><td class=left_rows height=18 align=left valign=middle><img src='../images/icons/user_add.png' alt='Create New User' />&nbsp;&nbsp;
-                <a class=admin_headings href='usercreate.php'>Create New User</a></td></tr>\n";
-echo "        <tr><td class=left_rows height=18 align=left valign=middle><img src='../images/icons/magnifier.png' alt='User Search' />&nbsp;&nbsp;
-                <a class=admin_headings href='usersearch.php'>User Search</a></td></tr>\n";
-echo "        <tr><td class=left_rows height=33></td></tr>\n";
-echo "        <tr><td class=left_rows_headings height=18 valign=middle>Offices</td></tr>\n";
-echo "        <tr><td class=left_rows height=18 align=left valign=middle><img src='../images/icons/brick.png' alt='Office Summary' />&nbsp;&nbsp;
-                <a class=admin_headings href='officeadmin.php'>Office Summary</a></td></tr>\n";
-echo "        <tr><td class=left_rows height=18 align=left valign=middle><img src='../images/icons/brick_add.png' alt='Create New Office' />&nbsp;&nbsp;
-                <a class=admin_headings href='officecreate.php'>Create New Office</a></td></tr>\n";
-echo "        <tr><td class=left_rows height=33></td></tr>\n";
-echo "        <tr><td class=left_rows_headings height=18 valign=middle>Groups</td></tr>\n";
-echo "        <tr><td class=left_rows height=18 align=left valign=middle><img src='../images/icons/group.png' alt='Group Summary' />&nbsp;&nbsp;
-                <a class=admin_headings href='groupadmin.php'>Group Summary</a></td></tr>\n";
-echo "        <tr><td class=left_rows height=18 align=left valign=middle><img src='../images/icons/group_add.png' alt='Create New Group' />&nbsp;&nbsp;
-                <a class=admin_headings href='groupcreate.php'>Create New Group</a></td></tr>\n";
-echo "        <tr><td class=left_rows height=33></td></tr>\n";
-echo "        <tr><td class=left_rows_headings height=18 valign=middle colspan=2>In/Out Status</td></tr>\n";
-echo "        <tr><td class=left_rows height=18 align=left valign=middle><img src='../images/icons/application.png' alt='Status Summary' />
-                &nbsp;&nbsp;<a class=admin_headings href='statusadmin.php'>Status Summary</a></td></tr>\n";
-echo "        <tr><td class=left_rows height=18 align=left valign=middle><img src='../images/icons/application_add.png' alt='Create Status' />&nbsp;&nbsp;
-                <a class=admin_headings href='statuscreate.php'>Create Status</a></td></tr>\n";
-echo "        <tr><td class=left_rows height=33></td></tr>\n";
-echo "        <tr><td class=left_rows_headings height=18 valign=middle colspan=2>Miscellaneous</td></tr>\n";
-echo "        <tr><td class=left_rows height=18 align=left valign=middle><img src='../images/icons/clock.png' alt='Modify Time' />
-                &nbsp;&nbsp;<a class=admin_headings href='timeadmin.php'>Modify Time</a></td></tr>\n";
-echo "        <tr><td class=left_rows height=18 align=left valign=middle><img src='../images/icons/application_edit.png' alt='Edit System Settings' />
-                &nbsp;&nbsp;<a class=admin_headings href='sysedit.php'>Edit System Settings</a></td></tr>\n";
-echo "        <tr><td class=left_rows height=18 align=left valign=middle><img src='../images/icons/database_go.png'
-                alt='Manage Database' />&nbsp;&nbsp;&nbsp;<a class=admin_headings href='database_management.php'>Manage Database</a></td></tr>\n";
-echo "      </table></td>\n";
-end moved */
 
 $user_count = mysql_query("select empfullname from ".$db_prefix."employees
                            order by empfullname");
@@ -127,7 +86,7 @@ echo "              <tr>\n";
 echo "                <th>&nbsp;</th>\n";
 echo "                <th>Username</th>\n";
 echo "                <th>Display Name</th>\n";
-echo "                <th>Email Address</th>\n";
+// echo "                <th>Email Address</th>\n";
 echo "                <th>Office</th>\n";
 echo "                <th>Group</th>\n";
 echo "                <th>Disabled</th>\n";
@@ -157,30 +116,30 @@ echo "              <tr><td>&nbsp;$row_count</td>\n";
 echo "                <td>&nbsp;<a title=\"Edit User: $empfullname\" class=footer_links
                     href=\"useredit.php?username=$empfullname&officename=".$row["office"]."\">$empfullname</a></td>\n";
 echo "                <td>&nbsp;$displayname</td>\n";
-echo "                <td>&nbsp;".$row["email"]."</td>\n";
+// echo "                <td>&nbsp;".$row["email"]."</td>\n";
 echo "                <td>&nbsp;".$row['office']."</td>\n";
 echo "                <td>&nbsp;".$row['groups']."</td>\n";
 
 if ("".$row["disabled"]."" == 1) {
-  echo "                <td><img src='../images/icons/cross.png' /></td>\n";
+  echo "                <td align='center'><i class='glyphicon glyphicon-remove text-red'></i></td>\n";
 } else {
   $disabled = "";
   echo "                <td>".$disabled."</td>\n";
 }
 if ("".$row["admin"]."" == 1) {
-  echo "                <td><img src='../images/icons/accept.png' /></td>\n";
+  echo "                <td align='center'><i class='glyphicon glyphicon-ok text-green'></i></td>\n";
 } else {
   $admin = "";
   echo "                <td>".$admin."</td>\n";
 }
 if ("".$row["time_admin"]."" == 1) {
-  echo "                <td><img src='../images/icons/accept.png' /></td>\n";
+  echo "                <td align='center'><i class='glyphicon glyphicon-ok text-green'></i></td>\n";
 } else {
   $time_admin = "";
   echo "                <td>".$time_admin."</td>\n";
 }
 if ("".$row["reports"]."" == 1) {
-  echo "                <td><img src='../images/icons/accept.png' /></td>\n";
+  echo "                <td align='center'><i class='glyphicon glyphicon-ok text-green'></i></td>\n";
 } else {
   $reports = "";
   echo "                <td>".$reports."</td>\n";
@@ -200,15 +159,14 @@ echo "                <td><a
 
 } else {
 
-echo "                <td><a title=\"Edit User: $empfullname\"
+echo "                <td align='center'><a title=\"Edit User: $empfullname\"
                     href=\"useredit.php?username=$empfullname&officename=".$row["office"]."\">
-                    <img border=0 src='../images/icons/application_edit.png' /></a></td>\n";
-echo "                <td><a title=\"Change Password: $empfullname\"
-                    href=\"chngpasswd.php?username=$empfullname&officename=".$row["office"]."\"><img border=0
-                    src='../images/icons/lock_edit.png' /></a></td>\n";
-echo "                <td><a title=\"Delete User: $empfullname\"
+                    <i class='glyphicon glyphicon-pencil'></i></a></td>\n";
+echo "                <td align='center'><a title=\"Change Password: $empfullname\"
+                    href=\"chngpasswd.php?username=$empfullname&officename=".$row["office"]."\"><i class='fa fa-lock text-yellow'></i></a></td>\n";
+echo "                <td align='center'><a title=\"Delete User: $empfullname\"
                     href=\"userdelete.php?username=$empfullname&officename=".$row["office"]."\">
-                    <img border=0 src='../images/icons/delete.png' /></a></td></tr>\n";
+                    <i class='glyphicon glyphicon-minus-sign text-red'></i></a></td></tr>\n";
 }
 }
 echo "          </table></div></div></div></div>\n";
