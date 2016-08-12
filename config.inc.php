@@ -391,7 +391,7 @@ $use_client_tz = "no";
 to "yes". Setting this option to "no" AND setting the above $use_client_tz option to "no",
 will display the punch-in/out times in GMT. Default is "yes". */
 
-$use_server_tz = "yes";
+$use_server_tz = "no";
 
 
 /* --- WEATHER INFO ---  */
