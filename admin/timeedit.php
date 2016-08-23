@@ -18,10 +18,38 @@
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA.             *
+ * This currently only works with american calendar m/d/yyyy and us time   *
+ *  03:30 am need to fix this.... maybe function validateDate is the key   *
+ *									   *
+ * if ($calendar_style == "euro") {					   *
+ * $mydateformat="d/m/Y";} 						   *
+ * else									   *
+ * {$mydateformat="m/d/Y";}						   *
+ * 									   *
+ * function validateDate($date, $format = 'Y-m-d H:i:s')		   *
+ * {									   *
+ *   $d = DateTime::createFromFormat($format, $date);			   *
+ *   return $d && $d->format($format) == $date;				   *
+ * }									   *
+ *									   *
+ * if (validateDate(''.$_POST['post_date'].'', ''.$mydateformat.'')) { 	   *
+ * // have not tested the post_date part yet 				   *
+ * //for more se http://php.net/manual/en/function.checkdate.php 	   *
+ * // if (validateDate('28/02/2012', ''.$mydateformat.'')) {		   *
+ * 									   *
+ *    // something when true 						   *
+ * echo "True";								   *
+ * } else {								   *
+ *   // something else when false					   *
+ * echo "False";							   *
+ * }									   *
+ * 									   *
+ *									   *
  ***************************************************************************/
 session_start();
 
-include '../config.inc.php';
+include 'config.inc.php';
+// use a different config.inc in Europe for now...
 include 'header_date.php';
 include 'topmain.php';
 include 'leftmain-time.php';
@@ -275,7 +303,8 @@ echo '<div class="box-header with-border">
         echo "              <tr>\n";
         echo "                <td class=table_rows width=20 align=center><img src='../images/icons/cancel.png' /></td><td class=table_rows_red> A valid Date is required.</td></tr>\n";
         echo "            </table>\n";
-    } elseif (eregi ("^([0-9]{1,2})[-,/,.]([0-9]{1,2})[-,/,.](([0-9]{2})|([0-9]{4}))$", $post_date, $date_regs)) {
+//    } elseif (eregi ("^([0-9]{1,2})[-,/,.]([0-9]{1,2})[-,/,.](([0-9]{2})|([0-9]{4}))$", $post_date, $date_regs)) {
+    } elseif (preg_match('/' . "^([0-9]{1,2})[-\,\/,.]([0-9]{1,2})[-\,\/,.](([0-9]{2})|([0-9]{4}))$" . '/i', $post_date, $date_regs)) {
         if ($calendar_style == "amer") {
             if (isset($date_regs)) {
                 $month = $date_regs[1];
@@ -380,7 +409,8 @@ echo '<div class="box-header with-border">
                     exit;
                 }
 
-                $final_notes[$x] = ereg_replace("[^[:alnum:] \,\.\?-]","",$final_notes[$x]);
+ //               $final_notes[$x] = ereg_replace("[^[:alnum:] \,\.\?-]","",$final_notes[$x]);
+		$final_notes[$x] = preg_replace("[^[:alnum:] \,\.\?-]","",$final_notes[$x]);
                 $final_username[$x] = addslashes($final_username[$x]);
 
                 $query5 = "select * from ".$db_prefix."info where (fullname = '".$final_username[$x]."') and (timestamp = '".$final_mysql_timestamp[$x]."') and (`inout` = '".$final_inout[$x]."')";
@@ -394,7 +424,8 @@ echo '<div class="box-header with-border">
 
                 if (!empty($edit_time_textbox[$x])) { // configure timestamp to insert/update //
                     if ($calendar_style == "euro") {
-                        $post_date = "$day/$month/$year";
+                      $post_date = "$day/$month/$year";
+
                     } elseif ($calendar_style == "amer") {
                      //   $post_date = "$month/$day/$year";
                     }
@@ -408,7 +439,10 @@ echo '<div class="box-header with-border">
                     }
                     // end post validation //
                     if ($timefmt_24hr == '0') {
-                        if ((!eregi ("^([0-9]?[0-9])+:+([0-9]+[0-9])+([a|p]+m)$", $edit_time_textbox[$x], $time_regs)) && (!eregi ("^([0-9]?[0-9])+:+([0-9]+[0-9])+( [a|p]+m)$", $edit_time_textbox[$x], $time_regs))) {
+//                        if ((!eregi ("^([0-9]?[0-9])+:+([0-9]+[0-9])+([a|p]+m)$", $edit_time_textbox[$x], $time_regs)) && (!eregi ("^([0-9]?[0-9])+:+([0-9]+[0-9])+( [a|p]+m)$", $edit_time_textbox[$x], $time_regs))) {
+
+if ((!preg_match('/' . "^([0-9]?[0-9])+:+([0-9]+[0-9])+([a|p]+m)$" . '/i', $edit_time_textbox[$x], $time_regs)) && (!preg_match('/' . "^([0-9]?[0-9])+:+([0-9]+[0-9])+( [a|p]+m)$" . '/i', $edit_time_textbox[$x], $time_regs))) {
+
                             $evil_time = '1';
                         } else {
                             if (isset($time_regs)) {
@@ -421,7 +455,8 @@ echo '<div class="box-header with-border">
                             }
                         }
                     } elseif ($timefmt_24hr == '1') {
-                        if (!eregi ("^([0-9]?[0-9])+:+([0-9]+[0-9])$", $edit_time_textbox[$x], $time_regs)) {
+                      //  if (!eregi ("^([0-9]?[0-9])+:+([0-9]+[0-9])$", $edit_time_textbox[$x], $time_regs)) {
+			if (!preg_match('/' . "^([0-9]?[0-9])+:+([0-9]+[0-9])+([a|p]+m)$" . '/i', $edit_time_textbox[$x], $time_regs)) {
                             $evil_time = '1';
                         } else {
                             if (isset($time_regs)) {
@@ -463,6 +498,7 @@ echo '<div class="box-header with-border">
                 // configure date to display correctly //
 
                 if ($calendar_style == "euro") {
+	              	
                     $post_date = "$day/$month/$year";
                 }
 
@@ -526,7 +562,8 @@ echo '<div class="box-header with-border">
 
                 // configure date to display correctly //
                 if ($calendar_style == "euro") {
-                    $post_date = "$day/$month/$year";
+                   $post_date = "$day/$month/$year";
+	    
                 }
                 echo "                <th class=rightside_heading nowrap halign=left colspan=5><img src='../images/icons/clock_edit.png' />&nbsp;&nbsp;&nbsp;Edited Time for $post_username on $post_date</th></tr>\n";
                 echo "              <tr><td height=15></td></tr>\n";
@@ -555,13 +592,14 @@ echo '<div class="box-header with-border">
                 $time_month = gmdate('m',$time);
                 $time_day = gmdate('d',$time);
                 $time_year = gmdate('Y',$time);
-                $time_tz_stamp = mktime ($time_hour, $time_min, $time_sec, $time_month, $time_day, $time_year);
+                $time_tz_stamp = time ($time_hour, $time_min, $time_sec, $time_month, $time_day, $time_year);
 
                 // Escape admin reason for SQL
                 if (empty($post_why)) {
                     $post_why = '';
                 } else {
-                    $post_why = ereg_replace("[^[:alnum:] \,\.\?-]", "", $post_why);
+                //    $post_why = ereg_replace("[^[:alnum:] \,\.\?-]", "", $post_why);
+		    $post_why = preg_replace("[^[:alnum:] \,\.\?-]", "", $post_why);
                 }
 
                 for ($x=0;$x<$final_num_rows;$x++) {
@@ -579,6 +617,7 @@ echo '<div class="box-header with-border">
 
                         if ($calendar_style == "euro") {
                             $post_date = "$day/$month/$year";
+			   
                         } elseif ($calendar_style == "amer") {
                             $post_date = "$month/$day/$year";
                         }
@@ -639,6 +678,7 @@ echo '<div class="box-header with-border">
 
             if ($calendar_style == "euro") {
                 $post_date = "$day/$month/$year";
+	 
             } elseif ($calendar_style == "amer") {
                 $post_date = "$month/$day/$year";
             }
@@ -675,7 +715,8 @@ echo '<div class="box-header with-border">
         if (!isset($time_set)) {
             // configure date to display correctly //
             if ($calendar_style == "euro") {
-                $post_date = "$day/$month/$year";
+             $post_date = "$day/$month/$year";
+	    
             }
             echo "            <form name='form' action='$self' method='post' onsubmit=\"return isDate()\">\n";
             echo "            <table align=center class=table_border width=60% border=0 cellpadding=0 cellspacing=3>\n";
@@ -718,7 +759,7 @@ echo '<div class="box-header with-border">
         // configure date to display correctly //
 
         if ($calendar_style == "euro") {
-            $post_date = "$day/$month/$year";
+          $post_date = "$day/$month/$year";
         }
 
         echo "                <th class=rightside_heading nowrap halign=left colspan=4><img src='../images/icons/clock_edit.png' />&nbsp;&nbsp;&nbsp;Edit Time for $post_username on $post_date</th></tr>\n";
@@ -745,7 +786,7 @@ echo'    <div class="bootstrap-timepicker">
     	              //       <label>Time: ('.$timefmt_24hr_text.')</label>
 
 		      echo'    	                     <div class="input-group">';
-		      echo "                      <input type='text' size='10' class='form-control timepicker' maxlength='$timefmt_size' name='edit_time_textbox[$x]'>";
+		      echo "                      <input type='text' size='10' class='form-control timepicker3' maxlength='$timefmt_size' name='edit_time_textbox[$x]'>";
 echo'    	                       <div class="input-group-addon">
     	                         <i class="fa fa-clock-o"></i>
     	                       </div>

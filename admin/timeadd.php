@@ -186,7 +186,7 @@ echo'    	                       <div class="input-group-addon">
     include '../footer.php';
 	include '../theme/templates/controlsidebar.inc'; 
 	include '../theme/templates/endmain.inc';
-	include '../theme/templates/adminfooterscripts.inc';
+	include '../theme/templates/reportsfooterscripts.inc';
     exit;
 } elseif ($request == 'POST') { // Add the time for the employee
     $get_user = stripslashes($_POST['get_user']);
@@ -319,7 +319,12 @@ echo'    	                       <div class="input-group-addon">
 
 */
     
-    if ((empty($post_date)) || (empty($post_time)) || ($post_statusname == '1') || (!eregi ("^([[:alnum:]]| |-|_|\.)+$", $post_statusname)) || (!eregi ("^([0-9]{1,2})[-,/,.]([0-9]{1,2})[-,/,.](([0-9]{2})|([0-9]{4}))$", $post_date))) {
+//    if ((empty($post_date)) || (empty($post_time)) || ($post_statusname == '1') || (!eregi ("^([[:alnum:]]| |-|_|\.)+$", $post_statusname)) || (!eregi ("^([0-9]{1,2})[-,/,.]([0-9]{1,2})[-,/,.](([0-9]{2})|([0-9]{4}))$", $post_date))) {
+	
+    if ((empty($post_date)) || (empty($post_time)) || ($post_statusname == '1') || (!preg_match('/' . "^([[:alnum:]]| |-|_|\.)+$" . '/i', $post_statusname)) ||
+        (!preg_match("/^([0-9]{1,2})[\-\/\.]([0-9]{1,2})[\-\/\.](([0-9]{2})|([0-9]{4}))$/i", $post_date))
+    ) {
+	
         $evil_post = '1';
         if (empty($post_date)) {
             echo "            <table align=center class=table_border width=60% border=0 cellpadding=0 cellspacing=3>\n";
@@ -347,8 +352,13 @@ echo'    	                       <div class="input-group-addon">
             echo "                <td class=table_rows width=20 align=center><img src='../images/icons/cancel.png' /></td><td class=table_rows_red> A valid Date is required.</td></tr>\n";
             echo "            </table>\n";
         }
-    } elseif ($timefmt_24hr == '0') {
-        if ((!eregi ("^([0-9]?[0-9])+:+([0-9]+[0-9])+([a|p]+m)$", $post_time, $time_regs)) && (!eregi ("^([0-9]?[0-9])+:+([0-9]+[0-9])+( [a|p]+m)$", $post_time, $time_regs))) {
+    } 
+//	elseif ($timefmt_24hr == '0') {
+//        if ((!eregi ("^([0-9]?[0-9])+:+([0-9]+[0-9])+([a|p]+m)$", $post_time, $time_regs)) && (!eregi ("^([0-9]?[0-9])+:+([0-9]+[0-9])+( [a|p]+m)$", $post_time, $time_regs))) {
+	elseif ($timefmt_24hr == '0') {
+	        if ((!preg_match('/' . "^([0-9]?[0-9])+:+([0-9]+[0-9])+([a|p]+m)$" . '/i', $post_time, $time_regs)) && (!preg_match('/' . "^([0-9]?[0-9])+:+([0-9]+[0-9])+( [a|p]+m)$" . '/i', $post_time,
+	                                                                                                     $time_regs))
+	        ) {
             $evil_time = '1';
             echo "            <table align=center class=table_border width=60% border=0 cellpadding=0 cellspacing=3>\n";
             echo "              <tr>\n";
@@ -369,8 +379,12 @@ echo'    	                       <div class="input-group-addon">
                 echo "            </table>\n";
             }
         }
-    } elseif ($timefmt_24hr == '1') {
-        if (!eregi ("^([0-9]?[0-9])+:+([0-9]+[0-9])$", $post_time, $time_regs)) {
+    } 
+	
+//	elseif ($timefmt_24hr == '1') {
+//        if (!eregi ("^([0-9]?[0-9])+:+([0-9]+[0-9])$", $post_time, $time_regs)) {
+	elseif ($timefmt_24hr == '1') {
+	        if (!preg_match('/' . "^([0-9]?[0-9])+:+([0-9]+[0-9])$" . '/i', $post_time, $time_regs)) {
             $evil_time = '1';
             echo "            <table align=center class=table_border width=60% border=0 cellpadding=0 cellspacing=3>\n";
             echo "              <tr>\n";
@@ -392,7 +406,8 @@ echo'    	                       <div class="input-group-addon">
         }
     }
 
-    if (eregi ("^([0-9]{1,2})[-,/,.]([0-9]{1,2})[-,/,.](([0-9]{2})|([0-9]{4}))$", $post_date, $date_regs)) {
+//    if (eregi ("^([0-9]{1,2})[-,/,.]([0-9]{1,2})[-,/,.](([0-9]{2})|([0-9]{4}))$", $post_date, $date_regs)) {
+if (preg_match("/^([0-9]{1,2})[\-\/\.]([0-9]{1,2})[\-\/\.](([0-9]{2})|([0-9]{4}))$/i", $post_date, $date_regs)) {
         if ($calendar_style == "amer") {
             if (isset($date_regs)) {
                 $month = $date_regs[1];
@@ -486,7 +501,7 @@ echo'    	                       <div class="input-group-addon">
         include '../footer.php';
 		include '../theme/templates/controlsidebar.inc'; 
 		include '../theme/templates/endmain.inc';
-		include '../theme/templates/adminfooterscripts.inc';
+		include '../theme/templates/reportsfooterscripts.inc';
 		
         exit;
     } else { // Display add time interface
@@ -496,7 +511,8 @@ echo'    	                       <div class="input-group-addon">
         // configure timestamp to insert/update
 
         if ($calendar_style == "euro") {
-            $post_date = "$day/$month/$year";
+//            $post_date = "$day/$month/$year";
+			$post_date = "$month/$day/$year";
         } elseif ($calendar_style == "amer") {
             $post_date = "$month/$day/$year";
         }
@@ -563,7 +579,7 @@ echo'    	                       <div class="input-group-addon">
                 include '../footer.php';
 				include '../theme/templates/controlsidebar.inc'; 
 				include '../theme/templates/endmain.inc';
-				include '../theme/templates/adminfooterscripts.inc';
+				include '../theme/templates/reportsfooterscripts.inc';
                 exit;
             }
         }
@@ -603,7 +619,7 @@ echo'    	                       <div class="input-group-addon">
         $time_month = gmdate('m', $time);
         $time_day = gmdate('d', $time);
         $time_year = gmdate('Y', $time);
-        $time_tz_stamp = mktime ($time_hour, $time_min, $time_sec, $time_month, $time_day, $time_year);
+        $time_tz_stamp = time ($time_hour, $time_min, $time_sec, $time_month, $time_day, $time_year);
 
         // add the time to the info table for $post_username and audit log
         if (strtolower($ip_logging) == "yes") {
@@ -651,7 +667,7 @@ echo '<div class="box-header with-border">
         include '../footer.php';
 		include '../theme/templates/controlsidebar.inc'; 
 		include '../theme/templates/endmain.inc';
-		include '../theme/templates/adminfooterscripts.inc';
+		include '../theme/templates/reportsfooterscripts.inc';
         exit;
     }
 }

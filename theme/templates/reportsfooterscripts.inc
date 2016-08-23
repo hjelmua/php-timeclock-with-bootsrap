@@ -33,11 +33,11 @@
 //Date picker
     $('#datepicker').datepicker({
       autoclose: true,
-      format: 'm/d/yyyy'
+      format: 'd/m/yyyy'
     });
     $('#datepicker1').datepicker({
       autoclose: true,
-      format: 'm/d/yyyy'
+      format: 'd/m/yyyy'
     });
 
 	     $("#timepicker1").timepicker({
@@ -53,12 +53,6 @@
 			showMeridian: false,
 				              minuteStep: 5 
 	    });	
-	    
-	    //Timepicker
-	    $(".timepicker3").timepicker({
-	      showInputs: false,
-	       minuteStep: 5 
-	    });
 </script>
 
 </body>
