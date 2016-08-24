@@ -20,32 +20,36 @@
  *   51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA.             *
  * This currently only works with american calendar m/d/yyyy and us time   *
  *  03:30 am need to fix this.... maybe function validateDate is the key   *
- *									   *
- * if ($calendar_style == "euro") {					   *
- * $mydateformat="d/m/Y";} 						   *
- * else									   *
- * {$mydateformat="m/d/Y";}						   *
- * 									   *
- * function validateDate($date, $format = 'Y-m-d H:i:s')		   *
- * {									   *
- *   $d = DateTime::createFromFormat($format, $date);			   *
- *   return $d && $d->format($format) == $date;				   *
- * }									   *
- *									   *
- * if (validateDate(''.$_POST['post_date'].'', ''.$mydateformat.'')) { 	   *
- * // have not tested the post_date part yet 				   *
- * //for more se http://php.net/manual/en/function.checkdate.php 	   *
- * // if (validateDate('28/02/2012', ''.$mydateformat.'')) {		   *
- * 									   *
- *    // something when true 						   *
- * echo "True";								   *
- * } else {								   *
- *   // something else when false					   *
- * echo "False";							   *
- * }									   *
- * 									   *
- *									   *
- ***************************************************************************/
+ 									   */
+
+/* Suggesting the following solution insted of regex for date and time 
+
+
+if ($calendar_style == "euro") {					   
+$mydateformat="d/m/Y";} 						  
+else									
+{$mydateformat="m/d/Y";}						
+									
+function validateDate($date, $format = 'Y-m-d H:i:s')		  
+{									 
+ $d = DateTime::createFromFormat($format, $date);			 
+ return $d && $d->format($format) == $date;				
+ }									
+									 
+ if (validateDate(''.$_POST['post_date'].'', ''.$mydateformat.'')) { 	 
+// have not tested the post_date part yet 				  
+//for more se http://php.net/manual/en/function.checkdate.php 	  
+// if (validateDate('28/02/2012', ''.$mydateformat.'')) {		  
+									 
+    // something when true 						
+ echo "True";								 
+  } else {								 
+  // something else when false					 
+ echo "False";							 
+ }									  
+
+*/
+
 session_start();
 
 include 'config.inc.php';
