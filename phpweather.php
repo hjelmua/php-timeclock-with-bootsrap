@@ -25,6 +25,7 @@
 /* Line 109 was added for php timeclock.  */
 /* Line 110 was edited for php timeclock. */
 ////////////////////////////////////////////
+/* Discontinued, does not work on PHP 7 */
 
 /* Unsets old language variables and loads new ones. */
 
