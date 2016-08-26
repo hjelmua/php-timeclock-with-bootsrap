@@ -460,7 +460,7 @@ if ((!preg_match('/' . "^([0-9]?[0-9])+:+([0-9]+[0-9])+([a|p]+m)$" . '/i', $edit
                         }
                     } elseif ($timefmt_24hr == '1') {
                       //  if (!eregi ("^([0-9]?[0-9])+:+([0-9]+[0-9])$", $edit_time_textbox[$x], $time_regs)) {
-			if (!preg_match('/' . "^([0-9]?[0-9])+:+([0-9]+[0-9])+([a|p]+m)$" . '/i', $edit_time_textbox[$x], $time_regs)) {
+			if (!preg_match('/' . "^([0-9]?[0-9])+:+([0-9]+[0-9])$" . '/i', $edit_time_textbox[$x], $time_regs)) {
                             $evil_time = '1';
                         } else {
                             if (isset($time_regs)) {
