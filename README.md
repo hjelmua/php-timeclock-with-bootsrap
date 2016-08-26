@@ -58,6 +58,9 @@ Admin level access and reports level access are completely separate from each ot
 ##PHP Weather discontinued
 The PHP Weather part has been discontinued and the code has not been updated to PHP 7. Do not use it on PHP7 servers.
 
+## Now PHP 7 enabled.
+All ereg/eregi and mysql code had been updated to PHP 7.
+
 ##License
 ________
 
