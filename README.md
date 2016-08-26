@@ -55,6 +55,9 @@ ___
 ##Roles
 Admin level access and reports level access are completely separate from each other. Just because a user has admin level access does not give that user reports level access. You must specifically give them reports level access when you are creating or editing the users, if you choose to secure these reports for these users. To make PHP Timeclock lock down the reports to only these users, set the use_reports_password setting in config.inc.php to "yes".
 
+##PHP Weather discontinued
+The PHP Weather part has been discontinued and the code has not been updated to PHP 7. Do not use it on PHP7 servers.
+
 ##License
 ________
 
