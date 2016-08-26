@@ -174,9 +174,9 @@ $post_officename = addslashes($post_officename);
 // check for duplicate officenames //
 
 $query = "select * from ".$db_prefix."offices where officename = '".$post_officename."'";
-$result = mysql_query($query);
+$result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
 
-while ($row=mysql_fetch_array($result)) {
+while ($row=mysqli_fetch_array($result)) {
   $tmp_officename = "".$row['officename']."";
 }
 
@@ -185,9 +185,10 @@ while ($row=mysql_fetch_array($result)) {
 $string = strstr($post_officename, "\'");
 $string2 = strstr($post_officename, "\"");
 
-if ((@$tmp_officename == $post_officename) || (empty($post_officename)) || (!eregi ("^([[:alnum:]]| |-|_|\.)+$", $post_officename)) ||
-((!eregi ("^([0-9])$", @$how_many)) && (isset($how_many))) || (@$how_many == '0') || (($create_groups != '1') && (!empty($create_groups))) ||
-(!empty($string)) || (!empty($string2))) {
+// if ((@$tmp_officename == $post_officename) || (empty($post_officename)) || (!eregi ("^([[:alnum:]]| |-|_|\.)+$", $post_officename)) || ((!eregi ("^([0-9])$", @$how_many)) && (isset($how_many))) || (@$how_many == '0') || (($create_groups != '1') && (!empty($create_groups))) || (!empty($string)) || (!empty($string2))) {
+
+
+if ((@$tmp_officename == $post_officename) || (empty($post_officename)) || (!preg_match('/' . "^([[:alnum:]]| |-|_|\.)+$" . '/i', $post_officename)) || ((!preg_match('/' . "^([0-9])$" . '/i', $how_many)) && (isset($how_many))) || (@$how_many == '0') || (($create_groups != '1') && (!empty($create_groups))) || (!empty($string)) || (!empty($string2))) {
 
 if (empty($post_officename)) {
 echo "            <table align=center class=table_border width=60% border=0 cellpadding=0 cellspacing=3>\n";
@@ -217,7 +218,8 @@ echo "                <td class=table_rows width=20 align=center><img src='../im
                     Office already exists. Create another office.</td></tr>\n";
 echo "            </table>\n";
 }
-elseif (!eregi ("^([[:alnum:]]| |-|_|\.)+$", $post_officename)) {
+// elseif (!eregi ("^([[:alnum:]]| |-|_|\.)+$", $post_officename)) {
+elseif (!preg_match('/' . "^([[:alnum:]]| |-|_|\.)+$" . '/i', $post_officename)) {
 echo "            <table align=center class=table_border width=60% border=0 cellpadding=0 cellspacing=3>\n";
 echo "              <tr>\n";
 echo "                <td class=table_rows width=20 align=center><img src='../images/icons/cancel.png' /></td><td class=table_rows_red>
@@ -238,7 +240,8 @@ echo "                <td class=table_rows width=20 align=center><img src='../im
                     You have chosen to create groups within this new office. Please input a number other than '0' for 'How Many?'.</td></tr>\n";
 echo "            </table>\n";
 }
-elseif (!eregi ("^([0-9])$", $how_many)) {
+// elseif (!eregi ("^([0-9])$", $how_many)) {
+elseif (!preg_match('/' . "^([0-9])$" . '/i', $how_many)) {
 echo "            <table align=center class=table_border width=60% border=0 cellpadding=0 cellspacing=3>\n";
 echo "              <tr>\n";
 echo "                <td class=table_rows width=20 align=center><img src='../images/icons/cancel.png' /></td><td class=table_rows_red>
@@ -314,7 +317,8 @@ $z = $x+1;
 // begin post validation //
 
 if (empty($input_group_name[$z])) {$empty_groupname = '1';}
-if (!eregi ("^([[:alnum:]]| |-|_|\.)+$", $input_group_name[$z])) {$evil_groupname = '1';}
+//if (!eregi ("^([[:alnum:]]| |-|_|\.)+$", $input_group_name[$z])) {$evil_groupname = '1';}
+if (!preg_match('/' . "^([[:alnum:]]| |-|_|\.)+$" . '/i', $input_group_name[$z])) {$evil_groupname = '1';}
 
 }
 
@@ -325,20 +329,20 @@ if (!eregi ("^([[:alnum:]]| |-|_|\.)+$", $input_group_name[$z])) {$evil_groupnam
 if ((@$empty_groupname != '1') && (@$evil_groupname != '1') && (@$groupname_array_cnt == @$unique_groupname_array_cnt)) {
 
 $query = "insert into ".$db_prefix."offices (officename) values ('".$post_officename."')";
-$result = mysql_query($query);
+$result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
 
 $query2 = "select * from ".$db_prefix."offices where officename = '".$post_officename."'";
-$result2 = mysql_query($query2);
+$result2 = mysqli_query($GLOBALS["___mysqli_ston"], $query2);
 
-while ($row=mysql_fetch_array($result2)) {
+while ($row=mysqli_fetch_array($result2)) {
   $tmp_officeid = "".$row['officeid']."";
 }
-mysql_free_result($result2);
+((mysqli_free_result($result2) || (is_object($result2) && (get_class($result2) == "mysqli_result"))) ? true : false);
 
 for ($x=0;$x<$how_many;$x++) {
 $y = $x+1;
 $query3 = "insert into ".$db_prefix."groups (groupname, officeid) values ('".$input_group_name[$y]."', '".$tmp_officeid."')";
-$result3 = mysql_query($query3);
+$result3 = mysqli_query($GLOBALS["___mysqli_ston"], $query3);
 }
 
 echo "            <table align=center class=table_border width=60% border=0 cellpadding=0 cellspacing=3>\n";
@@ -439,7 +443,7 @@ include '../footer.php'; exit;
 if (!isset($how_many)) {
 
 $query = "insert into ".$db_prefix."offices (officename) values ('".$post_officename."')";
-$result = mysql_query($query);
+$result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
 
 echo "            <table align=center class=table_border width=60% border=0 cellpadding=0 cellspacing=3>\n";
 echo "              <tr>\n";

@@ -144,7 +144,8 @@ if ($request == 'GET') {
             echo "              <tr>\n";
             echo "                <td class=table_rows width=20 align=center><img src='../images/icons/cancel.png' /></td><td class=table_rows_red> A valid From Date is required.</td></tr>\n";
             echo "            </table>\n";
-        } elseif (!eregi ("^([0-9]?[0-9])+[-|/|.]+([0-9]?[0-9])+[-|/|.]+(([0-9]{2})|([0-9]{4}))$", $from_date, $date_regs)) {
+ //       } elseif (!eregi ("^([0-9]?[0-9])+[-|/|.]+([0-9]?[0-9])+[-|/|.]+(([0-9]{2})|([0-9]{4}))$", $from_date, $date_regs)) {
+        } elseif (!preg_match('/' . "^([0-9]?[0-9])+[-|\/|.]+([0-9]?[0-9])+[-|\/|.]+(([0-9]{2})|([0-9]{4}))$" . '/i', $from_date, $date_regs)) {
             $evil_post = '1';
             if ($use_reports_password == "yes") {
                 include '../admin/topmain.php';
@@ -232,7 +233,8 @@ if ($request == 'GET') {
             echo "              <tr>\n";
             echo "                <td class=table_rows width=20 align=center><img src='../images/icons/cancel.png' /></td><td class=table_rows_red> A valid To Date is required.</td></tr>\n";
             echo "            </table>\n";
-        } elseif (!eregi ("^([0-9]?[0-9])+[-|/|.]+([0-9]?[0-9])+[-|/|.]+(([0-9]{2})|([0-9]{4}))$", $to_date, $date_regs)) {
+//        } elseif (!eregi ("^([0-9]?[0-9])+[-|/|.]+([0-9]?[0-9])+[-|/|.]+(([0-9]{2})|([0-9]{4}))$", $to_date, $date_regs)) {
+        } elseif (!preg_match('/' . "^([0-9]?[0-9])+[-|\/|.]+([0-9]?[0-9])+[-|\/|.]+(([0-9]{2})|([0-9]{4}))$" . '/i', $to_date, $date_regs)) {
             $evil_post = '1';
             if ($use_reports_password == "yes") {
                 include '../admin/topmain.php';
@@ -377,9 +379,9 @@ if ($request == 'GET') {
     $row_color = $color2; // Initial row color
 
     $query = "select * from ".$db_prefix."audit where modified_when >= '".$from_timestamp."' and modified_when <= '".$to_timestamp."' order by modified_when asc";
-    $result = mysql_query($query);
+    $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
 
-    while ($row=mysql_fetch_array($result)) {
+    while ($row=mysqli_fetch_array($result)) {
         $modified_when[] = "".$row["modified_when"]."";
         $modified_from[] = "".$row["modified_from"]."";
         $modified_to[] = "".$row["modified_to"]."";

@@ -144,13 +144,13 @@ if ($request == 'GET') { // Display employee select interface for editing an emp
     $get_user = addslashes($get_user);
 
     $query = "select * from ".$db_prefix."employees where empfullname = '".$get_user."' order by empfullname";
-    $result = mysql_query($query);
+    $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
 
-    while ($row=mysql_fetch_array($result)) {
+    while ($row=mysqli_fetch_array($result)) {
         $username = stripslashes("".$row['empfullname']."");
         $displayname = stripslashes("".$row['displayname']."");
     }
-    mysql_free_result($result);
+    ((mysqli_free_result($result) || (is_object($result) && (get_class($result) == "mysqli_result"))) ? true : false);
     $get_user = stripslashes($get_user);
 
 
@@ -213,8 +213,8 @@ echo '<div class="box-header with-border">
 
     if (!empty($get_user)) {
         $query = "select * from ".$db_prefix."employees where empfullname = '".$get_user."'";
-        $result = mysql_query($query);
-        while ($row=mysql_fetch_array($result)) {
+        $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
+        while ($row=mysqli_fetch_array($result)) {
             $tmp_get_user = "".$row['empfullname']."";
         }
         if (!isset($tmp_get_user)) {
@@ -225,8 +225,8 @@ echo '<div class="box-header with-border">
 
     if (!empty($post_username)) {
         $query = "select * from ".$db_prefix."employees where empfullname = '".$post_username."'";
-        $result = mysql_query($query);
-        while ($row=mysql_fetch_array($result)) {
+        $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
+        while ($row=mysqli_fetch_array($result)) {
             $tmp_username = "".$row['empfullname']."";
         }
         if (!isset($tmp_username)) {
@@ -237,8 +237,8 @@ echo '<div class="box-header with-border">
 
     if (!empty($post_displayname)) {
         $query = "select * from ".$db_prefix."employees where empfullname = '".$post_username."' and displayname = '".$post_displayname."'";
-        $result = mysql_query($query);
-        while ($row=mysql_fetch_array($result)) {
+        $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
+        while ($row=mysqli_fetch_array($result)) {
             $tmp_post_displayname = "".$row['displayname']."";
         }
         if (!isset($tmp_post_displayname)) {
@@ -402,12 +402,12 @@ echo '<div class="box-header with-border">
                 }
 
                 $query_sel = "select * from ".$db_prefix."punchlist where punchitems = '".$final_inout[$x]."'";
-                $result_sel = mysql_query($query_sel);
+                $result_sel = mysqli_query($GLOBALS["___mysqli_ston"], $query_sel);
 
-                while ($row=mysql_fetch_array($result_sel)) {
+                while ($row=mysqli_fetch_array($result_sel)) {
                     $punchitems = "".$row['punchitems']."";
                 }
-                mysql_free_result($result_sel);
+                ((mysqli_free_result($result_sel) || (is_object($result_sel) && (get_class($result_sel) == "mysqli_result"))) ? true : false);
                 if (!isset($punchitems)) {
                     echo "Something is fishy here.\n";
                     exit;
@@ -418,8 +418,8 @@ echo '<div class="box-header with-border">
                 $final_username[$x] = addslashes($final_username[$x]);
 
                 $query5 = "select * from ".$db_prefix."info where (fullname = '".$final_username[$x]."') and (timestamp = '".$final_mysql_timestamp[$x]."') and (`inout` = '".$final_inout[$x]."')";
-                $result5 = mysql_query($query5);
-                @$tmp_num_rows = mysql_num_rows($result5);
+                $result5 = mysqli_query($GLOBALS["___mysqli_ston"], $query5);
+                @$tmp_num_rows = mysqli_num_rows($result5);
 
                 if ((isset($tmp_num_rows)) && (@$tmp_num_rows != '1')) {
                     echo "Something is fishy here.\n";
@@ -611,9 +611,9 @@ if ((!preg_match('/' . "^([0-9]?[0-9])+:+([0-9]+[0-9])+([a|p]+m)$" . '/i', $edit
                         $row_color = ($row_count % 2) ? $color1 : $color2;
 
                         $query = "select * from ".$db_prefix."employees where empfullname = '".$final_username[$x]."'";
-                        $result = mysql_query($query);
+                        $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
 
-                        while ($row=mysql_fetch_array($result)) {
+                        while ($row=mysqli_fetch_array($result)) {
                             $currentEmployeeTimeStamp = "".$row['tstamp']."";
                         }
 
@@ -630,7 +630,7 @@ if ((!preg_match('/' . "^([0-9]?[0-9])+:+([0-9]+[0-9])+([a|p]+m)$" . '/i', $edit
 
                         if ($newTimeStamp[$x] >= $currentEmployeeTimeStamp) { // Only update the current employee's status if it is different.
                             $query2 = "update ".$db_prefix."employees set tstamp = '".$newTimeStamp[$x]."' where empfullname = '".$final_username[$x]."'";
-                            $result2 = mysql_query($query2);
+                            $result2 = mysqli_query($GLOBALS["___mysqli_ston"], $query2);
                         } else { // Determine if we are changing the last status of the employee.
                             /*
                                 Conditions for when we need to update the current status.
@@ -641,21 +641,21 @@ if ((!preg_match('/' . "^([0-9]?[0-9])+:+([0-9]+[0-9])+([a|p]+m)$" . '/i', $edit
 
                             if (($post_date == $currentDate) and ($x == ($final_num_rows - 1))) { // Have we met the conditions?
                                 $query2 = "update ".$db_prefix."employees set tstamp = '".$newTimeStamp[$x]."' where empfullname = '".$final_username[$x]."'";
-                                $result2 = mysql_query($query2);
+                                $result2 = mysqli_query($GLOBALS["___mysqli_ston"], $query2);
                             }
                         }
 
                         // Update the employee's record
                         $query3 = "update ".$db_prefix."info set timestamp = '".$newTimeStamp[$x]."', ipaddress = '".$connecting_ip."' where ((fullname = '".$final_username[$x]."') and (`inout` = '".$final_inout[$x]."') and (timestamp = '".$final_mysql_timestamp[$x]."') and (notes = '".$final_notes[$x]."'))";
-                        $result3 = mysql_query($query3);
+                        $result3 = mysqli_query($GLOBALS["___mysqli_ston"], $query3);
 
                         // Add the changes made to the audit table
                         if (strtolower($ip_logging) == "yes") {
                             $query4 = "insert into ".$db_prefix."audit (modified_by_ip, modified_by_user, modified_when, modified_from, modified_to, modified_why, user_modified) values ('".$connecting_ip."', '".$user."', '".$time_tz_stamp."', '".$final_mysql_timestamp[$x]."', '".$newTimeStamp[$x]."', '".$post_why."', '".$final_username[$x]."')";
-                            $result4 = mysql_query($query4);
+                            $result4 = mysqli_query($GLOBALS["___mysqli_ston"], $query4);
                         } else {
                             $query4 = "insert into ".$db_prefix."audit (modified_by_user, modified_when, modified_from, modified_to, modified_why, user_modified) values ('".$user."', '".$time_tz_stamp."', '".$final_mysql_timestamp[$x]."', '".$newTimeStamp[$x]."', '".$post_why."', '".$final_username[$x]."')";
-                            $result4 = mysql_query($query4);
+                            $result4 = mysqli_query($GLOBALS["___mysqli_ston"], $query4);
                         }
 
                         echo "                <tr class=display_row><td width=1% align=center class=table_rows bgcolor='$row_color' style='padding-left:5px;padding-right:5px;'> <img src='../images/icons/accept.png' /></td><td nowrap width=1% class=table_rows style='padding-right:5px;' bgcolor='$row_color'> &nbsp;&nbsp;$edit_time_textbox[$x]</td>\n";
@@ -696,21 +696,21 @@ if ((!preg_match('/' . "^([0-9]?[0-9])+:+([0-9]+[0-9])+([a|p]+m)$" . '/i', $edit
             $post_displayname = addslashes($post_displayname);
 
             $query = "select * from ".$db_prefix."info where (fullname = '".$post_username."') and ((timestamp < '".$calc."') and (timestamp >= '".$timestamp."')) order by timestamp asc";
-            $result = mysql_query($query);
+            $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
 
             $username = array();
             $inout = array();
             $notes = array();
             $mysql_timestamp = array();
 
-            while ($row=mysql_fetch_array($result)) {
+            while ($row=mysqli_fetch_array($result)) {
                 $time_set = '1';
                 $username[] = "".$row['fullname']."";
                 $inout[] = "".$row['inout']."";
                 $notes[] = "".$row['notes']."";
                 $mysql_timestamp[] = "".$row['timestamp']."";
             }
-            $num_rows = mysql_num_rows($result);
+            $num_rows = mysqli_num_rows($result);
         }
 
         $post_username = stripslashes($post_username);

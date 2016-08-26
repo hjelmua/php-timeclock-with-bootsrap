@@ -157,8 +157,12 @@ include 'header_post.php';include 'topmain.php'; include 'leftmain.php';
 
 // begin post validation //
 
-if ((!eregi ("^([[:alnum:]]| |-|'|,)+$", $post_username)) || (!eregi ("^([[:alnum:]]| |-|'|,)+$", $display_name)) ||
-(!eregi ("^([[:alnum:]]|_|\.|-|@)+$", $email_addy))) {
+// if ((!eregi ("^([[:alnum:]]| |-|'|,)+$", $post_username)) || (!eregi ("^([[:alnum:]]| |-|'|,)+$", $display_name)) ||
+// (!eregi ("^([[:alnum:]]|_|\.|-|@)+$", $email_addy))) {
+
+if ((!preg_match('/' . "^([[:alnum:]]| |-|'|,)+$" . '/i', $post_username)) || (!preg_match('/' . "^([[:alnum:]]| |-|'|,)+$" . '/i', $display_name)) ||
+	    (!preg_match('/' . "^([[:alnum:]]|_|.|-|@)+$" . '/i', $email_addy))) {
+
 
 	/*
 echo "<table width=100% height=89% border=0 cellpadding=0 cellspacing=1>\n";
@@ -206,7 +210,8 @@ echo "        <tr class=right_main_text>\n";
 echo "          <td valign=top>\n";
 	
 	*/
-if (!eregi ("^([[:alnum:]]| |-|'|,)+$", $post_username)) {
+// if (!eregi ("^([[:alnum:]]| |-|'|,)+$", $post_username)) {
+if (!preg_match('/' . "^([[:alnum:]]| |-|'|,)+$" . '/i', $post_username)) {
 if ($post_username == "") {} else {
 
 	echo ' <div class="col-md-4"><div class="alert alert-warning alert-dismissible">
@@ -217,7 +222,8 @@ if ($post_username == "") {} else {
 			  
 $evil_input = "1";
 }}
-if (!eregi ("^([[:alnum:]]| |-|'|,)+$", $display_name)) {
+//if (!eregi ("^([[:alnum:]]| |-|'|,)+$", $display_name)) {
+if (!preg_match('/^([[:alnum:]]|\s|\-|\'|\,)+$/i', $display_name)) {
 if ($display_name == "") {} else {
 
 	echo ' <div class="col-md-4"><div class="alert alert-warning alert-dismissible">
@@ -228,7 +234,8 @@ if ($display_name == "") {} else {
 
 $evil_input = "1";
 }}
-if (!eregi ("^([[:alnum:]]|_|\.|-|@)+$", $email_addy)) {
+// if (!eregi ("^([[:alnum:]]|_|\.|-|@)+$", $email_addy)) {
+if (!preg_match('/^([[:alnum:]]|_|.|-|@)+$/', $email_addy)) {
 if ($email_addy == "") {} else {
 
 	echo ' <div class="col-md-4"><div class="alert alert-warning alert-dismissible">
@@ -252,21 +259,21 @@ $evil_input = "1";
 
 if (!empty($office_name)) {
 $query = "select * from ".$db_prefix."offices where officename = '".$office_name."'";
-$result = mysql_query($query);
-while ($row=mysql_fetch_array($result)) {
+$result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
+while ($row=mysqli_fetch_array($result)) {
 $tmp_officename = "".$row['officename']."";
 }
-mysql_free_result($result);
+((mysqli_free_result($result) || (is_object($result) && (get_class($result) == "mysqli_result"))) ? true : false);
 if (!isset($tmp_officename)) {echo "Office is not defined.\n"; exit;}
 }
 
 if (!empty($group_name)) {
 $query = "select * from ".$db_prefix."groups where groupname = '".$group_name."'";
-$result = mysql_query($query);
-while ($row=mysql_fetch_array($result)) {
+$result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
+while ($row=mysqli_fetch_array($result)) {
 $tmp_groupname = "".$row['groupname']."";
 }
-mysql_free_result($result);
+((mysqli_free_result($result) || (is_object($result) && (get_class($result) == "mysqli_result"))) ? true : false);
 if (!isset($tmp_officename)) {echo "Group is not defined.\n"; exit;}
 }
 
@@ -337,19 +344,19 @@ $tmp_var2 = "Username";
   $query4 = "select empfullname, displayname, email, groups, office, admin, reports, time_admin, disabled from ".$db_prefix."employees
             where empfullname LIKE '%".$post_username."%' and office = '".$office_name."' and groups = '".$group_name."'
             order by empfullname";
-  $result4 = mysql_query($query4);
+  $result4 = mysqli_query($GLOBALS["___mysqli_ston"], $query4);
   }
   elseif (!empty($office_name)) {
   $query4 = "select empfullname, displayname, email, groups, office, admin, reports, time_admin, disabled from ".$db_prefix."employees
             where empfullname LIKE '%".$post_username."%' and office = '".$office_name."'
             order by empfullname";
-  $result4 = mysql_query($query4);
+  $result4 = mysqli_query($GLOBALS["___mysqli_ston"], $query4);
   }
   elseif (empty($office_name)) {
   $query4 = "select empfullname, displayname, email, groups, office, admin, reports, time_admin, disabled from ".$db_prefix."employees
             where empfullname LIKE '%".$post_username."%'
             order by empfullname";
-  $result4 = mysql_query($query4);
+  $result4 = mysqli_query($GLOBALS["___mysqli_ston"], $query4);
   }
 }
 
@@ -361,19 +368,19 @@ $tmp_var2 = "Display Name";
   $query4 = "select empfullname, displayname, email, groups, office, admin, reports, time_admin, disabled from ".$db_prefix."employees
             where displayname LIKE '%".$display_name."%' and office = '".$office_name."' and groups = '".$group_name."'
             order by empfullname";
-  $result4 = mysql_query($query4);
+  $result4 = mysqli_query($GLOBALS["___mysqli_ston"], $query4);
   }
   elseif (!empty($office_name)) {
   $query4 = "select empfullname, displayname, email, groups, office, admin, reports, time_admin, disabled from ".$db_prefix."employees
             where displayname LIKE '%".$display_name."%' and office = '".$office_name."'
             order by empfullname";
-  $result4 = mysql_query($query4);
+  $result4 = mysqli_query($GLOBALS["___mysqli_ston"], $query4);
   }
   elseif (empty($office_name)) {
   $query4 = "select empfullname, displayname, email, groups, office, admin, reports, time_admin, disabled from ".$db_prefix."employees
             where displayname LIKE '%".$display_name."%'
             order by empfullname";
-  $result4 = mysql_query($query4);
+  $result4 = mysqli_query($GLOBALS["___mysqli_ston"], $query4);
   }
 }
 
@@ -385,19 +392,19 @@ $tmp_var2 = "Email Address";
   $query4 = "select empfullname, displayname, email, groups, office, admin, reports, time_admin, disabled from ".$db_prefix."employees
             where email LIKE '%".$email_addy."%' and office = '".$office_name."' and groups = '".$group_name."'
             order by empfullname";
-  $result4 = mysql_query($query4);
+  $result4 = mysqli_query($GLOBALS["___mysqli_ston"], $query4);
   }
   elseif (!empty($office_name)) {
   $query4 = "select empfullname, displayname, email, groups, office, admin, reports, time_admin, disabled from ".$db_prefix."employees
             where email LIKE '%".$email_addy."%' and office = '".$office_name."'
             order by empfullname";
-  $result4 = mysql_query($query4);
+  $result4 = mysqli_query($GLOBALS["___mysqli_ston"], $query4);
   }
   elseif (empty($office_name)) {
   $query4 = "select empfullname, displayname, email, groups, office, admin, reports, time_admin, disabled from ".$db_prefix."employees
             where email LIKE '%".$email_addy."%'
             order by empfullname";
-  $result4 = mysql_query($query4);
+  $result4 = mysqli_query($GLOBALS["___mysqli_ston"], $query4);
   }
 }
 
@@ -405,11 +412,11 @@ $tmp_var = stripslashes($tmp_var);
 $tmp_var2 = stripslashes($tmp_var2);
 $row_count = "0";
 
-while ($row=mysql_fetch_array($result4)) {
+while ($row=mysqli_fetch_array($result4)) {
 
-@$user_count_rows = mysql_num_rows($user_count);
-@$admin_count_rows = mysql_num_rows($admin_count);
-@$reports_count_rows = mysql_num_rows($reports_count);
+@$user_count_rows = mysqli_num_rows($user_count);
+@$admin_count_rows = mysqli_num_rows($admin_count);
+@$reports_count_rows = mysqli_num_rows($reports_count);
 
 $row_count++;
 
@@ -487,7 +494,7 @@ echo "                <td>
                     <img border=0 src='../images/icons/delete.png' /></td>\n";
 echo "              </tr>\n";
 }
-mysql_free_result($result4);
+((mysqli_free_result($result4) || (is_object($result4) && (get_class($result4) == "mysqli_result"))) ? true : false);
 
 if ($row_count == "0") {
 

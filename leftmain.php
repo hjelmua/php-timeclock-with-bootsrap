@@ -49,9 +49,9 @@ if ($request == 'POST') {
         if (isset($displayname)) {
             $displayname = addslashes($displayname);
             $query = "select displayname from ".$db_prefix."employees where displayname = '".$displayname."'";
-            $emp_name_result = mysql_query($query);
+            $emp_name_result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
 
-            while ($row = mysql_fetch_array($emp_name_result)) {
+            while ($row = mysqli_fetch_array($emp_name_result)) {
                 $tmp_displayname = "".$row['displayname']."";
             }
             if ((!isset($tmp_displayname)) && (!empty($displayname))) {
@@ -64,9 +64,9 @@ if ($request == 'POST') {
         if (isset($fullname)) {
             $fullname = addslashes($fullname);
             $query = "select empfullname from ".$db_prefix."employees where empfullname = '".$fullname."'";
-            $emp_name_result = mysql_query($query);
+            $emp_name_result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
 
-            while ($row = mysql_fetch_array($emp_name_result)) {
+            while ($row = mysqli_fetch_array($emp_name_result)) {
                 $tmp_empfullname = "".$row['empfullname']."";
             }
             if ((!isset($tmp_empfullname)) && (!empty($fullname))) {
@@ -411,14 +411,14 @@ echo "<div class='box-body'>
 // query to populate dropdown with employee names //
 if ($show_display_name == "yes") {
     $query = "select displayname from ".$db_prefix."employees where disabled <> '1'  and empfullname <> 'admin' order by displayname";
-    $emp_name_result = mysql_query($query);
+    $emp_name_result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
     echo "
                            <select multiple class='form-control' name='left_displayname' size='6' tabindex=1>
                               <option value =''>
                                  ...
                               </option>";
 
-    while ($row = mysql_fetch_array($emp_name_result)) {
+    while ($row = mysqli_fetch_array($emp_name_result)) {
         $abc = stripslashes("".$row['displayname']."");
 
         if ((isset($_COOKIE['remember_me'])) && (stripslashes($_COOKIE['remember_me']) == $abc)) {
@@ -438,17 +438,17 @@ if ($show_display_name == "yes") {
                            </select>
     </div>
                         ";
-    mysql_free_result($emp_name_result);
+    ((mysqli_free_result($emp_name_result) || (is_object($emp_name_result) && (get_class($emp_name_result) == "mysqli_result"))) ? true : false);
 } else { // Display full employee names
     $query = "select empfullname from ".$db_prefix."employees where disabled <> '1'  and empfullname <> 'admin' order by empfullname";
-    $emp_name_result = mysql_query($query);
+    $emp_name_result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
     echo "
                            <select multiple class='form-control' name='left_fullname'>
                               <option value =''>
                                  ...
                               </option>";
 
-    while ($row = mysql_fetch_array($emp_name_result)) {
+    while ($row = mysqli_fetch_array($emp_name_result)) {
         $def = stripslashes("".$row['empfullname']."");
         if ((isset($_COOKIE['remember_me'])) && (stripslashes($_COOKIE['remember_me']) == $def)) {
             echo "
@@ -467,7 +467,7 @@ if ($show_display_name == "yes") {
                            </select>
     </div>
                         ";
-    mysql_free_result($emp_name_result);
+    ((mysqli_free_result($emp_name_result) || (is_object($emp_name_result) && (get_class($emp_name_result) == "mysqli_result"))) ? true : false);
 }
 
 // determine whether to use encrypted passwords or not //
@@ -488,7 +488,7 @@ echo "
 
 // query to populate dropdown with punchlist items //
 $query = "select punchitems from ".$db_prefix."punchlist";
-$punchlist_result = mysql_query($query);
+$punchlist_result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
 
 echo "
                            <select class='form-control' name='left_inout'>
@@ -496,7 +496,7 @@ echo "
                                  ...
                               </option>";
 
-while ($row = mysql_fetch_array($punchlist_result)) {
+while ($row = mysqli_fetch_array($punchlist_result)) {
     echo "
                               <option>
                                  ".$row['punchitems']."
@@ -507,7 +507,7 @@ echo "
                            </select>
 </div>
 ";
-mysql_free_result( $punchlist_result );
+((mysqli_free_result( $punchlist_result ) || (is_object( $punchlist_result ) && (get_class( $punchlist_result ) == "mysqli_result"))) ? true : false);
 
 echo "
                      <div class='form-group'>
@@ -596,7 +596,8 @@ echo "
 if ($request == 'POST') { // Process employee's punch information
     // signin/signout data passed over from timeclock.php //
     $inout = $_POST['left_inout'];
-    $notes = ereg_replace("[^[:alnum:] \,\.\?-]","",strtolower($_POST['left_notes']));
+//    $notes = ereg_replace("[^[:alnum:] \,\.\?-]","",strtolower($_POST['left_notes']));
+    $notes = preg_replace("[^[:alnum:] \,\.\?-]","",strtolower($_POST['left_notes']));
 
     // begin post validation //
     if ($use_passwd == "yes") {
@@ -604,9 +605,9 @@ if ($request == 'POST') { // Process employee's punch information
     }
 
     $query = "select punchitems from ".$db_prefix."punchlist";
-    $punchlist_result = mysql_query($query);
+    $punchlist_result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
 
-    while ($row = mysql_fetch_array($punchlist_result)) {
+    while ($row = mysqli_fetch_array($punchlist_result)) {
         $tmp_inout = "".$row['punchitems']."";
     }
 
@@ -709,22 +710,22 @@ if ($request == 'POST') { // Process employee's punch information
 
     // Get all the possible punch status names
     $query = "select punchitems from ".$db_prefix."punchlist";
-    $punchlist_result = mysql_query($query);
+    $punchlist_result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
     // We need to get the full name if we're only displaying the display name
     if ($show_display_name == "yes") {
         $query = "select empfullname from ".$db_prefix."employees where displayname = '".$displayname."'";
-        $sel_result = mysql_query($query);
-        while ($row = mysql_fetch_array($sel_result)) {
+        $sel_result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
+        while ($row = mysqli_fetch_array($sel_result)) {
             $fullname = stripslashes("".$row["empfullname"]."");
             $fullname = addslashes($fullname);
         }
     }
     // Get the current punch name of that employee
     $query = "select * from ".$db_prefix."info where fullname = '".$fullname."'";
-    $query = mysql_query($query);
+    $query = mysqli_query($GLOBALS["___mysqli_ston"], $query);
     // Find the last entry for the employee
     $largestStamp = 0;
-    while ($row = mysql_fetch_array($query)) {
+    while ($row = mysqli_fetch_array($query)) {
         if ($row['timestamp'] > $largestStamp) {
             $currentPunchName = $row['inout'];
             $largestStamp = $row['timestamp'];
@@ -732,17 +733,17 @@ if ($request == 'POST') { // Process employee's punch information
     }
     // Get the selected status
     $query = "SELECT `in_or_out` FROM ".$db_prefix."punchlist WHERE punchitems = '".$inout."'";
-    $query = mysql_query($query);
-    $row = mysql_fetch_array($query);
+    $query = mysqli_query($GLOBALS["___mysqli_ston"], $query);
+    $row = mysqli_fetch_array($query);
     $selectedStatus = $row['in_or_out']; // The first one should the be the current status code.
     if ($currentPunchName == "") {
         $currentStatus = "NEVER CLOCKED IN YET";
     } else { // Iterate through to find the current status of individual logging in
-        while ($punchName = mysql_fetch_array($punchlist_result)) {
+        while ($punchName = mysqli_fetch_array($punchlist_result)) {
             if ($currentPunchName == $punchName['punchitems']) {
                 $query = "SELECT `in_or_out` FROM ".$db_prefix."punchlist WHERE punchitems = '".$currentPunchName."'";
-                $query = mysql_query($query);
-                $row = mysql_fetch_array($query);
+                $query = mysqli_query($GLOBALS["___mysqli_ston"], $query);
+                $row = mysqli_fetch_array($query);
                 $currentStatus = $row['in_or_out']; // The first one should the be the current status code.
                 break;
             }
@@ -769,9 +770,9 @@ if ($request == 'POST') { // Process employee's punch information
 
     if ($use_passwd == "yes") { // Verify that the employee password is correct, if required
         $sel_query = "select empfullname, employee_passwd from ".$db_prefix."employees where empfullname = '".$fullname."'";
-        $sel_result = mysql_query($sel_query);
+        $sel_result = mysqli_query($GLOBALS["___mysqli_ston"], $sel_query);
 
-        while ($row=mysql_fetch_array($sel_result)) {
+        while ($row=mysqli_fetch_array($sel_result)) {
             $tmp_password = "".$row["employee_passwd"]."";
         }
 
@@ -810,9 +811,9 @@ if ($request == 'POST') { // Process employee's punch information
 
     if ($show_display_name == "yes") {
         $sel_query = "select empfullname from ".$db_prefix."employees where displayname = '".$displayname."'";
-        $sel_result = mysql_query($sel_query);
+        $sel_result = mysqli_query($GLOBALS["___mysqli_ston"], $sel_query);
 
-        while ($row=mysql_fetch_array($sel_result)) {
+        while ($row=mysqli_fetch_array($sel_result)) {
             $fullname = stripslashes("".$row["empfullname"]."");
             $fullname = addslashes($fullname);
         }
@@ -824,10 +825,10 @@ if ($request == 'POST') { // Process employee's punch information
         $query = "insert into ".$db_prefix."info (fullname, `inout`, timestamp, notes) values ('".$fullname."', '".$inout."', '".$tz_stamp."', '".$notes."')";
     }
 
-    $result = mysql_query($query);
+    $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
 
     $update_query = "update ".$db_prefix."employees set tstamp = '".$tz_stamp."' where empfullname = '".$fullname."'";
-    $other_result = mysql_query($update_query);
+    $other_result = mysqli_query($GLOBALS["___mysqli_ston"], $update_query);
 	    echo '<div class="col-md-4">
  <div class="callout callout-success">
                 <h4><i class="fa fa-bullhorn"></i> </h4>

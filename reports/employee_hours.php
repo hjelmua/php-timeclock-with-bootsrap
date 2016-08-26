@@ -156,7 +156,8 @@ function validInput($from_date, $to_date, $round_time, $show_details, $display_i
                      </td>
                   </tr>";
         $input_is_valid = False;
-    } elseif (! eregi ("^([0-9]?[0-9])+[-|/|.]+([0-9]?[0-9])+[-|/|.]+(([0-9]{2})|([0-9]{4}))$", $from_date, $date_regs)) {
+//    } elseif (! eregi ("^([0-9]?[0-9])+[-|/|.]+([0-9]?[0-9])+[-|/|.]+(([0-9]{2})|([0-9]{4}))$", $from_date, $date_regs)) {
+    }  elseif (!preg_match('/' . "^([0-9]?[0-9])+[-|\/|.]+([0-9]?[0-9])+[-|\/|.]+(([0-9]{2})|([0-9]{4}))$" . '/i', $from_date, $date_regs)) {
         if ($input_is_valid) {
             print "
       <table width=100% height=89% border=0 cellpadding=0 cellspacing=1>
@@ -219,7 +220,8 @@ function validInput($from_date, $to_date, $round_time, $show_details, $display_i
                      </td>
                   </tr>";
         $input_is_valid = False;
-    } elseif (! eregi ("^([0-9]?[0-9])+[-|/|.]+([0-9]?[0-9])+[-|/|.]+(([0-9]{2})|([0-9]{4}))$", $to_date, $date_regs)) {
+//    } elseif (! eregi ("^([0-9]?[0-9])+[-|/|.]+([0-9]?[0-9])+[-|/|.]+(([0-9]{2})|([0-9]{4}))$", $to_date, $date_regs)) {
+    }  elseif (!preg_match('/' . "^([0-9]?[0-9])+[-|\/|.]+([0-9]?[0-9])+[-|\/|.]+(([0-9]{2})|([0-9]{4}))$" . '/i', $from_date, $date_regs)) {
         if ($input_is_valid) {
             print "
       <table width=100% height=89% border=0 cellpadding=0 cellspacing=1>
@@ -354,7 +356,8 @@ if ($request == 'POST') {
     }
     $is_valid_input = validInput($from_date, $to_date, $round_time, $show_details, $display_ip, $displayEmptyHours);
     if ($is_valid_input) {
-        eregi ("^([0-9]?[0-9])+[-|/|.]+([0-9]?[0-9])+[-|/|.]+(([0-9]{2})|([0-9]{4}))$", $from_date, $date_regs);
+     //   eregi ("^([0-9]?[0-9])+[-|/|.]+([0-9]?[0-9])+[-|/|.]+(([0-9]{2})|([0-9]{4}))$", $from_date, $date_regs);
+        preg_match("/^([0-9]{1,2})[\-\/\.]([0-9]{1,2})[\-\/\.](([0-9]{2})|([0-9]{4}))$/i", $post_date , $date_regs);
         if ($calendar_style == "amer") {
             $from_month = $date_regs[1];
             $from_day = $date_regs[2];
@@ -364,7 +367,8 @@ if ($request == 'POST') {
             $from_day = $date_regs[1];
             $from_year = $date_regs[3];
         }
-        eregi ("^([0-9]?[0-9])+[-|/|.]+([0-9]?[0-9])+[-|/|.]+(([0-9]{2})|([0-9]{4}))$", $to_date, $date_regs);
+   //     eregi ("^([0-9]?[0-9])+[-|/|.]+([0-9]?[0-9])+[-|/|.]+(([0-9]{2})|([0-9]{4}))$", $to_date, $date_regs);
+	preg_match("/^([0-9]{1,2})[\-\/\.]([0-9]{1,2})[\-\/\.](([0-9]{2})|([0-9]{4}))$/i", $post_date , $date_regs);
         if ($calendar_style == "amer") {
             $to_month = $date_regs[1];
             $to_day = $date_regs[2];
@@ -375,8 +379,12 @@ if ($request == 'POST') {
             $to_year = $date_regs[3];
         }
         $from_date = "$from_month/$from_day/$from_year";
+		$from_dateeuro = "$from_day/$from_month/$from_year";
+// funkar ej $from_date = "$from_day/$from_month/$from_year";
         $from_timestamp = strtotime($from_date . " " . $report_start_time) - $tzo;
         $to_date = "$to_month/$to_day/$to_year";
+		$to_dateeuro = "$to_day/$to_month/$to_year";
+// funkar ej $to_date = "$to_day/$to_month/$to_year";
         $to_timestamp = strtotime($to_date . " " . $report_end_time) - $tzo + 60;
     }
 
@@ -663,16 +671,16 @@ if ($request == 'GET' || (! $is_valid_input)) { // Get the employee's report sel
     $rpt_month = gmdate('m',$time);
     $rpt_day = gmdate('d',$time);
     $rpt_year = gmdate('Y',$time);
-    $rpt_stamp = mktime ($rpt_hour, $rpt_min, $rpt_sec, $rpt_month, $rpt_day, $rpt_year);
+    $rpt_stamp = time ($rpt_hour, $rpt_min, $rpt_sec, $rpt_month, $rpt_day, $rpt_year);
 
     $rpt_stamp = $rpt_stamp + @$tzo;
     $rpt_time = date($timefmt, $rpt_stamp);
     $rpt_date = date($datefmt, $rpt_stamp);
 
     $query = "SELECT empfullname, displayname FROM ".$db_prefix."employees WHERE tstamp IS NOT NULL AND empfullname <> 'admin' ORDER BY displayname ASC";
-    $result = mysql_query($query);
+    $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
 
-    while ($row = mysql_fetch_array($result)) {
+    while ($row = mysqli_fetch_array($result)) {
         $empfullname = stripslashes("".$row['empfullname']."");
         $displayname = stripslashes("".$row['displayname']."");
         if ($empfullname == $_SESSION['valid_report_employee']) {
@@ -696,9 +704,13 @@ if ($request == 'GET' || (! $is_valid_input)) { // Get the employee's report sel
          </tr>
          <tr>
             <td width=80%> </td>
-            <td nowrap >
-               Date Range: $from_date - $to_date
-            </td>
+            <td nowrap >";
+	        if ($calendar_style == "amer") {
+	              echo "Date Range: $from_date - $to_date";
+	        } elseif ($calendar_style == "euro") {
+	            echo "Date Range: $from_dateeuro - $to_dateeuro";
+	        }
+            echo "</td>
          </tr>";
     if (strtolower($user_or_display) == "display") {
         echo "
@@ -727,12 +739,12 @@ if ($request == 'GET' || (! $is_valid_input)) { // Get the employee's report sel
     $row_color = $color1; // Initial row color
 
     $query = "SELECT ".$db_prefix."info.`inout`, ".$db_prefix."info.timestamp, ".$db_prefix."info.notes, ".$db_prefix."info.ipaddress, ".$db_prefix."punchlist.in_or_out, ".$db_prefix."punchlist.punchitems, ".$db_prefix."punchlist.color from ".$db_prefix."info, ".$db_prefix."punchlist, ".$db_prefix."employees WHERE ".$db_prefix."info.fullname LIKE ('".$empfullname."') AND ".$db_prefix."info.timestamp >= '".$from_timestamp."' AND ".$db_prefix."info.timestamp < '".$to_timestamp."' AND ".$db_prefix."info.`inout` = ".$db_prefix."punchlist.punchitems AND ".$db_prefix."employees.empfullname = '".$empfullname."' AND ".$db_prefix."employees.empfullname <> 'admin' ORDER BY ".$db_prefix."info.timestamp ASC";
-    $result = mysql_query($query);
+    $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
 
     $current_date = date($datefmt, "0000"); // Tracks what date we're currently displaying
     $total_hours = 0.0; // Tracks the hours worked in the report
     $daily_hour = $current_in_stamp = 0.0;
-    while ($row = mysql_fetch_array($result)) { // Process each punch
+    while ($row = mysqli_fetch_array($result)) { // Process each punch
         $info_inout = "".$row['inout']."";
         $info_timestamp = "".$row['timestamp']."" + $tzo;
         $info_notes = "".$row['notes']."";
@@ -850,6 +862,6 @@ if ($request == 'GET' || (! $is_valid_input)) { // Get the employee's report sel
 include '../footer.php';
 include '../theme/templates/controlsidebar.inc'; 
 include '../theme/templates/endmain.inc';
-include '../theme/templates/adminfooterscripts.inc';
+include '../theme/templates/reportsfooterscripts.inc';
 exit;
 ?>

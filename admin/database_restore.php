@@ -114,37 +114,37 @@ function validInput($backup_file) {
  */
 function clear_table($table) {
     $query = "DELETE FROM $table";
-    $result = mysql_query($query);
+    $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
     if ($result == false) {
         echo "
-                        Failed to clear table: $table, ".mysql_error().". <br>";
+                        Failed to clear table: $table, ".((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)).". <br>";
     } else {
         echo "
                         Cleared table: $table. <br>";
     }
-    mysql_free_result($result);
+    ((mysqli_free_result($result) || (is_object($result) && (get_class($result) == "mysqli_result"))) ? true : false);
 }
 
 /**
  * Restores information on to the database into table.
- * @param $data is the MySQL data insertion statement.
+ * @param $data is the mysql data insertion statement.
  * @param $table is the table to place the data into.
  * @note If $table does not exist the restore process for the table is skipped.
  */
 function restore_table($data, $table)
 {
     // Add data to the table in the database
-    $result = mysql_query($data);
+    $result = mysqli_query($GLOBALS["___mysqli_ston"], $data);
     if ($result == false) {
         echo "
-                        Failed to restore data, ".mysql_error().". <br>
+                        Failed to restore data, ".((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)).". <br>
                         <br>";
     } else {
         echo "
                         Successfully restored data. <br>
                         <br>";
     }
-    mysql_free_result($result);
+    ((mysqli_free_result($result) || (is_object($result) && (get_class($result) == "mysqli_result"))) ? true : false);
 }
 
 write_admin_interface($title);
@@ -223,14 +223,17 @@ echo "          </div></div></div></div>\n";
     $filename = $post_backup_file['tmp_name'];
     $file_handle = fopen($filename, "r");
     while ($line = fgets($file_handle)) {
-        if (ereg("# Data from table: ", $line)) {
-            $table = split("# Data from table: ", $line);
+    //    if (ereg("# Data from table: ", $line)) {
+	  if (preg_match("/# Data from table: /", $line)) {
+        //    $table = split("# Data from table: ", $line);
+	    $table = explode('# Data from table: ', $line);
             $table = rtrim($table[1]); // Strip ending characters to get only the table name
             echo "
                         <strong>Restore $table:</strong> <br>
                         Clearing table: $table... <br>";
             clear_table($table);
-        } elseif (ereg("INSERT INTO ", $line)) {
+     //   } elseif (ereg("INSERT INTO ", $line)) {
+	} elseif (preg_match('/INSERT INTO /', $line)) {
             $line = rtrim($line); // Strip ending characters
             restore_table($line, $table);
         }

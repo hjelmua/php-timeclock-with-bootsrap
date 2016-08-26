@@ -83,13 +83,13 @@ if ($request == 'GET') { // Display employee add time interface
     $get_user = addslashes($get_user);
 
     $query = "select * from ".$db_prefix."employees where empfullname = '".$get_user."' order by empfullname";
-    $result = mysql_query($query);
+    $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
 
-    while ($row=mysql_fetch_array($result)) {
+    while ($row=mysqli_fetch_array($result)) {
         $username = stripslashes("".$row['empfullname']."");
         $displayname = stripslashes("".$row['displayname']."");
     }
-    mysql_free_result($result);
+    ((mysqli_free_result($result) || (is_object($result) && (get_class($result) == "mysqli_result"))) ? true : false);
 
     $get_user = stripslashes($_GET['username']);
 
@@ -148,17 +148,17 @@ echo'    	                       <div class="input-group-addon">
     // query to populate dropdown with statuses //
 
     $query2 = "select * from ".$db_prefix."punchlist order by punchitems asc";
-    $result2 = mysql_query($query2);
+    $result2 = mysqli_query($GLOBALS["___mysqli_ston"], $query2);
     echo '<div class="form-group"><label>Status:</label>';
     echo "             <select class='form-control select2' name='post_statusname'>\n";
     echo "                      <option value ='1'>Choose One</option>\n";
 
-    while ($row2=mysql_fetch_array($result2)) {
+    while ($row2=mysqli_fetch_array($result2)) {
         echo "                        <option>".$row2['punchitems']."</option>\n";
     }
     echo "                      </select>&nbsp;*\n";
     echo '</div>';
-    mysql_free_result($result2);
+    ((mysqli_free_result($result2) || (is_object($result2) && (get_class($result2) == "mysqli_result"))) ? true : false);
     echo '<div class="form-group"><label>Notes:</label><div class="input-group">';
     echo "              <input type='text' size='25' maxlength='250' name='post_notes'>\n";
             echo '</div></div>';
@@ -209,8 +209,8 @@ echo'    	                       <div class="input-group-addon">
     // begin post validation //
     if (!empty($get_user)) {
         $query = "select * from ".$db_prefix."employees where empfullname = '".$get_user."'";
-        $result = mysql_query($query);
-        while ($row=mysql_fetch_array($result)) {
+        $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
+        while ($row=mysqli_fetch_array($result)) {
             $tmp_get_user = "".$row['empfullname']."";
         }
         if (!isset($tmp_get_user)) {
@@ -221,8 +221,8 @@ echo'    	                       <div class="input-group-addon">
 
     if (!empty($post_username)) {
         $query = "select * from ".$db_prefix."employees where empfullname = '".$post_username."'";
-        $result = mysql_query($query);
-        while ($row=mysql_fetch_array($result)) {
+        $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
+        while ($row=mysqli_fetch_array($result)) {
             $tmp_username = "".$row['empfullname']."";
         }
         if (!isset($tmp_username)) {
@@ -233,8 +233,8 @@ echo'    	                       <div class="input-group-addon">
 
     if (!empty($post_displayname)) {
         $query = "select * from ".$db_prefix."employees where empfullname = '".$post_username."' and displayname = '".$post_displayname."'";
-        $result = mysql_query($query);
-        while ($row=mysql_fetch_array($result)) {
+        $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
+        while ($row=mysqli_fetch_array($result)) {
             $tmp_post_displayname = "".$row['displayname']."";
         }
         if (!isset($tmp_post_displayname)) {
@@ -246,13 +246,13 @@ echo'    	                       <div class="input-group-addon">
     if (!empty($post_statusname)) {
         if ($post_statusname != '1') {
             $query = "select * from ".$db_prefix."punchlist where punchitems = '".$post_statusname."'";
-            $result = mysql_query($query);
+            $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
 
-            while ($row=mysql_fetch_array($result)) {
+            while ($row=mysqli_fetch_array($result)) {
                 $punchitems = "".$row['punchitems']."";
                 $color = "".$row['color']."";
             }
-            mysql_free_result($result);
+            ((mysqli_free_result($result) || (is_object($result) && (get_class($result) == "mysqli_result"))) ? true : false);
             if (!isset($punchitems)) {
                 echo "Something is fishy here.\n";
             exit;
@@ -282,7 +282,8 @@ echo'    	                       <div class="input-group-addon">
     }
 
     // Escape input
-    $post_notes = ereg_replace("[^[:alnum:] \,\.\?-]", "", $post_notes);
+//    $post_notes = ereg_replace("[^[:alnum:] \,\.\?-]", "", $post_notes);
+    $post_notes = preg_replace('/' . "[^[:alnum:] \,\.\?-]" . '/', "", $post_notes);
     if ($post_notes == "") {
         $post_notes = " ";
     }
@@ -291,7 +292,8 @@ echo'    	                       <div class="input-group-addon">
     if (empty($post_why)) {
         $post_why = '';
     } else {
-        $post_why = ereg_replace("[^[:alnum:] \,\.\?-]", "", $post_why);
+//        $post_why = ereg_replace("[^[:alnum:] \,\.\?-]", "", $post_why);
+	$post_why = preg_replace('/' . "[^[:alnum:] \,\.\?-]". '/', "", $post_why);
     }
 
     // end post validation //
@@ -341,12 +343,14 @@ echo'    	                       <div class="input-group-addon">
             echo "              <tr>\n";
             echo "                <td class=table_rows width=20 align=center><img src='../images/icons/cancel.png' /></td><td class=table_rows_red> A Status must be chosen.</td></tr>\n";
             echo "            </table>\n";
-        } elseif (!eregi ("^([[:alnum:]]| |-|_|\.)+$", $post_statusname)) {
+//        } elseif (!eregi ("^([[:alnum:]]| |-|_|\.)+$", $post_statusname)) {
+ } elseif (!preg_match('/' . "^([[:alnum:]]| |-|_|\.)+$" . '/i', $post_statusname)) {
             echo "            <table align=center class=table_border width=60% border=0 cellpadding=0 cellspacing=3>\n";
             echo "              <tr>\n";
             echo "                <td class=table_rows width=20 align=center><img src='../images/icons/cancel.png' /></td><td class=table_rows_red> Alphanumeric characters, hyphens, underscores, spaces, and periods are allowed in a Status Name.</td></tr>\n";
             echo "            </table>\n";
-        } elseif (!eregi ("^([0-9]{1,2})[-,/,.]([0-9]{1,2})[-,/,.](([0-9]{2})|([0-9]{4}))$", $post_date)) {
+ //       } elseif (!eregi ("^([0-9]{1,2})[-,/,.]([0-9]{1,2})[-,/,.](([0-9]{2})|([0-9]{4}))$", $post_date)) {
+ } elseif  (!preg_match("/^([0-9]{1,2})[\-\/\.]([0-9]{1,2})[\-\/\.](([0-9]{2})|([0-9]{4}))$/i", $post_date)) {
             echo "            <table align=center class=table_border width=60% border=0 cellpadding=0 cellspacing=3>\n";
             echo "              <tr>\n";
             echo "                <td class=table_rows width=20 align=center><img src='../images/icons/cancel.png' /></td><td class=table_rows_red> A valid Date is required.</td></tr>\n";
@@ -470,12 +474,12 @@ if (preg_match("/^([0-9]{1,2})[\-\/\.]([0-9]{1,2})[\-\/\.](([0-9]{2})|([0-9]{4})
         // query to populate dropdown with statuses //
 
         $query2 = "select * from ".$db_prefix."punchlist order by punchitems asc";
-        $result2 = mysql_query($query2);
+        $result2 = mysqli_query($GLOBALS["___mysqli_ston"], $query2);
 
         echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Status:</td><td colspan=2 width=80% style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;'> <select name='post_statusname'>\n";
         echo "                        <option value ='1'>Choose One</option>\n";
 
-        while ($row2=mysql_fetch_array($result2)) {
+        while ($row2=mysqli_fetch_array($result2)) {
             if ($post_statusname == "".$row2['punchitems']."") {
                 echo "                        <option selected>".$row2['punchitems']."</option>\n";
             } else {
@@ -483,7 +487,7 @@ if (preg_match("/^([0-9]{1,2})[\-\/\.]([0-9]{1,2})[\-\/\.](([0-9]{2})|([0-9]{4})
             }
         }
         echo "                      </select>&nbsp;*</td></tr>\n";
-        mysql_free_result($result2);
+        ((mysqli_free_result($result2) || (is_object($result2) && (get_class($result2) == "mysqli_result"))) ? true : false);
 
         echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Notes:</td><td align=left colspan=2 width=80% style='padding-left:20px;'><input type='text' size='25' maxlength='250' name='post_notes' value='$post_notes'></td></tr>\n";
         if ($require_time_admin_edit_reason == "yes") {
@@ -521,12 +525,12 @@ if (preg_match("/^([0-9]{1,2})[\-\/\.]([0-9]{1,2})[\-\/\.](([0-9]{2})|([0-9]{4})
 
         // check for duplicate time for $post_username
         $query = "select * from ".$db_prefix."info where fullname = '".$post_username."'";
-        $result = mysql_query($query);
+        $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
 
         $post_username = stripslashes($post_username);
         $post_displayname = stripslashes($post_displayname);
 
-        while ($row=mysql_fetch_array($result)) {
+        while ($row=mysqli_fetch_array($result)) {
             $info_table_timestamp = "".$row['timestamp']."";
             if ($timestamp == $info_table_timestamp) {
                 echo "            <table align=center class=table width=60% border=0 cellpadding=0 cellspacing=3>\n";
@@ -552,12 +556,12 @@ if (preg_match("/^([0-9]{1,2})[\-\/\.]([0-9]{1,2})[\-\/\.](([0-9]{2})|([0-9]{4})
 
                 // query to populate dropdown with statuses //
                 $query2 = "select * from ".$db_prefix."punchlist order by punchitems asc";
-                $result2 = mysql_query($query2);
+                $result2 = mysqli_query($GLOBALS["___mysqli_ston"], $query2);
 
                 echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Status:</td><td colspan=2 width=80% style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;'> <select name='post_statusname'>\n";
                 echo "                        <option value ='1'>Choose One</option>\n";
 
-                while ($row2=mysql_fetch_array($result2)) {
+                while ($row2=mysqli_fetch_array($result2)) {
                     if ($post_statusname == "".$row2['punchitems']."") {
                         echo "                        <option selected>".$row2['punchitems']."</option>\n";
                     } else {
@@ -565,7 +569,7 @@ if (preg_match("/^([0-9]{1,2})[\-\/\.]([0-9]{1,2})[\-\/\.](([0-9]{2})|([0-9]{4})
                     }
                 }
                 echo "                      </select>&nbsp;*</td></tr>\n";
-                mysql_free_result($result2);
+                ((mysqli_free_result($result2) || (is_object($result2) && (get_class($result2) == "mysqli_result"))) ? true : false);
 
                 echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Notes:</td><td align=left colspan=2 width=80% style='padding-left:20px;'><input type='text' size='17' maxlength='250' name='post_notes' value='$post_notes'></td></tr>\n";
                 echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Reason For Addition:</td><td align=left colspan=2 width=80% style='padding-left:20px;'><input type='text' size='17' maxlength='250' name='post_why' value='$post_why'></td></tr>\n";
@@ -583,23 +587,23 @@ if (preg_match("/^([0-9]{1,2})[\-\/\.]([0-9]{1,2})[\-\/\.](([0-9]{2})|([0-9]{4})
                 exit;
             }
         }
-        mysql_free_result($result);
+        ((mysqli_free_result($result) || (is_object($result) && (get_class($result) == "mysqli_result"))) ? true : false);
 
         // check to see if this would be the most recent time for $post_username. if so, run the update query for the employees table.
         $post_username = addslashes($post_username);
         $post_displayname = addslashes($post_displayname);
 
         $query = "select * from ".$db_prefix."employees where empfullname = '".$post_username."'";
-        $result = mysql_query($query);
+        $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
 
-        while ($row=mysql_fetch_array($result)) {
+        while ($row=mysqli_fetch_array($result)) {
             $employees_table_timestamp = "".$row['tstamp']."";
         }
-        mysql_free_result($result);
+        ((mysqli_free_result($result) || (is_object($result) && (get_class($result) == "mysqli_result"))) ? true : false);
 
         if ($timestamp > $employees_table_timestamp) {
             $update_query = "update ".$db_prefix."employees set tstamp = '".$timestamp."' where empfullname = '".$post_username."'";
-            $update_result = mysql_query($update_query);
+            $update_result = mysqli_query($GLOBALS["___mysqli_ston"], $update_query);
         }
 
         // determine who the authenticated user is for audit log
@@ -624,14 +628,14 @@ if (preg_match("/^([0-9]{1,2})[\-\/\.]([0-9]{1,2})[\-\/\.](([0-9]{2})|([0-9]{4})
         // add the time to the info table for $post_username and audit log
         if (strtolower($ip_logging) == "yes") {
             $query = "insert into ".$db_prefix."info (fullname, `inout`, timestamp, notes, ipaddress) values ('".$post_username."', '".$post_statusname."', '".$timestamp."', '".$post_notes."', '".$connecting_ip."')";
-            $result = mysql_query($query);
+            $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
             $query2 = "insert into ".$db_prefix."audit (modified_by_ip, modified_by_user, modified_when, modified_from, modified_to, modified_why, user_modified) values ('".$connecting_ip."', '".$user."', '".$time_tz_stamp."', '0', '".$timestamp."', '".$post_why."', '".$post_username."')";
-            $result2 = mysql_query($query2);
+            $result2 = mysqli_query($GLOBALS["___mysqli_ston"], $query2);
         } else {
             $query = "insert into ".$db_prefix."info (fullname, `inout`, timestamp, notes) values ('".$post_username."', '".$post_statusname."', '".$timestamp."', '".$post_notes."')";
-            $result = mysql_query($query);
+            $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
             $query2 = "insert into ".$db_prefix."audit (modified_by_user, modified_when, modified_from, modified_to, modified_why, user_modified) values ('".$user."', '".$time_tz_stamp."', '0', '".$timestamp."', '".$post_why."', '".$post_username."')";
-            $result2 = mysql_query($query2);
+            $result2 = mysqli_query($GLOBALS["___mysqli_ston"], $query2);
         }
 
         $post_username = stripslashes($post_username);

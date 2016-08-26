@@ -103,7 +103,9 @@ if ($request == 'GET') {
     echo "<table width=100% height=89% border=0 cellpadding=0 cellspacing=1>\n";
     echo "  <tr valign=top>\n";
     echo "    <td class=left_main width=180 align=left scope=col>\n";
+*/
     echo "      <form name='form' action='$self' method='post'>\n";
+	/*
     echo "      <table class=hide width=100% border=0 cellpadding=1 cellspacing=0>\n";
     echo "        <tr><td class=left_rows height=11></td></tr>\n";
     echo "        <tr><td class=left_rows_headings height=18 valign=middle>Users</td></tr>\n";
@@ -222,13 +224,15 @@ end moved */
         echo "            </table>\n";
         $evil = "1";
         echo "            <br />\n";
-    } elseif ((!eregi ("^(#[a-fA-F0-9]{6})+$", $color1)) && (!eregi ("^([a-fA-F0-9]{6})+$", $color1))) {
+   //   } elseif ((!eregi ("^(#[a-fA-F0-9]{6})+$", $color1)) && (!eregi ("^([a-fA-F0-9]{6})+$", $color1))) {
+    } elseif ((!preg_match('/' . "^(#[a-fA-F0-9]{6})+$" . '/i', $color1)) && (!preg_match('/' . "^([a-fA-F0-9]{6})+$" . '/i', $color1))) {
         echo "            <table align=center class=table_border width=100% border=0 cellpadding=0 cellspacing=3>\n";
         echo "              <tr><td width=20 align=center height=25 class=table_rows><img src='../images/icons/cancel.png' /></td> <td class=table_rows_red height=25><b>color1</b> is not a valid color.</td></tr>\n";
         echo "            </table>\n";
         $evil = "1";
         echo "            <br />\n";
-    } elseif ((!eregi ("^(#[a-fA-F0-9]{6})+$", $color2)) && (!eregi ("^([a-fA-F0-9]{6})+$", $color2))) {
+//      } elseif ((!eregi ("^(#[a-fA-F0-9]{6})+$", $color2)) && (!eregi ("^([a-fA-F0-9]{6})+$", $color2))) {
+    } elseif ((!preg_match('/' . "^(#[a-fA-F0-9]{6})+$" . '/i', $color2)) && (!preg_match('/' . "^([a-fA-F0-9]{6})+$" . '/i', $color2))) {
         echo "            <table align=center class=table_border width=100% border=0 cellpadding=0 cellspacing=3>\n";
         echo "              <tr><td width=20 align=center height=25 class=table_rows><img src='../images/icons/cancel.png' /></td> <td class=table_rows_red height=25><b>color2</b> is not a valid color.</td></tr>\n";
         echo "            </table>\n";
@@ -270,7 +274,8 @@ end moved */
         echo "            </table>\n";
         $evil = "1";
         echo "            <br />\n";
-    } elseif ((strlen($metar) > 4) || (!eregi ("^([a-zA-Z]{4})+$", $metar))) {
+//    } elseif ((strlen($metar) > 4) || (!eregi ("^([a-zA-Z]{4})+$", $metar))) {
+    } elseif ((strlen($metar) > 4) || (!preg_match('/' . "^([a-zA-Z]{4})+$" . '/i', $metar))) {
         echo "            <table align=center class=table_border width=100% border=0 cellpadding=0 cellspacing=3>\n";
         echo "              <tr><td width=20 align=center height=25 class=table_rows><img src='../images/icons/cancel.png' /></td> <td class=table_rows_red height=25><b>metar</b> is not a valid metar.</td></tr>\n";
         echo "            </table>\n";
@@ -323,12 +328,20 @@ end moved */
             echo "              <tr><td width=20 align=center height=25 class=table_rows><img src='../images/icons/cancel.png' /></td> <td class=table_rows_red height=25>One of the <b>allowed_networks</b> is longer than the allowed 21 characters.</td></tr>\n";
             echo "            </table>\n";
             echo "            <br />\n";
-        } elseif ((!eregi ("^([0-9]?[0-9])+:+([0-9]+[0-9])+([a|p]+m)$", $report_start_time, $start_time_regs)) && (!eregi ("^([0-9]?[0-9])+:+([0-9]+[0-9])+( [a|p]+m)$", $report_start_time, $start_time_regs)) && (!eregi ("^([0-9]?[0-9])+:+([0-9]+[0-9])$", $report_start_time, $start_time_regs))) {
+//        } elseif ((!eregi ("^([0-9]?[0-9])+:+([0-9]+[0-9])+([a|p]+m)$", $report_start_time, $start_time_regs)) && (!eregi ("^([0-9]?[0-9])+:+([0-9]+[0-9])+( [a|p]+m)$", $report_start_time, $start_time_regs)) && (!eregi ("^([0-9]?[0-9])+:+([0-9]+[0-9])$", $report_start_time, $start_time_regs))) {
+		
+        } elseif ((!preg_match('/' . "^([0-9]?[0-9])+:+([0-9]+[0-9])+([a|p]+m)$" . '/i', $report_start_time, $start_time_regs)) &&
+                  (!preg_match('/' . "^([0-9]?[0-9])+:+([0-9]+[0-9])+( [a|p]+m)$" . '/i', $report_start_time, $start_time_regs)) &&
+                  (!preg_match('/' . "^([0-9]?[0-9])+:+([0-9]+[0-9])$" . '/i', $report_start_time, $start_time_regs))) {
             echo "            <table align=center class=table_border width=100% border=0 cellpadding=0 cellspacing=3>\n";
             echo "              <tr><td width=20 align=center height=25 class=table_rows><img src='../images/icons/cancel.png' /></td> <td class=table_rows_red height=25><b>report_start_time</b> is not a valid time.</td></tr>\n";
             echo "            </table>\n";
             echo "            <br />\n";
-        } elseif ((!eregi ("^([0-9]?[0-9])+:+([0-9]+[0-9])+([a|p]+m)$", $report_end_time, $end_time_regs)) && (!eregi ("^([0-9]?[0-9])+:+([0-9]+[0-9])+( [a|p]+m)$", $report_end_time, $end_time_regs)) && (!eregi ("^([0-9]?[0-9])+:+([0-9]+[0-9])$", $report_end_time, $end_time_regs))) {
+//        } elseif ((!eregi ("^([0-9]?[0-9])+:+([0-9]+[0-9])+([a|p]+m)$", $report_end_time, $end_time_regs)) && (!eregi ("^([0-9]?[0-9])+:+([0-9]+[0-9])+( [a|p]+m)$", $report_end_time, $end_time_regs)) && (!eregi ("^([0-9]?[0-9])+:+([0-9]+[0-9])$", $report_end_time, $end_time_regs))) {
+		
+        } elseif ((!preg_match('/' . "^([0-9]?[0-9])+:+([0-9]+[0-9])+([a|p]+m)$" . '/i', $report_end_time, $end_time_regs)) &&
+                  (!preg_match('/' . "^([0-9]?[0-9])+:+([0-9]+[0-9])+( [a|p]+m)$" . '/i', $report_end_time, $end_time_regs)) &&
+                  (!preg_match('/' . "^([0-9]?[0-9])+:+([0-9]+[0-9])$" . '/i', $report_end_time, $end_time_regs))) {
             echo "            <table align=center class=table_border width=100% border=0 cellpadding=0 cellspacing=3>\n";
             echo "              <tr><td width=20 align=center height=25 class=table_rows><img src='../images/icons/cancel.png' /></td> <td class=table_rows_red height=25><b>report_end_time</b> is not a valid time.</td></tr>\n";
             echo "            </table>\n";
@@ -360,7 +373,7 @@ end moved */
     echo "              <tr><td colspan=3 class=table_rows width=10% align=left style='padding-left:4px;'>Listed below are the settings that have been chosen within config.inc.php, the config file for PHP Timeclock. Edit as you see fit. Then click the \"Next\" button near the bottom of the page to continue.</td></tr>\n";
     echo "              <tr><td height=40 class=table_rows width=10% align=left style='padding-left:4px;color:#27408b;'><b><u>VARIABLE</u></b></td> <td class=table_rows width=10% align=left style='color:#27408b;'><b><u>VALUE</u></b></td> <td class=table_rows width=80% align=left style='padding-left:10px;color:#27408b;'><b><u>DESCRIPTION</u></b></td></tr>\n";
     // Database settings
-    echo "              <tr><th colspan=3 class=table_heading_no_color nowrap align=left>MySql DB Settings</th></tr>\n";
+    echo "              <tr><th colspan=3 class=table_heading_no_color nowrap align=left>mysql DB Settings</th></tr>\n";
     // Display hostname
     echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>db_hostname:</td> <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top>$db_hostname</td> <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is the hostname for your mysql server, default is <b>localhost</b>.</td></tr>\n";
     echo "              <input type=\"hidden\" name=\"db_hostname\" value=\"$db_hostname\">\n";
@@ -369,7 +382,7 @@ end moved */
     echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>db_name:</td> <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top>$db_name</td> <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is the name of the mysql database you created during the install.</td></tr>\n";
     echo "              <input type=\"hidden\" name=\"db_name\" value=\"$db_name\">\n";
     $row_count++; $row_color = ($row_count % 2) ? $color2 : $color1;
-    // Display MySQL user-name
+    // Display mysql user-name
     echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>db_username:</td> <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top>$db_username</td> <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is the mysql username you created during the install.</td></tr>\n";
     echo "              <input type=\"hidden\" name=\"db_username\" value=\"$db_username\">\n";
     $row_count++; $row_color = ($row_count % 2) ? $color2 : $color1;
@@ -784,9 +797,9 @@ end moved */
         echo "                     <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top> <select name='group_name'> <option value = 'all'>all</option>\n";
 
         $query = "select DISTINCT(groupname) from groups order by groupname asc";
-        $result = mysql_query($query);
+        $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
 
-        while ($row=mysql_fetch_array($result)) {
+        while ($row=mysqli_fetch_array($result)) {
             if ("".$row['groupname']."" == $display_group) {
                 echo "                    <option selected>".$row['groupname']."</option>\n";
             } else {
@@ -1111,6 +1124,7 @@ end moved */
     include 'topmain.php';
     include 'leftmain.php';
 
+	/*
     echo "<table width=100% height=89% border=0 cellpadding=0 cellspacing=1>\n";
     echo "  <tr valign=top>\n";
     echo "    <td class=left_main width=180 align=left scope=col>\n";
@@ -1142,6 +1156,7 @@ end moved */
     echo "      <table width=100% height=100% border=0 cellpadding=10 cellspacing=1>\n";
     echo "        <tr class=right_main_text>\n";
     echo "          <td valign=top>\n";
+	*/
     echo "            <form name='form' action='$self' method='post'>\n";
 
     // Set posted values
@@ -1213,8 +1228,8 @@ end moved */
 
     if ($post_office_name != 'all') {
         $query = "select * from offices where officename = '".$post_office_name."'";
-        $result = mysql_query($query);
-        while ($row=mysql_fetch_array($result)) {
+        $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
+        while ($row=mysqli_fetch_array($result)) {
             $officename = "".$row['officename']."";
         }
         if (!isset($officename)) {
@@ -1225,8 +1240,8 @@ end moved */
 
     if ($post_group_name != 'all') {
         $query2 = "select * from groups where groupname = '".$post_group_name."'";
-        $result2 = mysql_query($query2);
-        while ($row2=mysql_fetch_array($result2)) {
+        $result2 = mysqli_query($GLOBALS["___mysqli_ston"], $query2);
+        while ($row2=mysqli_fetch_array($result2)) {
             $groupname = "".$row2['groupname']."";
         }
         if (!isset($groupname)) {
@@ -1344,12 +1359,14 @@ end moved */
         echo "              <tr><td width=20 align=center height=25 class=table_rows><img src='../images/icons/cancel.png' /></td> <td class=table_rows_red height=25><b>use_server_tz</b> and <b>use_client_tz</b> cannot both be set to  \"yes\".</td></tr>\n";
         echo "            </table>\n";
         $evil_post = "1";
-    } elseif ((!eregi ("^(#[a-fA-F0-9]{6})+$", $post_color1)) && (!eregi ("^([a-fA-F0-9]{6})+$", $post_color1))) {
+//    } elseif ((!eregi ("^(#[a-fA-F0-9]{6})+$", $post_color1)) && (!eregi ("^([a-fA-F0-9]{6})+$", $post_color1))) {
+    } elseif ((!preg_match('/' . "^(#[a-fA-F0-9]{6})+$" . '/i', $post_color1)) && (!preg_match('/' . "^([a-fA-F0-9]{6})+$" . '/i', $post_color1))) {
         echo "            <table align=center class=table_border width=100% border=0 cellpadding=0 cellspacing=3>\n";
         echo "              <tr><td width=20 align=center height=25 class=table_rows><img src='../images/icons/cancel.png' /></td> <td class=table_rows_red height=25><b>color1</b> is not a valid color.</td></tr>\n";
         echo "            </table>\n";
         $evil_post = "1";
-    } elseif ((!eregi ("^(#[a-fA-F0-9]{6})+$", $post_color2)) && (!eregi ("^([a-fA-F0-9]{6})+$", $post_color2))) {
+//    } elseif ((!eregi ("^(#[a-fA-F0-9]{6})+$", $post_color2)) && (!eregi ("^([a-fA-F0-9]{6})+$", $post_color2))) {
+    } elseif ((!preg_match('/' . "^(#[a-fA-F0-9]{6})+$" . '/i', $post_color2)) && (!preg_match('/' . "^([a-fA-F0-9]{6})+$" . '/i', $post_color2))) {
         echo "            <table align=center class=table_border width=100% border=0 cellpadding=0 cellspacing=3>\n";
         echo "              <tr><td width=20 align=center height=25 class=table_rows><img src='../images/icons/cancel.png' /></td> <td class=table_rows_red height=25><b>color2</b> is not a valid color.</td></tr>\n";
         echo "            </table>\n";
@@ -1394,7 +1411,8 @@ end moved */
         echo "              <tr><td width=20 align=center height=25 class=table_rows><img src='../images/icons/cancel.png' /></td> <td class=table_rows_red height=25><b>display_weather</b> does not equal \"yes\" or \"no\".</td></tr>\n";
         echo "            </table>\n";
         $evil_post = "1";
-    } elseif ((isset($post_metar)) && (!eregi ("^([a-zA-Z]{4})+$", $post_metar))) {
+//    } elseif ((isset($post_metar)) && (!eregi ("^([a-zA-Z]{4})+$", $post_metar))) {
+    } elseif ((isset($post_metar)) && (!preg_match('/' . "^([a-zA-Z]{4})+$" . '/i', $post_metar))) {
         echo "            <table align=center class=table_border width=100% border=0 cellpadding=0 cellspacing=3>\n";
         echo "              <tr><td width=20 align=center height=25 class=table_rows><img src='../images/icons/cancel.png' /></td> <td class=table_rows_red height=25><b>metar</b> is not a valid metar.</td></tr>\n";
         echo "            </table>\n";
@@ -1416,7 +1434,8 @@ end moved */
             echo "            </table>\n";
             $evil_post = "1";
         }
-    } elseif ((!eregi ("^([[:alnum:]]|_|\.|-)+@([[:alnum:]]|\.|-)+(\.)([a-z]{2,4})$", $post_email)) && ($post_email != "none")) {
+//    } elseif ((!eregi ("^([[:alnum:]]|_|\.|-)+@([[:alnum:]]|\.|-)+(\.)([a-z]{2,4})$", $post_email)) && ($post_email != "none")) {
+    } elseif ((!preg_match('/' . "^([[:alnum:]]|_|\.|-)+@([[:alnum:]]|\.|-)+(\.)([a-z]{2,4})$" . '/i', $post_email)) && ($post_email != "none")) {
         echo "            <table align=center class=table_border width=100% border=0 cellpadding=0 cellspacing=3>\n";
         echo "              <tr><td width=20 align=center height=25 class=table_rows><img src='../images/icons/cancel.png' /></td> <td class=table_rows_red height=25>Only alphanumeric characters, underscores, periods, and hyphens are allowed when creating an Email Address.</td></tr>\n";
         echo "            </table>\n";
@@ -1455,10 +1474,13 @@ end moved */
             if ((strlen($post_allowed_networks[$x]) > 21)) {
                 $evil_allowed_networks_length = "1";
                 $evil_post = "1";
-            } elseif ((!eregi("^([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})$", $post_allowed_networks[$x], $net_regs)) && (!eregi("^([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})/([0-9]?[0-9]?[0-9])$", $post_allowed_networks[$x], $net_regs)) && (!eregi("^([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.\[([0-9]?[0-9]?[0-9])\-([0-9]?[0-9]?[0-9])\]$", $post_allowed_networks[$x], $net_regs)) && (!empty($post_allowed_networks[$x]))) {
+ //           } elseif ((!eregi("^([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})$", $post_allowed_networks[$x], $net_regs)) && (!eregi("^([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})/([0-9]?[0-9]?[0-9])$", $post_allowed_networks[$x], $net_regs)) && (!eregi("^([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.\[([0-9]?[0-9]?[0-9])\-([0-9]?[0-9]?[0-9])\]$", $post_allowed_networks[$x], $net_regs)) && (!empty($post_allowed_networks[$x]))) {	    
+            } elseif ((!preg_match('/' . "^([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})$" . '/i', $post_allowed_networks[$x], $net_regs)) && (!preg_match('/' . "^([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\/([0-9]?[0-9]?[0-9])$" . '/i', $post_allowed_networks[$x], $net_regs)) && (!preg_match('/' . "^([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.\[([0-9]?[0-9]?[0-9])\-([0-9]?[0-9]?[0-9])\]$" . '/i', $post_allowed_networks[$x], $net_regs)) && (!empty($post_allowed_networks[$x]))) {
                 $evil_allowed_networks = "1";
                 $evil_post = "1";
-            } elseif ((eregi("^([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})$", $post_allowed_networks[$x], $net_regs)) || (eregi("^([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})/([0-9]?[0-9]?[0-9])$", $post_allowed_networks[$x], $net_regs)) || (eregi("^([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.\[([0-9]?[0-9]?[0-9])\-([0-9]?[0-9]?[0-9])\]$", $post_allowed_networks[$x], $net_regs)) || (!empty($post_allowed_networks[$x]))) {
+//           } elseif ((eregi("^([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})$", $post_allowed_networks[$x], $net_regs)) || (eregi("^([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})/([0-9]?[0-9]?[0-9])$", $post_allowed_networks[$x], $net_regs)) || (eregi("^([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.\[([0-9]?[0-9]?[0-9])\-([0-9]?[0-9]?[0-9])\]$", $post_allowed_networks[$x], $net_regs)) || (!empty($post_allowed_networks[$x]))) {
+            } elseif ((preg_match('/' . "^([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})$" . '/i', $post_allowed_networks[$x], $net_regs)) || (preg_match('/' . "^([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\/([0-9]?[0-9]?[0-9])$" . '/i', $post_allowed_networks[$x], $net_regs)) || (preg_match('/' . "^([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.\[([0-9]?[0-9]?[0-9])\-([0-9]?[0-9]?[0-9])\]$" . '/i', $post_allowed_networks[$x], $net_regs)) || (!empty($post_allowed_networks[$x]))) {
+		    
                 if (strstr($post_allowed_networks[$x], '/')) {
                     if ((($net_regs[1] < '0') || ($net_regs[1] > '255')) || (($net_regs[2] < '0') || ($net_regs[2] > '255')) || (($net_regs[3] < '0') || ($net_regs[3] > '255')) || (($net_regs[4] < '0') || ($net_regs[4] > '255')) || ((isset($net_regs[5])) && (($net_regs[5] < '0') || ($net_regs[5] > '32')))) {
                         $evil_allowed_networks = "1";
@@ -1488,13 +1510,17 @@ end moved */
             echo "            <table align=center class=table_border width=100% border=0 cellpadding=0 cellspacing=3>\n";
             echo "              <tr><td width=20 align=center height=25 class=table_rows><img src='../images/icons/cancel.png' /></td> <td height=25 class=table_rows_red>one of the <b>allowed_networks</b> is more than the allowed 21 characters.</td></tr>\n";
             echo "            </table>\n";
-        } elseif ((!eregi ("^([0-9]?[0-9])+:+([0-9]+[0-9])+([a|p]+m)$", $post_report_start_time, $start_time_regs)) && (!eregi ("^([0-9]?[0-9])+:+([0-9]+[0-9])+( [a|p]+m)$", $post_report_start_time, $start_time_regs)) && (!eregi ("^([0-9]?[0-9])+:+([0-9]+[0-9])$", $post_report_start_time, $start_time_regs))) {
+//        } elseif ((!eregi ("^([0-9]?[0-9])+:+([0-9]+[0-9])+([a|p]+m)$", $post_report_start_time, $start_time_regs)) && (!eregi ("^([0-9]?[0-9])+:+([0-9]+[0-9])+( [a|p]+m)$", $post_report_start_time, $start_time_regs)) && (!eregi ("^([0-9]?[0-9])+:+([0-9]+[0-9])$", $post_report_start_time, $start_time_regs))) {
+        } elseif ((!preg_match('/' . "^([0-9]?[0-9])+:+([0-9]+[0-9])+([a|p]+m)$" . '/i', $post_report_start_time, $start_time_regs)) && (!preg_match('/' . "^([0-9]?[0-9])+:+([0-9]+[0-9])+( [a|p]+m)$" . '/i', $post_report_start_time, $start_time_regs)) && (!preg_match('/' . "^([0-9]?[0-9])+:+([0-9]+[0-9])$" . '/i', $post_report_start_time, $start_time_regs))) {
+		
             echo "            <table align=center class=table_border width=100% border=0 cellpadding=0 cellspacing=3>\n";
             echo "              <tr><td width=20 align=center height=25 class=table_rows><img src='../images/icons/cancel.png' /></td> <td class=table_rows_red height=25><b>report_start_time</b> is not a valid time.</td></tr>\n";
             echo "            </table>\n";
             echo "            <br />\n";
             $evil_post = "1";
-        } elseif ((!eregi ("^([0-9]?[0-9])+:+([0-9]+[0-9])+([a|p]+m)$", $post_report_end_time, $end_time_regs)) && (!eregi ("^([0-9]?[0-9])+:+([0-9]+[0-9])+( [a|p]+m)$", $post_report_end_time, $end_time_regs)) && (!eregi ("^([0-9]?[0-9])+:+([0-9]+[0-9])$", $post_report_end_time, $end_time_regs))) {
+//        } elseif ((!eregi ("^([0-9]?[0-9])+:+([0-9]+[0-9])+([a|p]+m)$", $post_report_end_time, $end_time_regs)) && (!eregi ("^([0-9]?[0-9])+:+([0-9]+[0-9])+( [a|p]+m)$", $post_report_end_time, $end_time_regs)) && (!eregi ("^([0-9]?[0-9])+:+([0-9]+[0-9])$", $post_report_end_time, $end_time_regs))) {
+
+        } elseif ((!preg_match('/' . "^([0-9]?[0-9])+:+([0-9]+[0-9])+([a|p]+m)$" . '/i', $post_report_end_time, $end_time_regs)) && (!preg_match('/' . "^([0-9]?[0-9])+:+([0-9]+[0-9])+( [a|p]+m)$" . '/i', $post_report_end_time, $end_time_regs)) && (!preg_match('/' . "^([0-9]?[0-9])+:+([0-9]+[0-9])$" . '/i', $post_report_end_time, $end_time_regs))) {
             echo "            <table align=center class=table_border width=100% border=0 cellpadding=0 cellspacing=3>\n";
             echo "              <tr><td width=20 align=center height=25 class=table_rows><img src='../images/icons/cancel.png' /></td> <td class=table_rows_red height=25><b>report_end_time</b> is not a valid time.</td></tr>\n";
             echo "            </table>\n";
@@ -1544,7 +1570,7 @@ end moved */
         echo "              <tr><th colspan=3 class=table_heading_no_color nowrap align=left>Edit System Settings</th></tr>\n";
         echo "              <tr><td colspan=3 class=table_rows width=10% align=left style='padding-left:4px;'>Listed below are the settings that have been chosen within config.inc.php, the config file for PHP Timeclock. Edit as you see fit. Then click the \"Next\" button near the bottom of the page to continue.</td></tr>\n";
         echo "              <tr><td height=40 class=table_rows width=10% align=left style='padding-left:4px;color:#27408b;'><b><u>VARIABLE</u></b></td> <td class=table_rows width=10% align=left style='color:#27408b;'><b><u>VALUE</u></b></td> <td class=table_rows width=80% align=left style='padding-left:10px;color:#27408b;'><b><u>DESCRIPTION</u></b></td></tr>\n";
-        echo "              <tr><th colspan=3 class=table_heading_no_color nowrap align=left>MySql DB Settings</th></tr>\n";
+        echo "              <tr><th colspan=3 class=table_heading_no_color nowrap align=left>mysql DB Settings</th></tr>\n";
         echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>db_hostname:</td> <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top>$db_hostname</td> <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is the hostname for your mysql server, default is <b>localhost</b>.</td></tr>\n";
         echo "              <input type=\"hidden\" name=\"db_hostname\" value=\"$post_db_hostname\">\n";
         $row_count++; $row_color = ($row_count % 2) ? $color2 : $color1;
@@ -1922,9 +1948,9 @@ end moved */
         if (($display_office == "all") || ($display_office == "All")) {
             echo "                     <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top> <select name='group_name'> <option value = 'all'>all</option>\n";
             $query = "select DISTINCT(groupname) from groups order by groupname asc";
-            $result = mysql_query($query);
+            $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
 
-            while ($row=mysql_fetch_array($result)) {
+            while ($row=mysqli_fetch_array($result)) {
                 if ("".$row['groupname']."" == $post_group_name) {
                     echo "                    <option selected>".$row['groupname']."</option>\n";
                 } else {

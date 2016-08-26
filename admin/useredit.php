@@ -118,9 +118,9 @@ $get_user = addslashes($get_user);
 $row_count = 0;
 
 $query = "select * from ".$db_prefix."employees where empfullname = '".$get_user."' order by empfullname";
-$result = mysql_query($query);
+$result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
 
-while ($row=mysql_fetch_array($result)) {
+while ($row=mysqli_fetch_array($result)) {
 
 $row_count++;
 $row_color = ($row_count % 2) ? $color2 : $color1;
@@ -135,13 +135,13 @@ $reports = "".$row['reports']."";
 $time_admin = "".$row['time_admin']."";
 $disabled = "".$row['disabled']."";
 }
-mysql_free_result($result);
+((mysqli_free_result($result) || (is_object($result) && (get_class($result) == "mysqli_result"))) ? true : false);
 
 // make sure you cannot edit the admin perms for the last admin user in the system!! //
 
 if (!empty($admin)) {
-  $admin_count = mysql_query("select empfullname from ".$db_prefix."employees where admin = '1'");
-  @$admin_count_rows = mysql_num_rows($admin_count);
+  $admin_count = mysqli_query($GLOBALS["___mysqli_ston"], "select empfullname from ".$db_prefix."employees where admin = '1'");
+  @$admin_count_rows = mysqli_num_rows($admin_count);
   if (@$admin_count_rows == "1") {
     $evil = "1";
   }
@@ -273,8 +273,8 @@ $post_username = addslashes($post_username);
 
 if (!empty($post_username)) {
 $query = "select * from ".$db_prefix."employees where empfullname = '".$post_username."'";
-$result = mysql_query($query);
-while ($row=mysql_fetch_array($result)) {
+$result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
+while ($row=mysqli_fetch_array($result)) {
 $tmp_username = "".$row['empfullname']."";
 }
 if (!isset($tmp_username)) {echo "$tmp_username, $post_username. Something is fishy here.\n"; exit;}
@@ -284,10 +284,16 @@ $post_username = stripslashes($post_username);
 $tmp_post_username = stripslashes($post_username);
 $string = strstr($display_name, "\"");
 
-if ((!eregi ("^([[:alnum:]]| |-|'|,)+$", $display_name)) || (empty($display_name)) || (empty($email_addy)) || (empty($office_name)) || (empty($group_name)) ||
-(!eregi ("^([[:alnum:]]|_|\.|-)+@([[:alnum:]]|\.|-)+(\.)([a-z]{2,4})$", $email_addy)) || (($admin_perms != '1') && (!empty($admin_perms))) ||
-(($reports_perms != '1') && (!empty($reports_perms))) || (($time_admin_perms != '1') && (!empty($time_admin_perms))) || (($post_disabled != '1') &&
-(!empty($post_disabled))) || (!empty($string))) {
+//if ((!eregi ("^([[:alnum:]]| |-|'|,)+$", $display_name)) || (empty($display_name)) || (empty($email_addy)) || (empty($office_name)) || (empty($group_name)) ||
+//(!eregi ("^([[:alnum:]]|_|\.|-)+@([[:alnum:]]|\.|-)+(\.)([a-z]{2,4})$", $email_addy)) || (($admin_perms != '1') && (!empty($admin_perms))) ||
+//(($reports_perms != '1') && (!empty($reports_perms))) || (($time_admin_perms != '1') && (!empty($time_admin_perms))) || (($post_disabled != '1') &&
+//(!empty($post_disabled))) || (!empty($string))) {
+
+        if ((!preg_match('/' . "^([[:alnum:]]| |-|'|,)+$" . '/i', $display_name)) || (empty($display_name)) || (empty($email_addy)) || (empty($office_name)) || (empty($group_name)) ||
+            (!preg_match('/' . "^([[:alnum:]]|_|\.|-)+@([[:alnum:]]|\.|-)+(\.)([a-z]{2,4})$" . '/i', $email_addy)) || (($admin_perms != '1') && (!empty($admin_perms))) ||
+            (($reports_perms != '1') && (!empty($reports_perms))) || (($time_admin_perms != '1') && (!empty($time_admin_perms))) || (($post_disabled != '1') &&
+                                                                                                                                     (!empty($post_disabled))) || (!empty($string))
+        ) {
 
 echo "<table width=100% height=89% border=0 cellpadding=0 cellspacing=1>\n";
 echo "  <tr valign=top>\n";
@@ -378,14 +384,16 @@ echo "                <td class=table_rows width=20 align=center><img src='../im
                     Double Quotes are not allowed when creating an Username.</td></tr>\n";
 echo "            </table>\n";
 }
-elseif (!eregi ("^([[:alnum:]]| |-|'|,)+$", $display_name)) {
+// elseif (!eregi ("^([[:alnum:]]| |-|'|,)+$", $display_name)) {
+elseif (!preg_match('/' . "^([[:alnum:]]| |-|'|,)+$" . '/i', $display_name)) {
 echo "            <table align=center class=table_border width=60% border=0 cellpadding=0 cellspacing=3>\n";
 echo "              <tr>\n";
 echo "                <td class=table_rows width=20 align=center><img src='../images/icons/cancel.png' /></td><td class=table_rows_red>
                     Alphanumeric characters, hyphens, apostrophes, commas, and spaces are allowed when creating a Display Name.</td></tr>\n";
 echo "            </table>\n";
 }
-elseif (!eregi ("^([[:alnum:]]|_|\.|-)+@([[:alnum:]]|\.|-)+(\.)([a-z]{2,4})$", $email_addy)) {
+// elseif (!eregi ("^([[:alnum:]]|_|\.|-)+@([[:alnum:]]|\.|-)+(\.)([a-z]{2,4})$", $email_addy)) {
+elseif (!preg_match('/' . "^([[:alnum:]]|_|\.|-)+@([[:alnum:]]|\.|-)+(\.)([a-z]{2,4})$" . '/i', $email_addy)) {
 echo "            <table align=center class=table_border width=60% border=0 cellpadding=0 cellspacing=3>\n";
 echo "              <tr>\n";
 echo "                <td class=table_rows width=20 align=center><img src='../images/icons/cancel.png' /></td><td class=table_rows_red>
@@ -423,21 +431,21 @@ echo "            </table>\n";
 
 if (!empty($office_name)) {
 $query = "select * from ".$db_prefix."offices where officename = '".$office_name."'";
-$result = mysql_query($query);
-while ($row=mysql_fetch_array($result)) {
+$result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
+while ($row=mysqli_fetch_array($result)) {
 $tmp_officename = "".$row['officename']."";
 }
-mysql_free_result($result);
+((mysqli_free_result($result) || (is_object($result) && (get_class($result) == "mysqli_result"))) ? true : false);
 if (!isset($tmp_officename)) {echo "Office is not defined.\n"; exit;}
 }
 
 if (!empty($group_name)) {
 $query = "select * from ".$db_prefix."groups where groupname = '".$group_name."'";
-$result = mysql_query($query);
-while ($row=mysql_fetch_array($result)) {
+$result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
+while ($row=mysqli_fetch_array($result)) {
 $tmp_groupname = "".$row['groupname']."";
 }
-mysql_free_result($result);
+((mysqli_free_result($result) || (is_object($result) && (get_class($result) == "mysqli_result"))) ? true : false);
 if (!isset($tmp_officename)) {echo "Group is not defined.\n"; exit;}
 }
 
@@ -536,7 +544,7 @@ $query3 = "update ".$db_prefix."employees set displayname = ('".$display_name."'
 	   office = ('".$office_name."'), admin = ('".$admin_perms."'), reports = ('".$reports_perms."'), time_admin = ('".$time_admin_perms."'),
            disabled = ('".$post_disabled."')
            where empfullname = ('".$post_username."')";
-$result3 = mysql_query($query3);
+$result3 = mysqli_query($GLOBALS["___mysqli_ston"], $query3);
 
 echo "<table width=100% height=89% border=0 cellpadding=0 cellspacing=1>\n";
 echo "  <tr valign=top>\n";
@@ -604,9 +612,9 @@ echo "              <tr><td height=15></td></tr>\n";
 $query4 = "select empfullname, displayname, email, groups, office, admin, reports, time_admin, disabled from ".$db_prefix."employees
 	  where empfullname = '".$post_username."'
           order by empfullname";
-$result4 = mysql_query($query4);
+$result4 = mysqli_query($GLOBALS["___mysqli_ston"], $query4);
 
-while ($row=mysql_fetch_array($result4)) {
+while ($row=mysqli_fetch_array($result4)) {
 
 $username = stripslashes("".$row['empfullname']."");
 $displayname = stripslashes("".$row['displayname']."");
@@ -618,7 +626,7 @@ $reports = "".$row['reports']."";
 $time_admin = "".$row['time_admin']."";
 $disabled = "".$row['disabled']."";
 }
-mysql_free_result($result4);
+((mysqli_free_result($result4) || (is_object($result4) && (get_class($result4) == "mysqli_result"))) ? true : false);
 
 echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Username:</td><td align=left class=table_rows
                       colspan=2 width=80% style='padding-left:20px;'>$username</td></tr>\n";

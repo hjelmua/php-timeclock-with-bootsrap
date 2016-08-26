@@ -19,7 +19,7 @@
  *   51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA.             *
  ***************************************************************************/
 
-// A thanks goes to the PhpBB team for the inspiration for the memory management and table parsing for MySQL.
+// A thanks goes to the PhpBB team for the inspiration for the memory management and table parsing for mysql.
 
 /**
  * This module will allow a sys admin to backup the database.
@@ -90,7 +90,7 @@ echo '<div class="box-header with-border">
 }
 
 /**
- * Determines the memory limit requirements for exporting in MySQL.
+ * Determines the memory limit requirements for exporting in mysql.
  */
 function get_usable_memory() {
     $val = trim(@ini_get('memory_limit'));
@@ -147,11 +147,11 @@ function write_table($table) {
     $sql_data .= "# \n";
 
     $query = "SELECT * FROM $db_prefix$table";
-    $result = mysql_query($query);
+    $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
     if ($result != false) {
         // Get field information
-        $field_list = mysql_query("SHOW COLUMNS FROM $db_prefix$table");
-        while ($field = mysql_fetch_row($field_list)) {
+        $field_list = mysqli_query($GLOBALS["___mysqli_ston"], "SHOW COLUMNS FROM $db_prefix$table");
+        while ($field = mysqli_fetch_row($field_list)) {
             if ($field[0] == "inout") { // Needs to be escaped
                 $fields .='`inout`, ';
             } else {
@@ -159,7 +159,7 @@ function write_table($table) {
             }
         }
         $fields = rtrim($fields, ', ');
-        $fields_cnt = mysql_num_fields($result);
+        $fields_cnt = (($___mysqli_tmp = mysqli_num_fields($result)) ? $___mysqli_tmp : false);
 
         $sql_data       .= 'INSERT INTO '.$table.' ('.$fields.') VALUES ';
         $first_set      = true;
@@ -167,7 +167,7 @@ function write_table($table) {
         $max_len        = get_usable_memory();
 
         // Parse the table data and build the insertion statement
-        while ($row = mysql_fetch_row($result)) {
+        while ($row = mysqli_fetch_row($result)) {
             $values = array();
             if ($first_set) {
                 $query = $sql_data . '(';
@@ -197,7 +197,7 @@ function write_table($table) {
                 $first_set = false;
             }
         }
-        mysql_free_result($result);
+        ((mysqli_free_result($result) || (is_object($result) && (get_class($result) == "mysqli_result"))) ? true : false);
 
         // check to make sure we have nothing left to flush
         if (! $first_set && $query) {

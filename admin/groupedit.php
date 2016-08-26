@@ -114,9 +114,9 @@ echo "          <td valign=top>\n";
 echo "            <br />\n";
 
 $query = "select * from ".$db_prefix."groups, ".$db_prefix."offices where officename = '".$get_office."' and groupname = '".$get_group."'";
-$result = mysql_query($query);
+$result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
 
-while ($row=mysql_fetch_array($result)) {
+while ($row=mysqli_fetch_array($result)) {
 
 $officename = "".$row['officename']."";
 $officeid = "".$row['officeid']."";
@@ -128,8 +128,8 @@ if (!isset($officename)) {echo "Office name is not defined for this group.\n"; e
 if (!isset($groupname)) {echo "Group name is not defined for this group.\n"; exit;}
 
 $query2 = "select * from ".$db_prefix."employees where office = '".$get_office."' and groups = '".$get_group."'";
-$result2 = mysql_query($query2);
-@$user_cnt = mysql_num_rows($result2);
+$result2 = mysqli_query($GLOBALS["___mysqli_ston"], $query2);
+@$user_cnt = mysqli_num_rows($result2);
 
 echo "            <form name='form' action='$self' method='post'>\n";
 echo "            <table align=center class=table_border width=60% border=0 cellpadding=3 cellspacing=0>\n";
@@ -147,12 +147,12 @@ echo "              <tr><td class=table_rows height=25 width=20% style='padding-
 $query3 = "select * from ".$db_prefix."offices
            order by officename asc";
 
-$result3 = mysql_query($query3);
+$result3 = mysqli_query($GLOBALS["___mysqli_ston"], $query3);
 
 echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>New Parent Office:</td><td colspan=2 width=80%
                       style='padding-left:20px;'><select name='post_officename'>\n";
 
-while ($row=mysql_fetch_array($result3)) {
+while ($row=mysqli_fetch_array($result3)) {
   if ("".$row['officename']."" == $get_office) {
   echo "                    <option selected>".$row['officename']."</option>\n";
   } else {
@@ -176,21 +176,21 @@ echo "              <input type='hidden' name='get_office' value=\"$get_office\"
 echo "              <tr><td width=30><input type='image' name='submit' value='Edit Group' src='../images/buttons/next_button.png'></td>
                   <td><a href='groupadmin.php'><img src='../images/buttons/cancel_button.png' border='0'></td></tr></table></form>\n";
 
-$user_count = mysql_query("select empfullname from ".$db_prefix."employees where groups = ('".$get_group."') and office = ('".$get_office."')
+$user_count = mysqli_query($GLOBALS["___mysqli_ston"], "select empfullname from ".$db_prefix."employees where groups = ('".$get_group."') and office = ('".$get_office."')
                            order by empfullname");
-@$user_count_rows = mysql_num_rows($user_count);
+@$user_count_rows = mysqli_num_rows($user_count);
 
-$admin_count = mysql_query("select empfullname from ".$db_prefix."employees where admin = '1' and groups = ('".$get_group."')
+$admin_count = mysqli_query($GLOBALS["___mysqli_ston"], "select empfullname from ".$db_prefix."employees where admin = '1' and groups = ('".$get_group."')
                             and office = ('".$get_office."')");
-@$admin_count_rows = mysql_num_rows($admin_count);
+@$admin_count_rows = mysqli_num_rows($admin_count);
 
-$time_admin_count = mysql_query("select empfullname from ".$db_prefix."employees where time_admin = '1' and groups = ('".$get_group."')
+$time_admin_count = mysqli_query($GLOBALS["___mysqli_ston"], "select empfullname from ".$db_prefix."employees where time_admin = '1' and groups = ('".$get_group."')
                                  and office = ('".$get_office."')");
-@$time_admin_count_rows = mysql_num_rows($time_admin_count);
+@$time_admin_count_rows = mysqli_num_rows($time_admin_count);
 
-$reports_count = mysql_query("select empfullname from ".$db_prefix."employees where reports = '1' and groups = ('".$get_group."')
+$reports_count = mysqli_query($GLOBALS["___mysqli_ston"], "select empfullname from ".$db_prefix."employees where reports = '1' and groups = ('".$get_group."')
                               and office = ('".$get_office."')");
-@$reports_count_rows = mysql_num_rows($reports_count);
+@$reports_count_rows = mysqli_num_rows($reports_count);
 
 if ($user_count_rows > '0') {
 
@@ -220,9 +220,9 @@ $row_count = 0;
 
 $query = "select empfullname, displayname, email, groups, office, admin, reports, time_admin, disabled from ".$db_prefix."employees
           where groups = ('".$get_group."') and office = ('".$get_office."') order by empfullname";
-$result = mysql_query($query);
+$result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
 
-while ($row=mysql_fetch_array($result)) {
+while ($row=mysqli_fetch_array($result)) {
 
 $empfullname = stripslashes("".$row['empfullname']."");
 $displayname = stripslashes("".$row['displayname']."");
@@ -309,43 +309,43 @@ $string = strstr($post_groupname, "\'");
 
 if (!empty($get_office)) {
 $query = "select * from ".$db_prefix."offices where officename = '".$get_office."'";
-$result = mysql_query($query);
-while ($row=mysql_fetch_array($result)) {
+$result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
+while ($row=mysqli_fetch_array($result)) {
 $getoffice = "".$row['officename']."";
 }
-mysql_free_result($result);
+((mysqli_free_result($result) || (is_object($result) && (get_class($result) == "mysqli_result"))) ? true : false);
 }
 if (!isset($getoffice)) {echo "Office is not defined for this user. Go back and associate this user with an office.\n"; exit;}
 
 if (!empty($get_group)) {
 $query = "select * from ".$db_prefix."groups where groupname = '".$get_group."'";
-$result = mysql_query($query);
-while ($row=mysql_fetch_array($result)) {
+$result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
+while ($row=mysqli_fetch_array($result)) {
 $getgroup = "".$row['groupname']."";
 }
-mysql_free_result($result);
+((mysqli_free_result($result) || (is_object($result) && (get_class($result) == "mysqli_result"))) ? true : false);
 }
 if (!isset($getgroup)) {echo "Group is not defined for this user. Go back and associate this user with a group.\n"; exit;}
 
 if (!empty($post_officename)) {
 $query = "select * from ".$db_prefix."offices where officename = '".$post_officename."'";
-$result = mysql_query($query);
-while ($row=mysql_fetch_array($result)) {
+$result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
+while ($row=mysqli_fetch_array($result)) {
 $officename = "".$row['officename']."";
 $tmp_officeid = "".$row['officeid']."";
 }
-mysql_free_result($result);
+((mysqli_free_result($result) || (is_object($result) && (get_class($result) == "mysqli_result"))) ? true : false);
 }
 if (!isset($officename)) {echo "Office name is not defined for this group.\n"; exit;}
 
 if (!empty($post_officeid)) {
 $query = "select * from ".$db_prefix."offices where officeid = '".$post_officeid."'";
-$result = mysql_query($query);
-while ($row=mysql_fetch_array($result)) {
+$result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
+while ($row=mysqli_fetch_array($result)) {
 $post_officeid = "".$row['officeid']."";
 $post_officeid = $tmp_officeid;
 }
-mysql_free_result($result);
+((mysqli_free_result($result) || (is_object($result) && (get_class($result) == "mysqli_result"))) ? true : false);
 if (!isset($post_officeid)) {echo "Office id is not defined for this group.\n"; exit;}
 } else {
 $post_officeid = $tmp_officeid;
@@ -353,27 +353,27 @@ $post_officeid = $tmp_officeid;
 
 if (!empty($orig_officeid)) {
 $query = "select * from ".$db_prefix."offices where officeid = '".$orig_officeid."'";
-$result = mysql_query($query);
-while ($row=mysql_fetch_array($result)) {
+$result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
+while ($row=mysqli_fetch_array($result)) {
 $origofficeid = "".$row['officeid']."";
 }
-mysql_free_result($result);
+((mysqli_free_result($result) || (is_object($result) && (get_class($result) == "mysqli_result"))) ? true : false);
 }
 if (!isset($origofficeid)) {echo "Office name is not defined for this group.\n"; exit;}
 
 if (!empty($post_groupid)) {
 $query = "select * from ".$db_prefix."groups where groupid = '".$post_groupid."'";
-$result = mysql_query($query);
-while ($row=mysql_fetch_array($result)) {
+$result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
+while ($row=mysqli_fetch_array($result)) {
 $groupid = "".$row['groupid']."";
 }
-mysql_free_result($result);
+((mysqli_free_result($result) || (is_object($result) && (get_class($result) == "mysqli_result"))) ? true : false);
 }
 if (!isset($groupid)) {echo "Group id is not defined for this group.\n"; exit;}
 
 $query = "select * from ".$db_prefix."employees where office = '".$get_office."' and groups = '".$get_group."'";
-$result = mysql_query($query);
-@$tmp_user_cnt = mysql_num_rows($result);
+$result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
+@$tmp_user_cnt = mysqli_num_rows($result);
 
 if ($user_cnt != $tmp_user_cnt) {echo "Posted user count does not equal actual user count for this group.\n"; exit;}
 
@@ -385,14 +385,15 @@ echo "      <table class=hide width=100% border=0 cellpadding=1 cellspacing=0>\n
 if (empty($string)) {
 
 $query = "select * from ".$db_prefix."groups where groupname = '".$post_groupname."' and officeid = '".$post_officeid."'";
-$result = mysql_query($query);
+$result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
 
-while ($row=mysql_fetch_array($result)) {
+while ($row=mysqli_fetch_array($result)) {
 $dupe = '1';
 }
 }
 
-if ((empty($post_groupname)) || (!eregi ("^([[:alnum:]]| |-|_|\.)+$", $post_groupname)) || (!empty($string))) {
+// if ((empty($post_groupname)) || (!eregi ("^([[:alnum:]]| |-|_|\.)+$", $post_groupname)) || (!empty($string))) {
+if ((empty($post_groupname)) || (!preg_match('/' . "^([[:alnum:]]| |-|_|\.)+$" . '/i', $post_groupname)) || (!empty($string))) {
 $evil_group = '1';
 }
 
@@ -467,7 +468,8 @@ echo "                <td class=table_rows width=20 align=center><img src='../im
                     A Group Name is required.</td></tr>\n";
 echo "            </table>\n";
 }
-elseif (!eregi ("^([[:alnum:]]| |-|_|\.)+$", $post_groupname)) {
+// elseif (!eregi ("^([[:alnum:]]| |-|_|\.)+$", $post_groupname)) {
+elseif (!preg_match('/' . "^([[:alnum:]]| |-|_|\.)+$" . '/i', $post_groupname)) {
 echo "            <table align=center class=table_border width=60% border=0 cellpadding=0 cellspacing=3>\n";
 echo "              <tr>\n";
 echo "                <td class=table_rows width=20 align=center><img src='../images/icons/cancel.png' /></td><td class=table_rows_red>
@@ -508,12 +510,12 @@ echo "              <tr><td class=table_rows height=25 width=20% style='padding-
 $query3 = "select * from ".$db_prefix."offices
            order by officename asc";
 
-$result3 = mysql_query($query3);
+$result3 = mysqli_query($GLOBALS["___mysqli_ston"], $query3);
 
 echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>New Parent Office:</td><td colspan=2 width=80%
                       style='padding-left:20px;'><select name='post_officename'>\n";
 
-while ($row=mysql_fetch_array($result3)) {
+while ($row=mysqli_fetch_array($result3)) {
   if ("".$row['officename']."" == $post_officename) {
   $post_officeid = "".$row['officeid']."";
   echo "                    <option selected>".$row['officename']."</option>\n";
@@ -540,21 +542,21 @@ echo "              <input type='hidden' name='user_cnt' value=\"$user_cnt\">\n"
 echo "              <tr><td width=30><input type='image' name='submit' value='Edit Group' src='../images/buttons/next_button.png'></td>
                   <td><a href='groupadmin.php'><img src='../images/buttons/cancel_button.png' border='0'></td></tr></table></form>\n";
 
-$user_count = mysql_query("select empfullname from ".$db_prefix."employees where groups = ('".$get_group."') and office = ('".$get_office."')
+$user_count = mysqli_query($GLOBALS["___mysqli_ston"], "select empfullname from ".$db_prefix."employees where groups = ('".$get_group."') and office = ('".$get_office."')
                            order by empfullname");
-@$user_count_rows = mysql_num_rows($user_count);
+@$user_count_rows = mysqli_num_rows($user_count);
 
-$admin_count = mysql_query("select empfullname from ".$db_prefix."employees where admin = '1' and groups = ('".$get_group."')
+$admin_count = mysqli_query($GLOBALS["___mysqli_ston"], "select empfullname from ".$db_prefix."employees where admin = '1' and groups = ('".$get_group."')
                             and office = ('".$get_office."')");
-@$admin_count_rows = mysql_num_rows($admin_count);
+@$admin_count_rows = mysqli_num_rows($admin_count);
 
-$time_admin_count = mysql_query("select empfullname from ".$db_prefix."employees where time_admin = '1' and groups = ('".$get_group."')
+$time_admin_count = mysqli_query($GLOBALS["___mysqli_ston"], "select empfullname from ".$db_prefix."employees where time_admin = '1' and groups = ('".$get_group."')
                                  and office = ('".$get_office."')");
-@$time_admin_count_rows = mysql_num_rows($time_admin_count);
+@$time_admin_count_rows = mysqli_num_rows($time_admin_count);
 
-$reports_count = mysql_query("select empfullname from ".$db_prefix."employees where reports = '1' and groups = ('".$get_group."')
+$reports_count = mysqli_query($GLOBALS["___mysqli_ston"], "select empfullname from ".$db_prefix."employees where reports = '1' and groups = ('".$get_group."')
                               and office = ('".$get_office."')");
-@$reports_count_rows = mysql_num_rows($reports_count);
+@$reports_count_rows = mysqli_num_rows($reports_count);
 
 if ($user_count_rows > '0') {
 
@@ -584,9 +586,9 @@ $row_count = 0;
 
 $query = "select empfullname, displayname, email, groups, office, admin, reports, time_admin, disabled from ".$db_prefix."employees
           where groups = ('".$get_group."') and office = ('".$get_office."') order by empfullname";
-$result = mysql_query($query);
+$result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
 
-while ($row=mysql_fetch_array($result)) {
+while ($row=mysqli_fetch_array($result)) {
 
 $empfullname = stripslashes("".$row['empfullname']."");
 $displayname = stripslashes("".$row['displayname']."");
@@ -658,11 +660,11 @@ if ($user_count_rows > '0') {
 
 $query4 = "update ".$db_prefix."employees set groups = ('".$post_groupname."'), office = ('".$post_officename."')
            where groups = ('".$get_group."') and office = ('".$get_office."')";
-$result4 = mysql_query($query4);
+$result4 = mysqli_query($GLOBALS["___mysqli_ston"], $query4);
 
 $query5 = "update ".$db_prefix."groups set groupname = ('".$post_groupname."'), officeid = ('".$post_officeid."')
            where groupname = ('".$get_group."') and officeid = ('".$orig_officeid."')";
-$result5 = mysql_query($query5);
+$result5 = mysqli_query($GLOBALS["___mysqli_ston"], $query5);
 
 echo "            <table align=center class=table_border width=60% border=0 cellpadding=0 cellspacing=3>\n";
 echo "              <tr>\n";
@@ -689,21 +691,21 @@ echo "              <tr><td height=20 align=left>&nbsp;</td></tr>\n";
 echo "              <tr><td><a href='groupadmin.php'><img src='../images/buttons/done_button.png'
                       border='0'></a></td></tr></table>\n";
 
-$user_count = mysql_query("select empfullname from ".$db_prefix."employees where groups = ('".$post_groupname."') and office = ('".$post_officename."')
+$user_count = mysqli_query($GLOBALS["___mysqli_ston"], "select empfullname from ".$db_prefix."employees where groups = ('".$post_groupname."') and office = ('".$post_officename."')
                            order by empfullname");
-@$user_count_rows = mysql_num_rows($user_count);
+@$user_count_rows = mysqli_num_rows($user_count);
 
-$admin_count = mysql_query("select empfullname from ".$db_prefix."employees where admin = '1' and groups = ('".$post_groupname."') and
+$admin_count = mysqli_query($GLOBALS["___mysqli_ston"], "select empfullname from ".$db_prefix."employees where admin = '1' and groups = ('".$post_groupname."') and
                             office = ('".$post_officename."')");
-@$admin_count_rows = mysql_num_rows($admin_count);
+@$admin_count_rows = mysqli_num_rows($admin_count);
 
-$time_admin_count = mysql_query("select empfullname from ".$db_prefix."employees where time_admin = '1' and groups = ('".$post_groupname."') and
+$time_admin_count = mysqli_query($GLOBALS["___mysqli_ston"], "select empfullname from ".$db_prefix."employees where time_admin = '1' and groups = ('".$post_groupname."') and
                                  office = ('".$post_officename."')");
-@$time_admin_count_rows = mysql_num_rows($time_admin_count);
+@$time_admin_count_rows = mysqli_num_rows($time_admin_count);
 
-$reports_count = mysql_query("select empfullname from ".$db_prefix."employees where reports = '1' and groups = ('".$post_groupname."') and
+$reports_count = mysqli_query($GLOBALS["___mysqli_ston"], "select empfullname from ".$db_prefix."employees where reports = '1' and groups = ('".$post_groupname."') and
                               office = ('".$post_officename."')");
-@$reports_count_rows = mysql_num_rows($reports_count);
+@$reports_count_rows = mysqli_num_rows($reports_count);
 
 if ($user_count_rows > '0') {
 
@@ -734,9 +736,9 @@ $row_count = 0;
 
 $query = "select empfullname, displayname, email, groups, office, admin, reports, time_admin, disabled from ".$db_prefix."employees
           where groups = ('".$post_groupname."') order by empfullname";
-$result = mysql_query($query);
+$result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
 
-while ($row=mysql_fetch_array($result)) {
+while ($row=mysqli_fetch_array($result)) {
 
 $empfullname = stripslashes("".$row['empfullname']."");
 $displayname = stripslashes("".$row['displayname']."");

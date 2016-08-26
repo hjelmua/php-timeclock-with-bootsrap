@@ -36,7 +36,7 @@
         --- $db_name is the mysql database you created during the install. */
 
 $db_hostname = "localhost";
-$db_username = "timeclock";
+$db_username = "phptimeclock";
 $db_password = "";
 $db_name = "phptimeclock";
 
@@ -96,13 +96,13 @@ $disable_sysedit = "no";
 "yes" or "no". If "yes" is chosen, users will be required to enter a password
 whenever they change their status. Default is "no". */
 
-$use_passwd = "no";
+$use_passwd = "yes";
 
 
 /* If you only want certain users to have the ability to view and run the reports,
 change $use_reports_password to "yes". Default is "no"; */
 
-$use_reports_password = "no";
+$use_reports_password = "yes";
 
 
 /* Enable the option to log the ip addresses of the connecting computers when users
@@ -163,10 +163,10 @@ $calendar_style --> 1) amer
                 11) n/j/y                      11) M/d/yy                         11) m/d/yy
                 12) n-j-y                      12) M-d-yy                         12) m-d-yy */
 
-$datefmt = "n/j/Y";
-$js_datefmt = "M/d/yyyy";
-$tmp_datefmt = "m/d/yyyy";
-$calendar_style = "amer";
+$datefmt = "j/n/Y";
+$js_datefmt = "d/M/yyyy";
+$tmp_datefmt = "d/m/yyyy";
+$calendar_style = "euro";
 
 
 /* Choose the way times are displayed. Default is "g:i a".
@@ -180,7 +180,7 @@ $timefmt -->    1) G:i
                 5) g:iA
                 6) g:ia    */
 
-$timefmt = "g:i a";
+$timefmt = "H:i";
 
 
 /* Display only activity for the the current day instead of the last entry from each user.
@@ -192,7 +192,7 @@ $display_current_users = "no";
 /* Show a Display Name instead of a Username for each user on the main page.
 Default is "no". */
 
-$show_display_name = "no";
+$show_display_name = "yes";
 
 
 /* Display punch-in/out times for only a certain office on the main page of the application.
@@ -220,17 +220,16 @@ $display_group_name = "no";
 
 
 /* A logo or graphic, this is displayed in the top left of each page.
-Set it to "none" to ignore this option. Its better with none in a bootstraped version */
+Set it to "none" to ignore this option. */
 
 $logo = "none";
-/* $logo = "images/logos/phptimeclock.png"; *
 
 
 /* This sets the refresh rate (in seconds) for index.php. If the application is kept open,
 it will refresh every $refresh seconds to display the most current info. Default
 is 300. Set it to "none" to ignore this option. */
 
-$refresh = "300";
+$refresh = "none";
 
 
 /* Sets if the display page should display the name of the users logged in. Default is "yes". */
@@ -352,7 +351,7 @@ $username_dropdown_only = "no";
 /* Choose whether to print displaynames or usernames for each user when reports are run.
 Options for this variable are "user" and "display". Default is "user". */
 
-$user_or_display = "user";
+$user_or_display = "display";
 
 
 /* Choose whether to include in the reports the ip addresses of the systems that connect to
@@ -389,7 +388,7 @@ $use_client_tz = "no";
 
 /* To display the punch-in/out times in the timezone of the web server, leave this option set
 to "yes". Setting this option to "no" AND setting the above $use_client_tz option to "no",
-will display the punch-in/out times in GMT. Default is "yes". */
+will display the punch-in/out times in GMT. Default is "no". PHP is now supposed to handle this */
 
 $use_server_tz = "no";
 
@@ -412,19 +411,19 @@ https://pilotweb.nas.faa.gov/qryhtml/icao/ to find a corresponding ICAO near you
 $display_weather is set to "no", this option is ignored. If $display_weather is set to
 "yes", you MUST provide an ICAO here. */
 
-$metar = "KJAN";
+$metar = "ESSA";
 
 
 /* This is the city and country (or can be city and state) of the airport for
 the ICAO used above. The max length for this field is 100 characters.
 If $display_weather is set to "no", this option is ignored. */
 
-$city = "Jackson, Mississippi";
+$city = "Uppsala, Sweden";
 
 
 /* The name of the company whose hours are being tracked. */
 
-$company_name = "G.B.D. Company";
+$company_name = "Hjelms";
 
 
 /* Sets the title in the header. This is what the page will be named by default when you
@@ -444,4 +443,9 @@ $dbversion = "1.4";
 /* Application version. */
 
 $app_version = "1.1.0";
+
+/* test date format for validatedate*/
+
+$eurodateformat = "d/m/Y";
+$usdateformat = "m/d/Y";
 ?>

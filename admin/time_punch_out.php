@@ -30,7 +30,7 @@ session_start();
 $self = $_SERVER['PHP_SELF'];
 $request = $_SERVER['REQUEST_METHOD'];
 
-include '../config.inc.php';
+include 'config.inc.php';
 include '../functions.php';
 
 // Get the connecting IP address.
@@ -55,26 +55,26 @@ if ($restrict_ips == "yes") {
 
 // Ensure correct database version.
 if ($use_persistent_connection == "yes") {
-    @ $db = mysql_pconnect($db_hostname, $db_username, $db_password);
+    @ $db = ($GLOBALS["___mysqli_ston"] = mysqli_connect($db_hostname,  $db_username,  $db_password));
 } else {
-    @ $db = mysql_connect($db_hostname, $db_username, $db_password);
+    @ $db = ($GLOBALS["___mysqli_ston"] = mysqli_connect($db_hostname,  $db_username,  $db_password));
 }
 if (! $db) {
     echo "Error: Could not connect to the database. Please try again later.";
     exit;
 }
-mysql_select_db($db_name);
+((bool)mysqli_query($GLOBALS["___mysqli_ston"], "USE " . $db_name));
 
-$result = mysql_query("SHOW TABLES LIKE '".$db_prefix."dbversion'");
-@$rows = mysql_num_rows($result);
+$result = mysqli_query($GLOBALS["___mysqli_ston"], "SHOW TABLES LIKE '".$db_prefix."dbversion'");
+@$rows = mysqli_num_rows($result);
 if ($rows == "1") {
     $dbexists = "1";
 } else {
     $dbexists = "0";
 }
 
-$db_version_result = mysql_query("SELECT * FROM ".$db_prefix."dbversion");
-while (@$row = mysql_fetch_array($db_version_result)) {
+$db_version_result = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM ".$db_prefix."dbversion");
+while (@$row = mysqli_fetch_array($db_version_result)) {
     @$my_dbversion = "".$row["dbversion"]."";
 }
 
@@ -378,7 +378,9 @@ if ($request == 'POST') { // Validate user input
         $input_invalid = True;
     }
 
-    if ((empty($post_date)) || (empty($post_time)) || (! eregi("^([0-9]{1,2})[-,/,.]([0-9]{1,2})[-,/,.](([0-9]{2})|([0-9]{4}))$", $post_date))) {
+//    if ((empty($post_date)) || (empty($post_time)) ||  (!eregi("^([0-9]{1,2})[-,/,.]([0-9]{1,2})[-,/,.](([0-9]{2})|([0-9]{4}))$", $post_date))) {
+if ((empty($post_date)) || (empty($post_time)) || (!preg_match('/' . "^([0-9]{1,2})[-,/,.]([0-9]{1,2})[-,/,.](([0-9]{2})|([0-9]{4}))$" . '/i', $post_date))) {	    
+	    
         $input_invalid = True;
         if (empty($post_date)) {
             echo "
@@ -402,7 +404,10 @@ if ($request == 'POST') { // Validate user input
                      </tr>
                </td>
             </tr>";
-        } elseif (!eregi ("^([0-9]{1,2})[-,/,.]([0-9]{1,2})[-,/,.](([0-9]{2})|([0-9]{4}))$", $post_date)) {
+        } elseif 
+//	(!eregi ("^([0-9]{1,2})[-,/,.]([0-9]{1,2})[-,/,.](([0-9]{2})|([0-9]{4}))$", $post_date)) {
+(!preg_match('/' . "^([0-9]{1,2})[-,/,.]([0-9]{1,2})[-,/,.](([0-9]{2})|([0-9]{4}))$" . '/i', $post_date)) {
+
             echo "
                <td valign=top>
                   <table width=90% align=center height=40 border=0 cellpadding=0 cellspacing=0>
@@ -415,7 +420,10 @@ if ($request == 'POST') { // Validate user input
             </tr>";
         }
     } elseif ($timefmt_24hr == '0') {
-        if ((!eregi ("^([0-9]?[0-9])+:+([0-9]+[0-9])+([a|p]+m)$", $post_time, $time_regs)) && (!eregi ("^([0-9]?[0-9])+:+([0-9]+[0-9])+( [a|p]+m)$", $post_time, $time_regs))) {
+//        if ((!eregi ("^([0-9]?[0-9])+:+([0-9]+[0-9])+([a|p]+m)$", $post_time, $time_regs)) && (!eregi ("^([0-9]?[0-9])+:+([0-9]+[0-9])+( [a|p]+m)$", $post_time, $time_regs))) {
+if ((!preg_match('/' . "^([0-9]?[0-9])+:+([0-9]+[0-9])+([a|p]+m)$" . '/i', $post_time, $time_regs)) && (!preg_match('/' . "^([0-9]?[0-9])+:+([0-9]+[0-9])+( [a|p]+m)$" . '/i', $post_time, $time_regs))) {
+
+// if ((!eregi ("^([0-9]?[0-9])+:+([0-9]+[0-9])+([a|p]+m)$", $post_time, $time_regs)) && (!eregi ("^([0-9]?[0-9])+:+([0-9]+[0-9])+( [a|p]+m)$", $post_time, $time_regs))) {
             $input_invalid = True;
             echo "
                <td valign=top>
@@ -448,7 +456,8 @@ if ($request == 'POST') { // Validate user input
             }
         }
     } elseif ($timefmt_24hr == '1') {
-        if (!eregi ("^([0-9]?[0-9])+:+([0-9]+[0-9])$", $post_time, $time_regs)) {
+//          if (!eregi ("^([0-9]?[0-9])+:+([0-9]+[0-9])$", $post_time, $time_regs)) {
+if (!preg_match('/' . "^([0-9]?[0-9])+:+([0-9]+[0-9])$" . '/i', $post_time, $time_regs)) {
             $input_invalid = True;
             echo "
                <td valign=top>
@@ -482,7 +491,8 @@ if ($request == 'POST') { // Validate user input
         }
     }
 
-    if (eregi ("^([0-9]{1,2})[-,/,.]([0-9]{1,2})[-,/,.](([0-9]{2})|([0-9]{4}))$", $post_date, $date_regs)) {
+//    if (eregi ("^([0-9]{1,2})[-,/,.]([0-9]{1,2})[-,/,.](([0-9]{2})|([0-9]{4}))$", $post_date, $date_regs)) {
+    if (preg_match('/' . "^([0-9]{1,2})[-\,\/,.]([0-9]{1,2})[-\,\/,.](([0-9]{2})|([0-9]{4}))$" . '/i', $post_date, $date_regs)) {
         if ($calendar_style == "amer") {
             if (isset($date_regs)) { // Format the date to American style
                 $month = $date_regs[1];
@@ -612,12 +622,12 @@ if ($request == 'GET' || isset($input_invalid)) { // Output Office/Group Punch S
                                  </option>";
     // Retrieve Punch Status'
     $query = "SELECT * FROM ".$db_prefix."punchlist WHERE (in_or_out = 0) ORDER BY punchitems ASC";
-    $result = mysql_query($query);
+    $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
 
-    while ($row = mysql_fetch_array($result)) {
+    while ($row = mysqli_fetch_array($result)) {
         echo "                        <option>".$row['punchitems']."</option>";
     }
-    mysql_free_result($result);
+    ((mysqli_free_result($result) || (is_object($result) && (get_class($result) == "mysqli_result"))) ? true : false);
     echo "
                               </select>
                               &nbsp; *
@@ -729,19 +739,19 @@ if ($request == 'GET' || isset($input_invalid)) { // Output Office/Group Punch S
 
     // Build an SQL statment of all the in status' available.
     $query = "SELECT * FROM ".$db_prefix."punchlist WHERE (in_or_out = 1) ORDER BY punchitems ASC";
-    $result = mysql_query($query);
+    $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
 
     $sql_in_status_statement = "";
-    $number_of_in_statuss = mysql_num_rows($result);
+    $number_of_in_statuss = mysqli_num_rows($result);
     $count = 1;
-    while ($row = mysql_fetch_array($result)) {
+    while ($row = mysqli_fetch_array($result)) {
         $sql_in_status_statement .= "(info.inout = '".$row['punchitems']."')";
         if ($count < $number_of_in_statuss) {
             $sql_in_status_statement .= " OR ";
         }
         $count++;
     }
-    mysql_free_result($result);
+    ((mysqli_free_result($result) || (is_object($result) && (get_class($result) == "mysqli_result"))) ? true : false);
 
     // Get employee's punched in
     if ((! empty($post_office)) && (! empty($post_group))) {
@@ -751,12 +761,12 @@ if ($request == 'GET' || isset($input_invalid)) { // Output Office/Group Punch S
     } else {
         $query = "SELECT DISTINCT employees.empfullname FROM employees, info WHERE ((employees.tstamp = info.timestamp) AND ($sql_in_status_statement))";
     }
-    $result = mysql_query($query);
+    $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
 
     // Punch out each employee selected
     $passes = 0;
     $admin_note = 'Time Admin Mass Employee Punch Out';
-    while ($row = mysql_fetch_array($result)) {
+    while ($row = mysqli_fetch_array($result)) {
         $passes++;
         // Configure the current time to insert for audit log
         $time = time();
@@ -766,34 +776,34 @@ if ($request == 'GET' || isset($input_invalid)) { // Output Office/Group Punch S
         $time_month = gmdate('m', $time);
         $time_day = gmdate('d', $time);
         $time_year = gmdate('Y', $time);
-        $time_tz_stamp = mktime($time_hour, $time_min, $time_sec, $time_month, $time_day, $time_year);
+        $time_tz_stamp = time($time_hour, $time_min, $time_sec, $time_month, $time_day, $time_year);
 
         $employee = "".$row['empfullname']."";
         if (strtolower($ip_logging) == "yes") {
             $query = "INSERT INTO ".$db_prefix."info (fullname, `inout`, timestamp, notes, ipaddress) VALUES ('".$employee."', '".$post_statusname."', '".$timestamp."', '".$admin_note."', '".$connecting_ip."')";
-            mysql_query($query);
+            mysqli_query($GLOBALS["___mysqli_ston"], $query);
             $query = "INSERT INTO ".$db_prefix."audit (modified_by_ip, modified_by_user, modified_when, modified_from, modified_to, modified_why, user_modified) VALUES ('".$connecting_ip."', '".$user."', '".$time_tz_stamp."', '0', '".$timestamp."', '".$admin_note."', '".$employee."')";
-            mysql_query($query);
+            mysqli_query($GLOBALS["___mysqli_ston"], $query);
         } else {
             $query = "INSERT INTO ".$db_prefix."info (fullname, `inout`, timestamp, notes) VALUES ('".$employee."', '".$post_statusname."', '".$timestamp."', '".$admin_note."')";
-            mysql_query($query);
+            mysqli_query($GLOBALS["___mysqli_ston"], $query);
             $query = "INSERT INTO ".$db_prefix."audit (modified_by_user, modified_when, modified_from, modified_to, modified_why, user_modified) VALUES ('".$user."', '".$time_tz_stamp."', '0', '".$timestamp."', '".$admin_note."', '".$employee."')";
-            mysql_query($query);
+            mysqli_query($GLOBALS["___mysqli_ston"], $query);
         }
         // Determine if we need to update the employee's current status
         $query = "SELECT * FROM ".$db_prefix."employees WHERE empfullname = '".$employee."'";
-        $result_status = mysql_query($query);
+        $result_status = mysqli_query($GLOBALS["___mysqli_ston"], $query);
 
-        while ($status_row = mysql_fetch_array($result_status)) {
+        while ($status_row = mysqli_fetch_array($result_status)) {
             $employees_table_timestamp = "".$status_row['tstamp']."";
         }
-        mysql_free_result($result_status);
+        ((mysqli_free_result($result_status) || (is_object($result_status) && (get_class($result_status) == "mysqli_result"))) ? true : false);
         if ($timestamp > $employees_table_timestamp) {
             $query = "UPDATE ".$db_prefix."employees SET tstamp = '".$timestamp."' WHERE empfullname = '".$employee."'";
-            mysql_query($query);
+            mysqli_query($GLOBALS["___mysqli_ston"], $query);
         }
     }
-    mysql_free_result($result);
+    ((mysqli_free_result($result) || (is_object($result) && (get_class($result) == "mysqli_result"))) ? true : false);
 
     echo "
        <td valign=top>

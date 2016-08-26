@@ -60,9 +60,9 @@ echo "      </table><br /></td></tr></table>\n"; exit;
 $get_status = $_GET['statusname'];
 
 $query = "select * from ".$db_prefix."punchlist where punchitems = '".$get_status."'";
-$result = mysql_query($query);
+$result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
 
-while ($row=mysql_fetch_array($result)) {
+while ($row=mysqli_fetch_array($result)) {
 
 $punchitem = "".$row['punchitems']."";
 $color = "".$row['color']."";
@@ -169,11 +169,11 @@ $create_status = $_POST['create_status'];
 
 if (!empty($get_status)) {
 $query = "select * from ".$db_prefix."punchlist where punchitems = '".$get_status."'";
-$result = mysql_query($query);
-while ($row=mysql_fetch_array($result)) {
+$result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
+while ($row=mysqli_fetch_array($result)) {
 $getstatus = "".$row['punchitems']."";
 }
-mysql_free_result($result);
+((mysqli_free_result($result) || (is_object($result) && (get_class($result) == "mysqli_result"))) ? true : false);
 if (!isset($getstatus)) {echo "Status is not defined.\n"; exit;}
 }
 
@@ -185,8 +185,9 @@ $post_statusname = addslashes($post_statusname);
 $string = strstr($post_statusname, "\'");
 $string2 = strstr($post_statusname, "\"");
 
-if ((empty($post_statusname)) || (empty($post_color)) || (!eregi ("^([[:alnum:]]| |-|_|\.)+$", $post_statusname)) ||
-((!eregi ("^(#[a-fA-F0-9]{6})+$", $post_color)) && (!eregi ("^([a-fA-F0-9]{6})+$", $post_color))) || (!empty($string)) || (!empty($string2))) {
+// if ((empty($post_statusname)) || (empty($post_color)) || (!eregi ("^([[:alnum:]]| |-|_|\.)+$", $post_statusname)) || ((!eregi ("^(#[a-fA-F0-9]{6})+$", $post_color)) && (!eregi ("^([a-fA-F0-9]{6})+$", $post_color))) || (!empty($string)) || (!empty($string2))) {
+
+if ((empty($post_statusname)) || (empty($post_color)) || (!preg_match('/' . "^([[:alnum:]]| |-|_|.)+$" . '/i', $post_statusname)) || ((!preg_match('/' . "^(#[a-fA-F0-9]{6})+$" . '/i', $post_color)) && (!preg_match('/' . "^([a-fA-F0-9]{6})+$" . '/i', $post_color))) || (!empty($string)) || (!empty($string2))) {
 
 echo "<table width=100% height=89% border=0 cellpadding=0 cellspacing=1>\n";
 echo "  <tr valign=top>\n";
@@ -251,14 +252,16 @@ echo "                <td class=table_rows width=20 align=center><img src='../im
                     &nbsp;A Color is required.</td></tr>\n";
 echo "            </table>\n";
 }
-elseif (!eregi ("^([[:alnum:]]| |-|_|\.)+$", $post_statusname)) {
+// elseif (!eregi ("^([[:alnum:]]| |-|_|\.)+$", $post_statusname)) {
+elseif (!preg_match('/' . "^([[:alnum:]]| |-|_|.)+$" . '/i', $post_statusname)) {
 echo "            <table align=center class=table_border width=60% border=0 cellpadding=0 cellspacing=3>\n";
 echo "              <tr>\n";
 echo "                <td class=table_rows width=20 align=center><img src='../images/icons/cancel.png' /></td><td class=table_rows_red nowrap>
                     &nbsp;Alphanumeric characters, hyphens, underscores, spaces, and periods are allowed when editing a Status Name.</td></tr>\n";
 echo "            </table>\n";
 }
-elseif ((!eregi ("^(#[a-fA-F0-9]{6})+$", $post_color)) && (!eregi ("^([a-fA-F0-9]{6})+$", $post_color))) {
+// elseif ((!eregi ("^(#[a-fA-F0-9]{6})+$", $post_color)) && (!eregi ("^([a-fA-F0-9]{6})+$", $post_color))) {
+elseif ((!preg_match('/' . "^(#[a-fA-F0-9]{6})+$" . '/i', $post_color)) && (!preg_match('/' . "^([a-fA-F0-9]{6})+$" . '/i', $post_color))) {
 echo "            <table align=center class=table_border width=60% border=0 cellpadding=0 cellspacing=3>\n";
 echo "              <tr>\n";
 echo "                <td class=table_rows width=20 align=center><img src='../images/icons/cancel.png' /></td><td class=table_rows_red nowrap>
@@ -327,10 +330,10 @@ exit;
 
 $query = "update ".$db_prefix."punchlist set punchitems = ('".$post_statusname."'), color = ('".$post_color."'), in_or_out = ('".$create_status."')
           where punchitems  = ('".$get_status."')";
-$result = mysql_query($query);
+$result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
 
 $query2 = "update ".$db_prefix."info set `inout` = ('".$post_statusname."') where `inout` = ('".$get_status."')";
-$result2 = mysql_query($query2);
+$result2 = mysqli_query($GLOBALS["___mysqli_ston"], $query2);
 
 echo "<table width=100% height=89% border=0 cellpadding=0 cellspacing=1>\n";
 echo "  <tr valign=top>\n";

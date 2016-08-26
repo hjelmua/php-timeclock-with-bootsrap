@@ -45,18 +45,18 @@ echo "      </table><br /></td></tr></table>\n"; exit;
 }
 
 
-$user_count = mysql_query("select empfullname from ".$db_prefix."employees
+$user_count = mysqli_query($GLOBALS["___mysqli_ston"], "select empfullname from ".$db_prefix."employees
                            order by empfullname");
-@$user_count_rows = mysql_num_rows($user_count);
+@$user_count_rows = mysqli_num_rows($user_count);
 
-$admin_count = mysql_query("select empfullname from ".$db_prefix."employees where admin = '1'");
-@$admin_count_rows = mysql_num_rows($admin_count);
+$admin_count = mysqli_query($GLOBALS["___mysqli_ston"], "select empfullname from ".$db_prefix."employees where admin = '1'");
+@$admin_count_rows = mysqli_num_rows($admin_count);
 
-$time_admin_count = mysql_query("select empfullname from ".$db_prefix."employees where time_admin = '1'");
-@$time_admin_count_rows = mysql_num_rows($time_admin_count);
+$time_admin_count = mysqli_query($GLOBALS["___mysqli_ston"], "select empfullname from ".$db_prefix."employees where time_admin = '1'");
+@$time_admin_count_rows = mysqli_num_rows($time_admin_count);
 
-$reports_count = mysql_query("select empfullname from ".$db_prefix."employees where reports = '1'");
-@$reports_count_rows = mysql_num_rows($reports_count);
+$reports_count = mysqli_query($GLOBALS["___mysqli_ston"], "select empfullname from ".$db_prefix."employees where reports = '1'");
+@$reports_count_rows = mysqli_num_rows($reports_count);
 
 
 echo '<div class="row">
@@ -102,9 +102,9 @@ $row_count = 0;
 
 $query = "select empfullname, displayname, email, groups, office, admin, reports, time_admin, disabled from ".$db_prefix."employees
           order by empfullname";
-$result = mysql_query($query);
+$result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
 
-while ($row=mysql_fetch_array($result)) {
+while ($row=mysqli_fetch_array($result)) {
 
 $empfullname = stripslashes("".$row['empfullname']."");
 $displayname = stripslashes("".$row['displayname']."");

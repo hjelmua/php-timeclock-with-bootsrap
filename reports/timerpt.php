@@ -80,19 +80,19 @@ echo "              <input type='hidden' name='date_format' value='$js_datefmt'>
 if ($username_dropdown_only == "yes") {
 
 $query = "select * from ".$db_prefix."employees order by empfullname asc";
-$result = mysql_query($query);
+$result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
 
 echo "             <div class='form-group'><label> Username: </label>
                   <select name='user_name' class='form-control select2 pull-right' style='width: 50%;'>\n";
 echo "                    <option value ='All'>All</option>\n";
 
-while ($row=mysql_fetch_array($result)) {
+while ($row=mysqli_fetch_array($result)) {
   $tmp_empfullname = stripslashes("".$row['empfullname']."");
   echo "                    <option>$tmp_empfullname</option>\n";
 }
 
 echo "                  </select></div> &nbsp;*\n";
-mysql_free_result($result);
+((mysqli_free_result($result) || (is_object($result) && (get_class($result) == "mysqli_result"))) ? true : false);
 } else {
 
 echo "<div class='form-group'><label>Choose Office: </label> <select name='office_name' class='form-control select2 pull-right' style='width: 50%;' onchange='group_names();'></select></div>";
@@ -231,7 +231,7 @@ include '../theme/templates/endmaincontent.inc';
 include '../footer.php';
 include '../theme/templates/controlsidebar.inc'; 
 include '../theme/templates/endmain.inc';
-include '../theme/templates/adminfooterscripts.inc';
+include '../theme/templates/reportsfooterscripts.inc';
 exit;
 
 } else {
@@ -252,9 +252,9 @@ $fullname = addslashes($fullname);
 
 if ($fullname != "All") {
 $query = "select * from ".$db_prefix."employees where empfullname = '".$fullname."'";
-$result = mysql_query($query);
+$result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
 
-while ($row=mysql_fetch_array($result)) {
+while ($row=mysqli_fetch_array($result)) {
 $empfullname = stripslashes("".$row['empfullname']."");
 $displayname = stripslashes("".$row['displayname']."");
 }
@@ -264,16 +264,16 @@ $fullname = stripslashes($fullname);
 
 if (($office_name != "All") && (!empty($office_name))) {
 $query = "select officename from ".$db_prefix."offices where officename = '".$office_name."'";
-$result = mysql_query($query);
-while ($row=mysql_fetch_array($result)) {
+$result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
+while ($row=mysqli_fetch_array($result)) {
 $getoffice = "".$row['officename']."";
 }
 if (!isset($getoffice)) {echo "Something smells fishy here.\n"; exit;}
 }
 if (($group_name != "All") && (!empty($group_name))) {
 $query = "select groupname from ".$db_prefix."groups where groupname = '".$group_name."'";
-$result = mysql_query($query);
-while ($row=mysql_fetch_array($result)) {
+$result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
+while ($row=mysqli_fetch_array($result)) {
 $getgroup = "".$row['groupname']."";
 }
 if (!isset($getgroup)) {echo "Something smells fishy here.\n"; exit;}
@@ -346,7 +346,8 @@ echo "                <td class=table_rows width=20 align=center><img src='../im
                     A valid From Date is required.</td></tr>\n";
 echo "            </table>\n";
 }
-elseif (!eregi ("^([0-9]?[0-9])+[-|/|.]+([0-9]?[0-9])+[-|/|.]+(([0-9]{2})|([0-9]{4}))$", $from_date, $date_regs)) {
+//elseif (!eregi ("^([0-9]?[0-9])+[-|/|.]+([0-9]?[0-9])+[-|/|.]+(([0-9]{2})|([0-9]{4}))$", $from_date, $date_regs)) {
+elseif (!preg_match('/' . "^([0-9]?[0-9])+[-|\/|.]+([0-9]?[0-9])+[-|\/|.]+(([0-9]{2})|([0-9]{4}))$" . '/i', $from_date, $date_regs)) {
 $evil_post = '1';
 if ($use_reports_password == "yes") {
 include '../admin/topmain.php';
@@ -439,7 +440,8 @@ echo "                <td class=table_rows width=20 align=center><img src='../im
                     A valid To Date is required.</td></tr>\n";
 echo "            </table>\n";
 }
-elseif (!eregi ("^([0-9]?[0-9])+[-|/|.]+([0-9]?[0-9])+[-|/|.]+(([0-9]{2})|([0-9]{4}))$", $to_date, $date_regs)) {
+// elseif (!eregi ("^([0-9]?[0-9])+[-|/|.]+([0-9]?[0-9])+[-|/|.]+(([0-9]{2})|([0-9]{4}))$", $to_date, $date_regs)) {
+elseif (!preg_match('/' . "^([0-9]?[0-9])+[-|\/|.]+([0-9]?[0-9])+[-|\/|.]+(([0-9]{2})|([0-9]{4}))$" . '/i', $to_date, $date_regs)) {
 $evil_post = '1';
 if ($use_reports_password == "yes") {
 include '../admin/topmain.php';
@@ -522,19 +524,19 @@ echo "              <input type='hidden' name='date_format' value='$js_datefmt'>
 if ($username_dropdown_only == "yes") {
 
 $query = "select * from ".$db_prefix."employees order by empfullname asc";
-$result = mysql_query($query);
+$result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
 
 echo "              <tr><td>Username:</td><td colspan=2>
                   <select name='user_name'>\n";
 echo "                    <option value ='All'>All</option>\n";
 
-while ($row=mysql_fetch_array($result)) {
+while ($row=mysqli_fetch_array($result)) {
   $empfullname_tmp = stripslashes("".$row['empfullname']."");
   echo "                    <option>$empfullname_tmp</option>\n";
 }
 
 echo "                  </select>&nbsp;*</td></tr>\n";
-mysql_free_result($result);
+((mysqli_free_result($result) || (is_object($result) && (get_class($result) == "mysqli_result"))) ? true : false);
 } else {
 
 echo "              <tr><td>Choose Office:</td><td colspan=2>
@@ -615,7 +617,7 @@ $rpt_sec = gmdate('s',$time);
 $rpt_month = gmdate('m',$time);
 $rpt_day = gmdate('d',$time);
 $rpt_year = gmdate('Y',$time);
-$rpt_stamp = mktime ($rpt_hour, $rpt_min, $rpt_sec, $rpt_month, $rpt_day, $rpt_year);
+$rpt_stamp = time ($rpt_hour, $rpt_min, $rpt_sec, $rpt_month, $rpt_day, $rpt_year);
 
 $rpt_stamp = $rpt_stamp + @$tzo;
 $rpt_time = date($timefmt, $rpt_stamp);
@@ -660,36 +662,36 @@ if (strtolower($user_or_display) == "display") {
     if (($office_name == "All") && ($group_name == "All") && ($fullname == "All")) {
 
         $query = "select empfullname, displayname from ".$db_prefix."employees WHERE tstamp IS NOT NULL order by displayname asc";
-        $result = mysql_query($query);
+        $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
 
     } elseif ((empty($office_name)) && (empty($group_name)) && ($fullname == 'All')) {
 
         $query = "select empfullname, displayname from ".$db_prefix."employees WHERE tstamp IS NOT NULL order by displayname asc";
-        $result = mysql_query($query);
+        $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
 
     } elseif ((empty($office_name)) && (empty($group_name)) && ($fullname != 'All')) {
 
         $query = "select empfullname, displayname from ".$db_prefix."employees WHERE tstamp IS NOT NULL and empfullname = '".$fullname."' order by
                   displayname asc";
-        $result = mysql_query($query);
+        $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
 
     } elseif (($office_name != "All") && ($group_name == "All") && ($fullname == "All")) {
 
         $query = "select empfullname, displayname from ".$db_prefix."employees where office = '".$office_name."' and tstamp IS NOT NULL order by
                   displayname asc";
-        $result = mysql_query($query);
+        $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
 
     } elseif (($office_name != "All") && ($group_name != "All") && ($fullname == "All")) {
 
         $query = "select empfullname, displayname from ".$db_prefix."employees where office = '".$office_name."' and groups = '".$group_name."'  and
                   tstamp IS NOT NULL order by displayname asc";
-        $result = mysql_query($query);
+        $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
 
     } elseif (($office_name != "All") && ($group_name != "All") && ($fullname != "All")) {
 
         $query = "select empfullname, displayname from ".$db_prefix."employees where office = '".$office_name."' and groups = '".$group_name."' and
                   empfullname = '".$fullname."' and tstamp IS NOT NULL order by displayname asc";
-        $result = mysql_query($query);
+        $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
     }
 
 } else {
@@ -697,40 +699,40 @@ if (strtolower($user_or_display) == "display") {
     if (($office_name == "All") && ($group_name == "All") && ($fullname == "All")) {
 
         $query = "select empfullname, displayname from ".$db_prefix."employees WHERE tstamp IS NOT NULL order by empfullname asc";
-        $result = mysql_query($query);
+        $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
 
     } elseif ((empty($office_name)) && (empty($group_name)) && ($fullname == 'All')) {
 
         $query = "select empfullname, displayname from ".$db_prefix."employees WHERE tstamp IS NOT NULL order by empfullname asc";
-        $result = mysql_query($query);
+        $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
 
     } elseif ((empty($office_name)) && (empty($group_name)) && ($fullname != 'All')) {
 
         $query = "select empfullname, displayname from ".$db_prefix."employees WHERE tstamp IS NOT NULL and empfullname = '".$fullname."' order by
                   empfullname asc";
-        $result = mysql_query($query);
+        $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
 
     } elseif (($office_name != "All") && ($group_name == "All") && ($fullname == "All")) {
 
         $query = "select empfullname, displayname from ".$db_prefix."employees where office = '".$office_name."' and tstamp IS NOT NULL order by
                   empfullname asc";
-        $result = mysql_query($query);
+        $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
 
     } elseif (($office_name != "All") && ($group_name != "All") && ($fullname == "All")) {
 
         $query = "select empfullname, displayname from ".$db_prefix."employees where office = '".$office_name."' and groups = '".$group_name."'  and
                   tstamp IS NOT NULL order by empfullname asc";
-        $result = mysql_query($query);
+        $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
 
     } elseif (($office_name != "All") && ($group_name != "All") && ($fullname != "All")) {
 
         $query = "select empfullname, displayname from ".$db_prefix."employees where office = '".$office_name."' and groups = '".$group_name."' and
                   empfullname = '".$fullname."' and tstamp IS NOT NULL order by empfullname asc";
-        $result = mysql_query($query);
+        $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
     }
 }
 
-while ($row=mysql_fetch_array($result)) {
+while ($row=mysqli_fetch_array($result)) {
 
   $employees_empfullname[] = stripslashes("".$row['empfullname']."");
   $employees_displayname[] = stripslashes("".$row['displayname']."");
@@ -753,9 +755,9 @@ for ($x=0;$x<$employees_cnt;$x++) {
                   and ".$db_prefix."info.timestamp <= '".$to_timestamp."' and ".$db_prefix."info.`inout` = ".$db_prefix."punchlist.punchitems
                   and ".$db_prefix."employees.empfullname = '".$employees_empfullname[$x]."' and ".$db_prefix."employees.empfullname <> 'admin'
                   order by ".$db_prefix."info.timestamp asc";
-        $result = mysql_query($query);
+        $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
 
-        while ($row=mysql_fetch_array($result)) {
+        while ($row=mysqli_fetch_array($result)) {
 
             $display_stamp = "".$row["timestamp"]."";
             $time = date($timefmt, $display_stamp);

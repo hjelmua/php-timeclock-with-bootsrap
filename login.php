@@ -53,9 +53,9 @@ if ($_REQUEST["login_action"] == "admin") {
 
         // Determine if the user has sys or time access rights.
         $query = "select empfullname, employee_passwd, admin, time_admin from ".$db_prefix."employees where empfullname = '".$login_userid."'";
-        $result = mysql_query($query);
+        $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
 
-        while ($row = mysql_fetch_array($result)) {
+        while ($row = mysqli_fetch_array($result)) {
             $admin_username = "".$row['empfullname']."";
             $admin_password = "".$row['employee_passwd']."";
             $admin_auth = "".$row['admin']."";
@@ -71,9 +71,9 @@ if ($_REQUEST["login_action"] == "admin") {
 
         // Determine if the user has report access rights.
         $query = "select empfullname, employee_passwd, reports from ".$db_prefix."employees where empfullname = '".$login_userid."'";
-        $result = mysql_query($query);
+        $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
 
-        while ($row=mysql_fetch_array($result)) {
+        while ($row=mysqli_fetch_array($result)) {
             $reports_username = "".$row['empfullname']."";
             $reports_password = "".$row['employee_passwd']."";
             $reports_auth = "".$row['reports']."";
@@ -169,9 +169,9 @@ if ($_REQUEST["login_action"] == "admin") {
 
         // Determine if the user has report access rights.
         $query = "select empfullname, employee_passwd, reports from ".$db_prefix."employees where empfullname = '".$login_userid."'";
-        $result = mysql_query($query);
+        $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
 
-        while ($row = mysql_fetch_array($result)) {
+        while ($row = mysqli_fetch_array($result)) {
             $reports_username = "".$row['empfullname']."";
             $reports_password = "".$row['employee_passwd']."";
             $reports_auth = "".$row['reports']."";
@@ -186,9 +186,9 @@ if ($_REQUEST["login_action"] == "admin") {
 
         // Determine if the user has time or sys access rights.
         $query = "select empfullname, employee_passwd, admin, time_admin from ".$db_prefix."employees where empfullname = '".$login_userid."'";
-        $result = mysql_query($query);
+        $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
 
-        while ($row = mysql_fetch_array($result)) {
+        while ($row = mysqli_fetch_array($result)) {
             $admin_username = "".$row['empfullname']."";
             $admin_password = "".$row['employee_passwd']."";
             $admin_auth = "".$row['admin']."";

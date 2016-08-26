@@ -48,24 +48,24 @@ if ($restrict_ips == "yes") {
 // check for correct db version //
 
 if ($use_persistent_connection == "yes") {
-    @ $db = mysql_pconnect($db_hostname, $db_username, $db_password);
+    @ $db = ($GLOBALS["___mysqli_ston"] = mysqli_connect($db_hostname,  $db_username,  $db_password));
 } else {
-    @ $db = mysql_connect($db_hostname, $db_username, $db_password);
+    @ $db = ($GLOBALS["___mysqli_ston"] = mysqli_connect($db_hostname,  $db_username,  $db_password));
 }
 if (!$db) {echo "Error: Could not connect to the database. Please try again later."; exit;}
-mysql_select_db($db_name);
+((bool)mysqli_query($GLOBALS["___mysqli_ston"], "USE " . $db_name));
 
 $table = "dbversion";
-$result = mysql_query("SHOW TABLES LIKE '".$db_prefix.$table."'");
-@$rows = mysql_num_rows($result);
+$result = mysqli_query($GLOBALS["___mysqli_ston"], "SHOW TABLES LIKE '".$db_prefix.$table."'");
+@$rows = mysqli_num_rows($result);
 if ($rows == "1") {
 $dbexists = "1";
 } else {
 $dbexists = "0";
 }
 
-$db_version_result = mysql_query("select * from ".$db_prefix."dbversion");
-while (@$row = mysql_fetch_array($db_version_result)) {
+$db_version_result = mysqli_query($GLOBALS["___mysqli_ston"], "select * from ".$db_prefix."dbversion");
+while (@$row = mysqli_fetch_array($db_version_result)) {
   @$my_dbversion = "".$row["dbversion"]."";
 }
 
@@ -80,7 +80,7 @@ echo "Please reconfigure your config.inc.php file, you cannot have both $use_cli
 echo "<head>\n";
 if ($use_client_tz == "yes") {
 if (!isset($_COOKIE['tzoffset'])) {
-include '../tzoffset.php';
+//include '../tzoffset.php';
 echo "<meta http-equiv='refresh' content='0;URL=index.php'>\n";}}
 include '../theme/templates/adminheader.inc';
 echo "<link rel='stylesheet' type='text/css' media='print' href='../css/print.css' />\n";

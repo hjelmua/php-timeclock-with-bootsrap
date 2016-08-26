@@ -64,7 +64,7 @@ if (! isset($_GET['printer_friendly']) && ($message_of_the_day != "none")) {
 end move to leftmain */ 
 
 // Parse the employee info in the result array
-while ($row = mysql_fetch_array($result)) {
+while ($row = mysqli_fetch_array($result)) {
     $display_stamp = "".$row["timestamp"]."";
     $time = date($timefmt, $display_stamp);
     $date = date($datefmt, $display_stamp);
@@ -252,9 +252,9 @@ end moving to leftmain */
     if ($display_status == "yes") {
         // Get in or out status of the current status
         $status_query = "SELECT * FROM ".$db_prefix."punchlist ORDER BY punchitems ASC";
-        $status = mysql_query($status_query);
+        $status = mysqli_query($GLOBALS["___mysqli_ston"], $status_query);
 
-        while ($status_row = mysql_fetch_array($status)) {
+        while ($status_row = mysqli_fetch_array($status)) {
             if ($status_row['punchitems'] == $row["inout"]) {
                 echo "
                              <!-- <td> -->";
@@ -274,7 +274,7 @@ end moving to leftmain */
                 break;
             }
         }
-        mysql_free_result($status);
+        ((mysqli_free_result($status) || (is_object($status) && (get_class($status) == "mysqli_result"))) ? true : false);
     }
 
     if ($display_date == "yes") {
@@ -338,5 +338,5 @@ if (! isset($_GET['printer_friendly'])) {
     echo "
 <!-- debug end of display.php-->";
 }
-mysql_free_result($result);
+((mysqli_free_result($result) || (is_object($result) && (get_class($result) == "mysqli_result"))) ? true : false);
 ?>
