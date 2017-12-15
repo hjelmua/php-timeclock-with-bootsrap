@@ -166,7 +166,7 @@ $calendar_style --> 1) amer
 $datefmt = "j/n/Y";
 $js_datefmt = "d/M/yyyy";
 $tmp_datefmt = "d/m/yyyy";
-$calendar_style = "euro";
+$calendar_style = "amer";
 
 
 /* Choose the way times are displayed. Default is "g:i a".
