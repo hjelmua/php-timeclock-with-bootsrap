@@ -164,19 +164,19 @@ echo "              <input type='hidden' name='date_format' value='$js_datefmt'>
 if ($username_dropdown_only == "yes") {
 
 $query = "select * from ".$db_prefix."employees order by empfullname asc";
-$result = mysql_query($query);
+$result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
 
 echo "              Username:
                   <select name='user_name'>\n";
 echo "                    <option value ='All'>All</option>\n";
 
-while ($row=mysql_fetch_array($result)) {
+while ($row=mysqli_fetch_array($result)) {
   $tmp_empfullname = stripslashes("".$row['empfullname']."");
   echo "                    <option>$tmp_empfullname</option>\n";
 }
 
 echo "                  </select>&nbsp;*\n";
-mysql_free_result($result);
+mysqli_free_result($result);
 } else {
 
 echo "<div class='form-group'><label>Choose Office: </label> <select name='office_name' class='form-control select2 pull-right' style='width: 50%;' onchange='group_names();'></select></div>";
