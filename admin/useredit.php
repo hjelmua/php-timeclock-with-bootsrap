@@ -289,12 +289,13 @@ $string = strstr($display_name, "\"");
 //(($reports_perms != '1') && (!empty($reports_perms))) || (($time_admin_perms != '1') && (!empty($time_admin_perms))) || (($post_disabled != '1') &&
 //(!empty($post_disabled))) || (!empty($string))) {
 
-        if ((!preg_match('/' . "^([[:alnum:]]| |-|'|,)+$" . '/i', $display_name)) || (empty($display_name)) || (empty($email_addy)) || (empty($office_name)) || (empty($group_name)) ||
+        if ((!preg_match('/' . "^([[:alnum:]]|Å|Ä|Ö| |-|'|,)+$" . '/i', $display_name)) || (empty($display_name)) || (empty($email_addy)) || (empty($office_name)) || (empty($group_name)) ||
             (!preg_match('/' . "^([[:alnum:]]|_|\.|-)+@([[:alnum:]]|\.|-)+(\.)([a-z]{2,4})$" . '/i', $email_addy)) || (($admin_perms != '1') && (!empty($admin_perms))) ||
             (($reports_perms != '1') && (!empty($reports_perms))) || (($time_admin_perms != '1') && (!empty($time_admin_perms))) || (($post_disabled != '1') &&
                                                                                                                                      (!empty($post_disabled))) || (!empty($string))
         ) {
 
+/*
 echo "<table width=100% height=89% border=0 cellpadding=0 cellspacing=1>\n";
 echo "  <tr valign=top>\n";
 echo "    <td class=left_main width=180 align=left scope=col>\n";
@@ -346,7 +347,7 @@ echo "      <table width=100% height=100% border=0 cellpadding=10 cellspacing=1>
 echo "        <tr class=right_main_text>\n";
 echo "          <td valign=top>\n";
 echo "            <br />\n";
-
+*/
 // begin post validation //
 
 if (empty($display_name)) {
@@ -385,7 +386,8 @@ echo "                <td class=table_rows width=20 align=center><img src='../im
 echo "            </table>\n";
 }
 // elseif (!eregi ("^([[:alnum:]]| |-|'|,)+$", $display_name)) {
-elseif (!preg_match('/' . "^([[:alnum:]]| |-|'|,)+$" . '/i', $display_name)) {
+//elseif (!preg_match('/' . "^([[:alnum:]]| |-|'|,)+$" . '/i', $display_name)) {
+  elseif (!preg_match('/' . "^([[:alnum:]]|Å|Ä|Ö| |-|'|,)+$" . '/i', $display_name)) {
 echo "            <table align=center class=table_border width=60% border=0 cellpadding=0 cellspacing=3>\n";
 echo "              <tr>\n";
 echo "                <td class=table_rows width=20 align=center><img src='../images/icons/cancel.png' /></td><td class=table_rows_red>
@@ -546,6 +548,7 @@ $query3 = "update ".$db_prefix."employees set displayname = ('".$display_name."'
            where empfullname = ('".$post_username."')";
 $result3 = mysqli_query($GLOBALS["___mysqli_ston"], $query3);
 
+/*
 echo "<table width=100% height=89% border=0 cellpadding=0 cellspacing=1>\n";
 echo "  <tr valign=top>\n";
 echo "    <td class=left_main width=180 align=left scope=col>\n";
@@ -597,6 +600,7 @@ echo "      <table width=100% height=100% border=0 cellpadding=10 cellspacing=1>
 echo "        <tr class=right_main_text>\n";
 echo "          <td valign=top>\n";
 echo "            <br />\n";
+*/
 echo "            <table align=center class=table_border width=60% border=0 cellpadding=0 cellspacing=3>\n";
 echo "              <tr>\n";
 echo "                <td class=table_rows width=20 align=center><img src='../images/icons/accept.png' /></td>
