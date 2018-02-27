@@ -39,7 +39,7 @@ echo '<div class="row">
                 <table class="table table-hover table-striped">
 	      ';
 echo "              <tr><th><b><u>VARIABLE</u></b></td> <th><b><u>VALUE</u></b></td> <th><b><u>DESCRIPTION</u></b></td></tr>\n";
-echo "              <tr><th>MySql DB Settings</th></tr>\n";
+echo "              <tr><th>mysql DB Settings</th></tr>\n";
 // Display database hostname
 echo "              <tr><td>db_hostname:</td> <td>$db_hostname</td> <td>This is the hostname for your mysql server, default is <b>localhost</b>.</td></tr>\n";
 $row_count++; $row_color = ($row_count % 2) ? $color2 : $color1;
