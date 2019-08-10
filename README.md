@@ -1,7 +1,7 @@
 About
 =====
 
-A fork of timeclock version 1.10 that uses bootstrap
+A fork of timeclock version 1.10 that uses bootstrap.
 
 
 Timeclock - What Is It?
