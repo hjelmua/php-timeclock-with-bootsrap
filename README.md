@@ -61,7 +61,7 @@ The PHP Weather part has been discontinued and the code has not been updated to 
 ## Now PHP 7 enabled.
 All ereg/eregi and mysql code had been updated to PHP 7.
 
-##New frontend first step to PHP 8.x
+## New frontend first step to PHP 8.x
 In the folder newfrontend you can find the beginning of the next generation PHP Timeclock. It is build to use the database structure.
 
 ##License
