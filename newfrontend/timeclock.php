@@ -1,6 +1,6 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+//error_reporting(E_ALL);
+//ini_set('display_errors', 1);
 // Include database configuration
 include 'config/config.php';
 
@@ -20,6 +20,8 @@ if ($result->num_rows > 0) {
 }
 
 // Handle punch action
+$errorMessage = ''; // Initialize an error message variable
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $employee = $_POST['employee'];
     $password = $_POST['password'];
@@ -32,41 +34,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $authResult = $conn->query($authSql);
 
     if (!$authResult || $authResult->num_rows === 0) {
-        die("Error: Employee not found.");
-    }
-
-    $row = $authResult->fetch_assoc();
-    $storedPassword = $row['employee_passwd'];
-
-    // Verify the password using the same crypt logic
-    $hashedInputPassword = crypt($password, 'xy');
-    if ($hashedInputPassword !== $storedPassword) {
-        die("Error: Invalid password.");
-    }
-
-    // Proceed with the punch action if the password is valid
-    $lastPunchSql = "SELECT `inout` FROM info WHERE fullname = '$employee' ORDER BY timestamp DESC LIMIT 1";
-    $lastPunchResult = $conn->query($lastPunchSql);
-
-    if (!$lastPunchResult) {
-        die("Error fetching last punch: " . $conn->error);
-    }
-
-    $lastStatus = ($lastPunchResult->num_rows > 0) ? $lastPunchResult->fetch_assoc()['inout'] : 'out';
-    $newStatus = ($lastStatus === 'in') ? 'out' : 'in';
-
-    // Insert the new punch
-    $punchSql = "
-        INSERT INTO info (fullname, `inout`, timestamp, notes, ipaddress)
-        VALUES ('$employee', '$newStatus', $timestamp, '$notes', '$ipAddress')";
-    
-    if ($conn->query($punchSql)) {
-        $message = "Punch $newStatus recorded successfully.";
+        $errorMessage = "Error: Employee not found.";
     } else {
-        die("Error: " . $conn->error);
+        $row = $authResult->fetch_assoc();
+        $storedPassword = $row['employee_passwd'];
+
+        // Verify the password using the same crypt logic
+        $hashedInputPassword = crypt($password, 'xy');
+        if ($hashedInputPassword !== $storedPassword) {
+            $errorMessage = "Error: Invalid password.";
+        } else {
+            // Proceed with the punch action if the password is valid
+            $lastPunchSql = "SELECT `inout` FROM info WHERE fullname = '$employee' ORDER BY timestamp DESC LIMIT 1";
+            $lastPunchResult = $conn->query($lastPunchSql);
+
+            if (!$lastPunchResult) {
+                $errorMessage = "Error fetching last punch: " . $conn->error;
+            } else {
+                $lastStatus = ($lastPunchResult->num_rows > 0) ? $lastPunchResult->fetch_assoc()['inout'] : 'out';
+                $newStatus = ($lastStatus === 'in') ? 'out' : 'in';
+
+                // Insert the new punch
+                $punchSql = "
+                    INSERT INTO info (fullname, `inout`, timestamp, notes, ipaddress)
+                    VALUES ('$employee', '$newStatus', $timestamp, '$notes', '$ipAddress')";
+
+                if (!$conn->query($punchSql)) {
+                    $errorMessage = "Error: " . $conn->error;
+                } else {
+                    $message = "Punch $newStatus recorded successfully.";
+                }
+            }
+        }
     }
 }
-
 
 // Fetch current status for all employees
 $statusSql = "
@@ -114,16 +115,26 @@ if ($statusResult->num_rows > 0) {
             <!-- Left Column: Form -->
             <div class="col-md-6">
                 <div class="card shadow p-4">
-                    <h2 class="mb-4">Punch In/Out</h2>
-                    <?php if (isset($message)): ?>
-                        <div class="alert alert-info text-center">
-                            <?= $message ?>
-                        </div>
-                    <?php endif; ?>
+                    <h2 class="mb-4 display-4"><i class="bi bi-clock"></i> Timeclock</h2>
+
+                <!-- Display error message -->
+                <?php if (!empty($errorMessage)): ?>
+                    <div class="alert alert-danger">
+                        <?= $errorMessage ?>
+                    </div>
+                <?php endif; ?>
+
+                <!-- Display success message -->
+                <?php if (!empty($message)): ?>
+                    <div class="alert alert-success">
+                        <?= $message ?>
+                    </div>
+                <?php endif; ?>
+
                     <form method="POST">
                         <div class="mb-3">
                             <label for="employee" class="form-label">Select Employee:</label>
-                            <select name="employee" id="employee" class="form-select form-select-lg" required>
+                            <select name="employee" id="employee" class="form-select form-select-lg" size="4" required>
                                 <option value="" disabled selected>Choose an employee...</option>
                                 <?php foreach ($employees as $employee): ?>
                                     <option value="<?= $employee['empfullname'] ?>"><?= $employee['displayname'] ?></option>
@@ -139,7 +150,7 @@ if ($statusResult->num_rows > 0) {
                             <textarea name="notes" id="notes" class="form-control" placeholder="Add any additional information..."></textarea>
                         </div>
                         <div class="d-grid">
-                            <button type="submit" class="btn btn-primary btn-lg">Punch In/Out</button>
+                            <button type="submit" class="btn btn-primary btn-lg"><i class="bi bi-clock"></i> Punch Status</button>
                         </div>
                     </form>
                 </div>
