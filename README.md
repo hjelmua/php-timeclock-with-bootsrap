@@ -1,3 +1,9 @@
+You can find the new version of php-timeclock-with-bootsrap
+=====
+here: https://github.com/hjelmua/php-timeclock
+
+
+
 About
 =====
 
