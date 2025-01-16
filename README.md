@@ -3,6 +3,12 @@ About
 
 A fork of timeclock version 1.10 that uses bootstrap
 
+Please use the new version
+====
+
+New version found here: https://github.com/hjelmua/php-timeclock/
+
+
 
 Timeclock - What Is It?
 =======================
